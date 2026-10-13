@@ -1,0 +1,1382 @@
+[
+  {
+    "id": "p1",
+    "name": "Bradman Best",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p2",
+    "name": "Jack Bostock",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p3",
+    "name": "Blayke Brailey",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p4",
+    "name": "Patrick Carrigan",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p5",
+    "name": "Reuben Cotter",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p6",
+    "name": "Tom Dearden",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p7",
+    "name": "Tino Fa'asuamaleaui",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p8",
+    "name": "David Fifita",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p9",
+    "name": "Harry Grant",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p10",
+    "name": "Keaon Koloamatangi",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p11",
+    "name": "Liam Martin",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p12",
+    "name": "Latrell Mitchell",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p13",
+    "name": "Mitchell Moses",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p14",
+    "name": "Cameron Munster",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p15",
+    "name": "Cameron Murray",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p16",
+    "name": "Jacob Preston",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p17",
+    "name": "Lindsay Smith",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p18",
+    "name": "Kotoni Staggs",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p19",
+    "name": "James Tedesco",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p20",
+    "name": "Tom Trbojevic",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p21",
+    "name": "Sam Walker",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p22",
+    "name": "Reece Walsh",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p23",
+    "name": "Isaah Yeo",
+    "nation": "AUS",
+    "marketEligible": true
+  },
+  {
+    "id": "p24",
+    "name": "Cameron Brown",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p25",
+    "name": "Rhys Dakin",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p26",
+    "name": "Glassie Glassie",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p27",
+    "name": "Valentine Holmes",
+    "nation": "COK",
+    "marketEligible": true
+  },
+  {
+    "id": "p28",
+    "name": "Esom Ioka",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p29",
+    "name": "KL Iro",
+    "nation": "COK",
+    "marketEligible": true
+  },
+  {
+    "id": "p30",
+    "name": "Chaev Kolone",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p31",
+    "name": "Makahesi Makatoa",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p32",
+    "name": "Esan Marsters",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p33",
+    "name": "Amare Milford",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p34",
+    "name": "Davvy Moale",
+    "nation": "COK",
+    "marketEligible": true
+  },
+  {
+    "id": "p35",
+    "name": "K-Ci Newton-Whare",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p36",
+    "name": "Rua Ngatikaura",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p37",
+    "name": "Marata Niukore",
+    "nation": "COK",
+    "marketEligible": true
+  },
+  {
+    "id": "p38",
+    "name": "Pride Petterson-Robati",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p39",
+    "name": "Reuben Porter",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p40",
+    "name": "Reubenn Rennie",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p41",
+    "name": "Brad Takairangi",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p42",
+    "name": "Mason Teague",
+    "nation": "COK",
+    "marketEligible": true
+  },
+  {
+    "id": "p43",
+    "name": "David Tuariki",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p44",
+    "name": "Paul Ulberg",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p45",
+    "name": "Delahia Wigmore",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p46",
+    "name": "Maui Winitana-Patelesio",
+    "nation": "COK",
+    "marketEligible": false
+  },
+  {
+    "id": "p47",
+    "name": "Matty Ashton",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p48",
+    "name": "AJ Brimson",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p49",
+    "name": "Ben Currie",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p50",
+    "name": "Zach Eckersley",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p51",
+    "name": "Herbie Farnworth",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p52",
+    "name": "Ethan Havard",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p53",
+    "name": "Max King",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p54",
+    "name": "Morgan Knowles",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p55",
+    "name": "Mikey Lewis",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p56",
+    "name": "Jez Litten",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p57",
+    "name": "Junior Nsemba",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p58",
+    "name": "Brad O'Neill",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p59",
+    "name": "Kai Pearce-Paul",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p60",
+    "name": "Victor Radley",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p61",
+    "name": "Hugo Savala",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p62",
+    "name": "Harry Smith",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p63",
+    "name": "Morgan Smithies",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p64",
+    "name": "Luke Thompson",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p65",
+    "name": "Sam Walters",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p66",
+    "name": "Ben Talty",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p67",
+    "name": "Jack Welsby",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p68",
+    "name": "George Williams",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p69",
+    "name": "Dom Young",
+    "nation": "ENG",
+    "marketEligible": true
+  },
+  {
+    "id": "p70",
+    "name": "Bayleigh Bentley-Hape",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p71",
+    "name": "Waqa Blake",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p72",
+    "name": "Kurt Donoghoe",
+    "nation": "FIJ",
+    "marketEligible": true
+  },
+  {
+    "id": "p73",
+    "name": "Apenisa Driti",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p74",
+    "name": "Kitione Kautoga",
+    "nation": "FIJ",
+    "marketEligible": true
+  },
+  {
+    "id": "p75",
+    "name": "Elijah Keung",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p76",
+    "name": "Apisai Koroisau",
+    "nation": "FIJ",
+    "marketEligible": true
+  },
+  {
+    "id": "p77",
+    "name": "Josese Lanyon",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p78",
+    "name": "Jordan Leiu",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p79",
+    "name": "Joseph Litidamu",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p80",
+    "name": "Kylan Mafoa",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p81",
+    "name": "Taane Milne",
+    "nation": "FIJ",
+    "marketEligible": true
+  },
+  {
+    "id": "p82",
+    "name": "Caleb Navale",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p83",
+    "name": "Jimmy Ngutlik",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p84",
+    "name": "Ronaldo Philitoga",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p85",
+    "name": "Mitchell Prest",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p86",
+    "name": "Emosi Ravosai",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p87",
+    "name": "Jacob Saifiti",
+    "nation": "FIJ",
+    "marketEligible": true
+  },
+  {
+    "id": "p88",
+    "name": "Solomone Saukuru",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p89",
+    "name": "Sunia Turuva",
+    "nation": "FIJ",
+    "marketEligible": true
+  },
+  {
+    "id": "p90",
+    "name": "Semi Valemei",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p91",
+    "name": "Brandon Wakeham",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p92",
+    "name": "Jordan Miller",
+    "nation": "FIJ",
+    "marketEligible": false
+  },
+  {
+    "id": "p93",
+    "name": "Guillermo Aispuro-Bichet",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p94",
+    "name": "Léo Darrélatour",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p95",
+    "name": "Julian Bousquet",
+    "nation": "FRA",
+    "marketEligible": true
+  },
+  {
+    "id": "p96",
+    "name": "Romain Navarrete",
+    "nation": "FRA",
+    "marketEligible": true
+  },
+  {
+    "id": "p97",
+    "name": "Benjamin Garcia",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p98",
+    "name": "Alrix Da Costa",
+    "nation": "FRA",
+    "marketEligible": true
+  },
+  {
+    "id": "p99",
+    "name": "Benjamin Laguerre",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p100",
+    "name": "César Rougé",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p101",
+    "name": "Thomas Lacans",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p102",
+    "name": "Lambert Belmas",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p103",
+    "name": "Tiaki Chan",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p104",
+    "name": "Louis Grossemy",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p105",
+    "name": "Mathieu Jussaume",
+    "nation": "FRA",
+    "marketEligible": true
+  },
+  {
+    "id": "p106",
+    "name": "Roméo Tropis",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p107",
+    "name": "Amir Bourouh",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p108",
+    "name": "Arthur Romano",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p109",
+    "name": "Arthur Mourgue",
+    "nation": "FRA",
+    "marketEligible": true
+  },
+  {
+    "id": "p110",
+    "name": "Jordan Dezaria",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p111",
+    "name": "Mathieu Cozza",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p112",
+    "name": "Joe Drodrolagi",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p113",
+    "name": "Théo Fages",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p114",
+    "name": "Fouad Yaha",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p115",
+    "name": "Latrell Siegwalt",
+    "nation": "FRA",
+    "marketEligible": false
+  },
+  {
+    "id": "p116",
+    "name": "Abbas Miski",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p117",
+    "name": "Alex Conti",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p118",
+    "name": "Alex Twal",
+    "nation": "LEB",
+    "marketEligible": true
+  },
+  {
+    "id": "p119",
+    "name": "Brandon Morkos",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p120",
+    "name": "Charbel Tasipale",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p121",
+    "name": "Ibrahim El Labban",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p122",
+    "name": "Jacob Kiraz",
+    "nation": "LEB",
+    "marketEligible": true
+  },
+  {
+    "id": "p123",
+    "name": "Jalal Bazzaz",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p124",
+    "name": "James Roumanos",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p125",
+    "name": "Jason Saab",
+    "nation": "LEB",
+    "marketEligible": true
+  },
+  {
+    "id": "p126",
+    "name": "Jaxson Rahme",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p127",
+    "name": "Jordan Samrani",
+    "nation": "LEB",
+    "marketEligible": true
+  },
+  {
+    "id": "p128",
+    "name": "Joseph Nohra",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p129",
+    "name": "Khaled Rajab",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p130",
+    "name": "Khalil Rahme",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p131",
+    "name": "Michael Gabrael",
+    "nation": "LEB",
+    "marketEligible": true
+  },
+  {
+    "id": "p132",
+    "name": "Mikael Ibrahim",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p133",
+    "name": "Mohamed Alameddine",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p134",
+    "name": "Moustafa Dirani",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p135",
+    "name": "Tanous Sukkar",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p136",
+    "name": "Tony Francis",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p137",
+    "name": "Tupou Francis",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p138",
+    "name": "Yehya Ayache",
+    "nation": "LEB",
+    "marketEligible": false
+  },
+  {
+    "id": "p139",
+    "name": "Erin Clark",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p140",
+    "name": "James Fisher-Harris",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p141",
+    "name": "Dane Gagai",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p142",
+    "name": "Jahrome Hughes",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p143",
+    "name": "Jamayne Isaako",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p144",
+    "name": "Keano Kini",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p145",
+    "name": "Jacob Laban",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p146",
+    "name": "Moses Leota",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p147",
+    "name": "Jeremy Marshall-King",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p148",
+    "name": "Te Maire Martin",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p149",
+    "name": "Casey McLean",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p150",
+    "name": "Ronaldo Mulitalo",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p151",
+    "name": "Charnze Nicoll-Klokstad",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p152",
+    "name": "Briton Nikora",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p153",
+    "name": "Kodi Nikorima",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p154",
+    "name": "Isaiah Papali'i",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p155",
+    "name": "Kalyn Ponga",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p156",
+    "name": "Scott Sorensen",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p157",
+    "name": "Tanner Stowers-Smith",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p158",
+    "name": "Joseph Tapine",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p159",
+    "name": "Leo Thompson",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p160",
+    "name": "Naufahu Whyte",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p161",
+    "name": "Xavier Willison",
+    "nation": "NZL",
+    "marketEligible": true
+  },
+  {
+    "id": "p162",
+    "name": "Bailey Biondi-Odo",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p163",
+    "name": "Jack de Belin",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p164",
+    "name": "Robert Derby",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p165",
+    "name": "Dudley Dotoi",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p166",
+    "name": "Josh Feledy",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p167",
+    "name": "Finley Glare",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p168",
+    "name": "Liam Horne",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p169",
+    "name": "Edwin Ipape",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p170",
+    "name": "Zev John",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p171",
+    "name": "Epel Kapinias",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p172",
+    "name": "Zac Laybutt",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p173",
+    "name": "Nene MacDonald",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p174",
+    "name": "Rhyse Martin",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p175",
+    "name": "Robert Mathias",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p176",
+    "name": "Morea Morea",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p177",
+    "name": "Luca Moretti",
+    "nation": "PNG",
+    "marketEligible": true
+  },
+  {
+    "id": "p178",
+    "name": "Sylvester Namo",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p179",
+    "name": "Nixon Putt",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p180",
+    "name": "Valentine Richard",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p181",
+    "name": "Rodrick Tai",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p182",
+    "name": "Gairo Voro",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p183",
+    "name": "Sanny Wabo",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p184",
+    "name": "Khaiya Waiembi",
+    "nation": "PNG",
+    "marketEligible": false
+  },
+  {
+    "id": "p185",
+    "name": "Shawn Blore",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p186",
+    "name": "Stephen Crichton",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p187",
+    "name": "Sua Fa’alogo",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p188",
+    "name": "Clayton Faulalo",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p189",
+    "name": "Chanel Harris-Tavita",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p190",
+    "name": "Eddie Ieremia-Toeava",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p191",
+    "name": "Benaiah Ioelu",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p192",
+    "name": "Connelly Lemuelu",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p193",
+    "name": "Spencer Leniu",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p194",
+    "name": "Jarome Luai",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p195",
+    "name": "Francis Manuleleua",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p196",
+    "name": "Deine Mariner",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p197",
+    "name": "Ata Mariota",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p198",
+    "name": "Jermaine McEwen",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p199",
+    "name": "Francis Molo",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p200",
+    "name": "Junior Paulo",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p201",
+    "name": "Pasami Saulo",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p202",
+    "name": "Hamiso Tabuai-Fidow",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p203",
+    "name": "Izack Tago",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p204",
+    "name": "Jazz Tevaga",
+    "nation": "SAM",
+    "marketEligible": false
+  },
+  {
+    "id": "p205",
+    "name": "Brian To’o",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p206",
+    "name": "Enari Tuala",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p207",
+    "name": "Ronald Volkman",
+    "nation": "SAM",
+    "marketEligible": true
+  },
+  {
+    "id": "p208",
+    "name": "Addin Fonua-Blake",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p209",
+    "name": "Dallin Watene-Zelezniak",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p210",
+    "name": "Demitric Vaimauga",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p211",
+    "name": "Haumole Olakau'atu",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p212",
+    "name": "Isaiya Katoa",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p213",
+    "name": "Jason Taumalolo",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p214",
+    "name": "Jojo Fifita",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p215",
+    "name": "Talatau Amone",
+    "nation": "TON",
+    "marketEligible": false
+  },
+  {
+    "id": "p216",
+    "name": "Kulikefu Finefeuiaki",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p217",
+    "name": "Latu Fainu",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p218",
+    "name": "Lehi Hopoate",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p219",
+    "name": "Moeaki Fotuaika",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p220",
+    "name": "Paul Alamoti",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p221",
+    "name": "Robert Toia",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p222",
+    "name": "Salesi Foketi",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p223",
+    "name": "Sione Katoa",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p224",
+    "name": "Siua Wong",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p225",
+    "name": "Soni Luke",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p226",
+    "name": "Stefano Utoikamanu",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p227",
+    "name": "Taniela Paseka",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p228",
+    "name": "Tolutau Koula",
+    "nation": "TON",
+    "marketEligible": true
+  },
+  {
+    "id": "p229",
+    "name": "Tuimoala Lolohea",
+    "nation": "TON",
+    "marketEligible": false
+  },
+  {
+    "id": "p230",
+    "name": "Tyson Frizell",
+    "nation": "TON",
+    "marketEligible": true
+  }
+]
