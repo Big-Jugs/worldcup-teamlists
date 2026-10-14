@@ -119,6 +119,33 @@
       "away": "SAM",
       "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-3/tonga-v-samoa/",
       "date": "2026-11-01"
+    },
+    {
+      "id": "SF-1",
+      "round": 4,
+      "home": "TBC",
+      "away": "TBC",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/semi-final/game-1/",
+      "date": "2026-11-07",
+      "venue": "McDonald Jones Stadium, Newcastle"
+    },
+    {
+      "id": "SF-2",
+      "round": 4,
+      "home": "TBC",
+      "away": "TBC",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/semi-final/game-2/",
+      "date": "2026-11-08",
+      "venue": "Allianz Stadium, Sydney"
+    },
+    {
+      "id": "FINAL-1",
+      "round": 5,
+      "home": "TBC",
+      "away": "TBC",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/final/game-1/",
+      "date": "2026-11-15",
+      "venue": "Suncorp Stadium, Brisbane"
     }
   ]
 }
