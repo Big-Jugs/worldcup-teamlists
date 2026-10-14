@@ -223,47 +223,75 @@ def parse_embedded(source,fixture,roster):
 
 
 def fetch_payloads_browser(url, *, timeout_ms=16000):
-    """Fallback for client-rendered NRL match pages. Captures JSON responses,
-    including undocumented stats endpoints, without guessing endpoint paths.
+    """Diagnostic Playwright probe: include cross-domain JSON stats endpoints.
+
+    Earlier versions discarded EVERY non-nrl.com response. Match statistics may
+    be loaded from third-party hosts. Diagnostic log reveals host/path only
+    (never credentials, querystrings, request headers, or payload values).
     """
     from playwright.sync_api import sync_playwright
-    samples=[]; hints=[]
+    from collections import Counter
+    samples=[]; hints=[]; observations=[]; domains=Counter(); failures=[]
+    def safe_path(raw):
+        parsed=urlparse(raw)
+        return (parsed.hostname or 'unknown') + (parsed.path[:160] or '/')
     with sync_playwright() as p:
         browser=p.chromium.launch(headless=True,args=['--no-sandbox'])
-        context=browser.new_context(user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131.0 Safari/537.36')
+        context=browser.new_context(
+            user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36',
+            viewport={'width':1440,'height':900},locale='en-AU')
         page=context.new_page()
         def capture(response):
-            if len(samples)>=50:return
-            try:
-                u=urlparse(response.url)
-                if u.hostname not in ('nrl.com','www.nrl.com') and not u.hostname.endswith('.nrl.com'):return
-                if response.status!=200:return
-                typ=response.headers.get('content-type','').lower()
-                if 'json' not in typ:return
-                data=response.json()
-                if isinstance(data,(dict,list)):
-                    samples.append((response.url,data))
-                    if 'fantasyPointsTotal' in str(data)[:500000]:hints.append(response.url)
-            except Exception:pass
+            parsed=urlparse(response.url)
+            host=parsed.hostname or 'unknown'
+            domains[host]+=1
+            if response.status>=400 and len(failures)<12:
+                failures.append(f'{response.status} {safe_path(response.url)}')
+            if response.status!=200 or len(samples)>=150:return
+            content_type=response.headers.get('content-type','').lower()
+            path=parsed.path.lower()
+            # Some match APIs declare JSON as text/plain; still try likely paths.
+            candidate=('json' in content_type or any(s in path for s in ('/stats','/match','/player','/data','/fixture')))
+            if not candidate:return
+            try:data=response.json()
+            except Exception:return
+            if not isinstance(data,(dict,list)):return
+            samples.append((safe_path(response.url),data))
+            serialized=json.dumps(data,ensure_ascii=False)[:1500000].lower()
+            if any(k.lower() in serialized for k in FANTASY_KEYS):
+                hints.append(safe_path(response.url))
         page.on('response',capture)
         try:
             page.goto(url,wait_until='domcontentloaded',timeout=timeout_ms)
-            page.wait_for_timeout(4000)
+            page.wait_for_timeout(6500)
+            observations.append('Page title: '+str(page.title())[:120])
+            observations.append('Rendered URL: '+safe_path(page.url))
             for js in ('window.__NEXT_DATA__','window.__INITIAL_STATE__','window.__PRELOADED_STATE__'):
                 try:
                     data=page.evaluate(f'() => {js} || null')
                     if isinstance(data,(dict,list)):samples.append((js,data))
                 except Exception:pass
-            # Fixture pages sometimes load the Player Stats tab only when opened.
-            for label in ('Player Stats','Player stats'):
+            clicked=False
+            for label in ('Player Stats','Player stats','Players Stats','Stats'):
                 try:
+                    # Prefer actual accessible tab/button controls, fall back to text.
                     loc=page.get_by_text(label,exact=True).first
                     if loc.count() and loc.is_visible():
-                        loc.click(timeout=1500);page.wait_for_timeout(2500);break
+                        loc.click(timeout=2000)
+                        clicked=True
+                        page.wait_for_timeout(5000)
+                        break
                 except Exception:pass
+            observations.append('Player Stats tab clickable: '+str(clicked))
+            body=page.locator('body').inner_text(timeout=3000)
+            observations.append('Rendered page contains Fantasy label: '+str(bool(re.search(r'fantasy\s*(points|pts)',body,re.I))))
+            observations.append('Rendered page contains Player Stats label: '+str('player stats' in body.lower()))
             samples.append(('rendered-html',page.content()))
         finally:browser.close()
-    return samples,hints
+    observations.append('Response domains/counts: '+str(domains.most_common(18)))
+    observations.append('HTTP errors: '+str(failures))
+    observations.append('Candidate JSON endpoints (host/path only): '+str([orig for orig,_ in samples if orig!='rendered-html'][:22]))
+    return samples,hints,observations
 
 
 def parse_match_url(url,fixture,roster,*,browser=False):
@@ -280,7 +308,8 @@ def parse_match_url(url,fixture,roster,*,browser=False):
     except Exception as exc:log.append('HTML request failed: '+str(exc)[:130])
     if browser:
         try:
-            samples,hints=fetch_payloads_browser(url)
+            samples,hints,observations=fetch_payloads_browser(url)
+            for note in observations:log.append(note)
             log.append(f'Browser captured {len(samples)} payloads; fantasy-related JSON endpoints: {hints[:4]}')
             for origin,payload in samples:
                 if isinstance(payload,str):match,msg=parse_embedded(payload,fixture,roster)
