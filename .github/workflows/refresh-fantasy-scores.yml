@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       probe_2025:
-        description: "Test 2025 England v Kangaroos without publishing (for validation)"
+        description: "Test 2025 England v Kangaroos without publishing"
         type: boolean
         required: false
         default: false
@@ -35,11 +35,11 @@ jobs:
       - name: Check 2026 World Cup official fantasy scores
         if: ${{ inputs.probe_2025 != true }}
         run: python refresh_fantasy_scores.py --browser
-      - name: Publish verified changes only
+      - name: Publish verified feed to GitHub
         if: ${{ inputs.probe_2025 != true }}
         run: |
           if git diff --quiet -- worldcup-fantasy-scores.json; then
-            echo "No verified match-specific Fantasy changes"
+            echo "No new verified fantasy scores"
             exit 0
           fi
           git config user.name "worldcup-score-bot"
@@ -47,3 +47,9 @@ jobs:
           git add worldcup-fantasy-scores.json
           git commit -m "Update verified World Cup fantasy scores"
           git push
+      - name: Publish verified scores to Supabase ladder
+        if: ${{ inputs.probe_2025 != true }}
+        env:
+          WCF_SUPABASE_URL: ${{ secrets.WCF_SUPABASE_URL }}
+          WCF_SUPABASE_SECRET_KEY: ${{ secrets.WCF_SUPABASE_SECRET_KEY }}
+        run: python publish_scores_to_supabase.py
