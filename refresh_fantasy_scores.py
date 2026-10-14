@@ -90,6 +90,22 @@ def fantasy_of(obj):
 
 def extract_embedded(html_text):
     soup=BeautifulSoup(html_text,'html.parser')
+    # Modern NRL match-centre pages are Quasar/Vue. The official match
+    # object, including match-player statistics, may be serialised as an
+    # HTML-escaped JSON attribute rather than a script or network response.
+    # This also runs against the Playwright-rendered HTML fallback.
+    for node in soup.select('#vue-match-centre[q-data], [q-data]'):
+        raw=node.get('q-data')
+        if not raw:
+            continue
+        for candidate in (raw, html.unescape(raw)):
+            try:
+                parsed=json.loads(candidate)
+            except (ValueError, TypeError):
+                continue
+            if isinstance(parsed,(dict,list)):
+                yield parsed
+                break
     for script in soup.find_all('script'):
         body=script.string or script.get_text() or ''
         if not body.strip():continue
@@ -212,10 +228,10 @@ def parse_payload(payload, fixture, roster, *, probe=False):
     return {'home':fixture['home'],'away':fixture['away'],'status':state,'updatedAt':now,'players':scores},f'{len(scores)} verified 2026-market player scores ({state})'
 
 
-def parse_embedded(source,fixture,roster):
+def parse_embedded(source,fixture,roster,*,probe=False):
     best=None; diagnostics=[]
     for payload in extract_embedded(source):
-        result,msg=parse_payload(payload,fixture,roster)
+        result,msg=parse_payload(payload,fixture,roster,probe=probe)
         if result and (best is None or len(result['players'])>len(best['players'])):best=result
         diagnostics.append(msg)
     if best:return best, f'{len(best["players"])} match-scoped players'
@@ -286,7 +302,20 @@ def fetch_payloads_browser(url, *, timeout_ms=16000):
             body=page.locator('body').inner_text(timeout=3000)
             observations.append('Rendered page contains Fantasy label: '+str(bool(re.search(r'fantasy\s*(points|pts)',body,re.I))))
             observations.append('Rendered page contains Player Stats label: '+str('player stats' in body.lower()))
-            samples.append(('rendered-html',page.content()))
+            # Presence of the visible Fantasy selector alone does NOT prove
+            # that real fantasy player scores have loaded.
+            rendered=page.content()
+            rsoup=BeautifulSoup(rendered,'html.parser')
+            qnodes=rsoup.select('#vue-match-centre[q-data], [q-data]')
+            observations.append('Rendered match-centre q-data elements: '+str(len(qnodes)))
+            if qnodes:
+                try:
+                    stats=sum(1 for record in walk(json.loads(qnodes[0].get('q-data')))
+                              if isinstance(record,dict) and fantasy_of(record) is not None)
+                    observations.append('Rendered q-data fantasy stat records: '+str(stats))
+                except (ValueError,TypeError) as exc:
+                    observations.append('Rendered q-data parse failed: '+type(exc).__name__)
+            samples.append(('rendered-html',rendered))
         finally:browser.close()
     observations.append('Response domains/counts: '+str(domains.most_common(18)))
     observations.append('HTTP errors: '+str(failures))
@@ -294,7 +323,7 @@ def fetch_payloads_browser(url, *, timeout_ms=16000):
     return samples,hints,observations
 
 
-def parse_match_url(url,fixture,roster,*,browser=False):
+def parse_match_url(url,fixture,roster,*,browser=False,probe=False):
     u=urlparse(url)
     if u.scheme!='https' or u.hostname not in ('www.nrl.com','nrl.com') or not u.path.startswith('/draw/'):
         return None,'Invalid match URL',[]
@@ -302,7 +331,16 @@ def parse_match_url(url,fixture,roster,*,browser=False):
     try:
         res=requests.get(url,timeout=12,headers=HEADERS)
         res.raise_for_status()
-        match,msg=parse_embedded(res.text,fixture,roster)
+        soup=BeautifulSoup(res.text,'html.parser')
+        qnodes=soup.select('#vue-match-centre[q-data], [q-data]')
+        valid=[]
+        for node in qnodes:
+            try: valid.append(json.loads(node.get('q-data','')))
+            except (ValueError,TypeError): pass
+        stats=sum(1 for obj in valid for record in walk(obj)
+                  if isinstance(record,dict) and fantasy_of(record) is not None)
+        log.append(f'HTML match-centre q-data elements: {len(qnodes)}; decoded: {len(valid)}; fantasy stat records: {stats}')
+        match,msg=parse_embedded(res.text,fixture,roster,probe=probe)
         log.append(f'HTML HTTP {res.status_code}: {msg}')
         if match:return match,msg,log
     except Exception as exc:log.append('HTML request failed: '+str(exc)[:130])
@@ -312,8 +350,8 @@ def parse_match_url(url,fixture,roster,*,browser=False):
             for note in observations:log.append(note)
             log.append(f'Browser captured {len(samples)} payloads; fantasy-related JSON endpoints: {hints[:4]}')
             for origin,payload in samples:
-                if isinstance(payload,str):match,msg=parse_embedded(payload,fixture,roster)
-                else:match,msg=parse_payload(payload,fixture,roster)
+                if isinstance(payload,str):match,msg=parse_embedded(payload,fixture,roster,probe=probe)
+                else:match,msg=parse_payload(payload,fixture,roster,probe=probe)
                 if match:
                     log.append('Matched from '+origin)
                     return match,msg,log
@@ -377,7 +415,7 @@ def main():
     if args.probe_historical:
         fixture={'id':'ENG-AUS-2025','round':0,'home':'ENG','away':'AUS'}
         url='https://www.nrl.com/draw/internationals/2025/game-1/england-v-kangaroos/'
-        match,msg,notes=parse_match_url(url,fixture,roster,browser=True)
+        match,msg,notes=parse_match_url(url,fixture,roster,browser=True,probe=True)
         print('HISTORICAL PROBE:',msg)
         for line in notes:print(' ',line)
         if match:
