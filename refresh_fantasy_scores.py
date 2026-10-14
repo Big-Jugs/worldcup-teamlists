@@ -172,6 +172,91 @@ def scored_rows(rows, side, lookup_name, lookup_id, id_to_name):
 
 
 
+# World Cup semi-finalists are unknown until the knockout draw is finalised.
+# Resolve both sides ONLY using the current NRL match's own named teams.
+# Unknown/TBC match sides never receive guessed scores or mislabelled players.
+NATION_NAMES = {
+    'australia': 'AUS', 'kangaroos': 'AUS', 'aus': 'AUS',
+    'newzealand': 'NZL', 'kiwis': 'NZL', 'nzl': 'NZL',
+    'england': 'ENG', 'eng': 'ENG',
+    'samoa': 'SAM', 'toasamoa': 'SAM', 'sam': 'SAM',
+    'tonga': 'TON', 'matemaatonga': 'TON', 'ton': 'TON',
+    'papuanewguinea': 'PNG', 'pngkumuls': 'PNG', 'kumuls': 'PNG', 'png': 'PNG',
+    'fiji': 'FIJ', 'fijibati': 'FIJ', 'fij': 'FIJ',
+    'cookislands': 'COK', 'cookislandsakukura': 'COK', 'cok': 'COK', 'coo': 'COK',
+    'france': 'FRA', 'fra': 'FRA', 'lebanon': 'LEB', 'cedars': 'LEB', 'leb': 'LEB'
+}
+
+
+def nation_from_team(team):
+    if isinstance(team, str):
+        return NATION_NAMES.get(normalise(team))
+    if isinstance(team, dict):
+        # Match team identity only, not individual players or unrelated stats.
+        for field in ('name', 'teamName', 'displayName', 'shortName',
+                      'abbreviation', 'code', 'teamCode', 'teamShortName', 'fullName',
+                      'nickName', 'nickname',
+                      'countryName', 'nation'):
+            v = team.get(field)
+            if isinstance(v, str):
+                n = NATION_NAMES.get(normalise(v))
+                if n:
+                    return n
+        for field in ('team', 'teamInfo', 'details'):
+            value = team.get(field)
+            if isinstance(value, dict):
+                n = nation_from_team(value)
+                if n:
+                    return n
+    return None
+
+
+def resolved_fixture(match, fixture):
+    home, away = fixture['home'], fixture['away']
+    if home != 'TBC' and away != 'TBC':
+        return fixture
+    # Avoid accidentally accepting teams from a historical child match.
+    if not isinstance(match, dict):
+        return None
+    official_home = nation_from_team(match.get('homeTeam'))
+    official_away = nation_from_team(match.get('awayTeam'))
+    if official_home is None or official_away is None or official_home == official_away:
+        return None
+    if home != 'TBC' and home != official_home:
+        return None
+    if away != 'TBC' and away != official_away:
+        return None
+    return dict(fixture, home=official_home, away=official_away)
+
+
+def current_match_containers(payload):
+    """Walk page-state containers, not unrelated historical/fixture matches.
+
+    NRL q-data may bundle an upcoming current match AND completed recent matches.
+    Never publish a historical match as a live World Cup fixture merely because
+    its data also contains a valid Fantasy table and two recognisable teams.
+    """
+    excluded={'stats','statistics','history','recentmatches','previousmatches',
+              'matchhistory','headtohead','fixtures','matches','results',
+              'players','playerstats','hometeam','awayteam','teams',
+              'standings','table','schedule','games'}
+    def visit(obj, depth=0):
+        if depth>16:
+            return
+        if isinstance(obj, dict):
+            yield obj
+            for key,value in obj.items():
+                k=re.sub(r'[^a-z0-9]', '', str(key).lower())
+                if k in excluded:
+                    continue
+                if isinstance(value, (dict,list)):
+                    yield from visit(value,depth+1)
+        elif isinstance(obj,list):
+            for value in obj:
+                yield from visit(value,depth+1)
+    yield from visit(payload)
+
+
 def parse_payload(payload, fixture, roster, *, probe=False):
     """Parse NRL match-centre stats using the CURRENT match's status.
 
@@ -181,17 +266,23 @@ def parse_payload(payload, fixture, roster, *, probe=False):
     `match.stats.history.recentMatches`, which concerns unrelated games.
     """
     if not isinstance(payload,(dict,list)):return None,'Not JSON data'
-    by_name, by_id, eligible = roster_lookups(roster,fixture)
     id_to_name=names_by_external_id(payload)
     candidates=[]
     saw_stats=0
     saw_status=0
+    unresolved=0
     # A current-match object is only accepted when its OWN state is live/final.
     # Avoid treating statistics from unrelated recentMatches as a current match.
-    for obj in walk(payload):
+    for obj in current_match_containers(payload):
         if not isinstance(obj,dict):continue
         match=obj.get('match') if isinstance(obj.get('match'),dict) else obj
         state=match_state(match)
+        participants=resolved_fixture(match,fixture)
+        if not participants:
+            if state:
+                unresolved+=1
+            continue
+        by_name, by_id, eligible = roster_lookups(roster, participants)
         possible=[]
         # Official website's `match.stats.players` is the primary shape.
         match_stats=match.get('stats')
@@ -209,26 +300,28 @@ def parse_payload(payload, fixture, roster, *, probe=False):
                 saw_stats+=1
                 if not state:continue
                 saw_status+=1
-                found.update(scored_rows(stats['homeTeam'], fixture['home'], by_name, by_id, id_to_name))
-                found.update(scored_rows(stats['awayTeam'], fixture['away'], by_name, by_id, id_to_name))
-                candidates.append((state,found))
+                found.update(scored_rows(stats['homeTeam'], participants['home'], by_name, by_id, id_to_name))
+                found.update(scored_rows(stats['awayTeam'], participants['away'], by_name, by_id, id_to_name))
+                candidates.append((state,found,participants))
             elif isinstance(stats,list):
                 if not any(fantasy_of(row) is not None for row in stats):continue
                 saw_stats+=1
                 if not state:continue
                 saw_status+=1
-                for side in (fixture['home'],fixture['away']):
+                for side in (participants['home'],participants['away']):
                     found.update(scored_rows(stats,side,by_name,by_id,id_to_name))
-                candidates.append((state,found))
+                candidates.append((state,found,participants))
     if not candidates:
+        if 'TBC' in (fixture['home'],fixture['away']) and unresolved:
+            return None,'Knockout match nations not yet identified from official NRL current-match teams'
         return None,f'No current-match stats with live/final state (fantasy tables={saw_stats}, state-confirmed={saw_status})'
-    state,scores=max(candidates,key=lambda pair:len(pair[1]))
+    state,scores,participants=max(candidates,key=lambda pair:len(pair[1]))
     sides={p['nation'] for p in roster if p['id'] in scores}
     minimum=1 if probe else 8
     if len(scores)<minimum or (not probe and len(sides)<2):
         return None,f'Only {len(scores)} matched eligible players across {len(sides)} nations — insufficient verified match scope (fantasy tables={saw_stats})'
     now=datetime.now(timezone.utc).isoformat(timespec='seconds')
-    return {'home':fixture['home'],'away':fixture['away'],'status':state,'updatedAt':now,'players':scores},f'{len(scores)} matched eligible player scores ({state})'
+    return {'home':participants['home'],'away':participants['away'],'status':state,'updatedAt':now,'players':scores},f'{len(scores)} matched eligible player scores ({state})'
 
 def parse_embedded(source,fixture,roster,*,probe=False):
     best=None; diagnostics=[]
@@ -366,30 +459,36 @@ def date_of(s):
     except (ValueError,TypeError):return None
 
 
-def active_fixture(fixture,existing,today):
-    old=existing.get('rounds',{}).get(str(fixture['round']),{}).get('matches',{}).get(fixture['id'],{})
-    if old.get('status')=='final' and date_of(fixture.get('date','')) and date_of(fixture['date'])<today-timedelta(days=4):return False
-    d=date_of(fixture.get('date',''))
-    if not d:return True
-    return today-timedelta(days=3)<=d<=today+timedelta(days=1)
+def active_fixture(fixture, existing, today):
+    # Date is the host-city calendar date; a one-day pre-match buffer covers
+    # timezone boundaries, and seven days after the fixture allows stat fixes.
+    d = date_of(fixture.get('date'))
+    if not d:
+        return False  # A missing date must never trigger a permanent scan.
+    return today - timedelta(days=7) <= d <= today + timedelta(days=1)
 
 
 def update(sources,roster,existing,*,fetcher=None, browser=False, today=None):
     now=datetime.now(timezone.utc);today=today or now.date()
     out=copy.deepcopy(existing);out.setdefault('rounds',{})
     count=0
-    for fixture in sources['fixtures']:
-        if not active_fixture(fixture,existing,today):continue
+    fixtures=sources['fixtures']
+    assert len({f['id'] for f in fixtures})==len(fixtures), 'Duplicate fixture IDs'
+    assert all(f.get('round') in (1,2,3,4,5) for f in fixtures), 'Invalid round'
+    scheduled=[f for f in fixtures if active_fixture(f,existing,today)]
+    print(f'SCORING SCHEDULE: {len(fixtures)} fixtures configured; {len(scheduled)} within match-day window')
+    for fixture in scheduled:
         u=urlparse(fixture['url'])
         if u.scheme!='https' or u.hostname not in ('www.nrl.com','nrl.com') or not u.path.startswith('/draw/rugby-league-world-cup/2026/'):
             print('SKIP unapproved URL',fixture['id']);continue
+        print('CHECK',fixture['id'],fixture['date'],fixture['home'],fixture['away'])
         if fetcher:
             try:
                 s=fetcher(fixture['url'])
                 match,msg=parse_embedded(s,fixture,roster)
             except Exception as exc:match,msg=None,str(exc)
             notes=[]
-        else:match,msg,notes=parse_match_url(fixture['url'],fixture,roster,browser=browser)
+        else:match,msg,notes=parse_match_url(fixture['url'],fixture,roster,browser=(browser and abs((today-date_of(fixture['date'])).days)<=2))
         for line in notes:print('  ',line)
         if not match:
             print('NO SOURCE DATA',fixture['id'],msg)
