@@ -171,62 +171,64 @@ def scored_rows(rows, side, lookup_name, lookup_id, id_to_name):
     return out
 
 
-def parse_payload(payload, fixture, roster, *, probe=False):
-    """Parse match-scoped player stats. Handles NRL's ID-only fantasy rows.
 
-    A separate lineup maps NRL playerId to name. Don't scan generic season
-    tables, or infer game state from unrelated 'recentMatches' elements.
+def parse_payload(payload, fixture, roster, *, probe=False):
+    """Parse NRL match-centre stats using the CURRENT match's status.
+
+    Real NRL q-data has `match.stats.players.homeTeam/awayTeam` while some
+    older formats have a sibling `players` map. Player identities live in
+    `match.homeTeam.players/awayTeam.players`. Never source status from
+    `match.stats.history.recentMatches`, which concerns unrelated games.
     """
-    if not isinstance(payload,(dict,list)):return None, 'Not JSON data'
+    if not isinstance(payload,(dict,list)):return None,'Not JSON data'
     by_name, by_id, eligible = roster_lookups(roster,fixture)
     id_to_name=names_by_external_id(payload)
     candidates=[]
+    saw_stats=0
+    saw_status=0
+    # A current-match object is only accepted when its OWN state is live/final.
+    # Avoid treating statistics from unrelated recentMatches as a current match.
     for obj in walk(payload):
         if not isinstance(obj,dict):continue
-        # NRL match-centre pattern: players.homeTeam[] and awayTeam[] hold
-        # fantasyPointsTotal, alongside match.matchState and lineup metadata.
-        stats=obj.get('players')
-        groups=None
-        if isinstance(stats,dict) and isinstance(stats.get('homeTeam'),list) and isinstance(stats.get('awayTeam'),list):
-            groups=stats
-        if groups is not None:
-            state=match_state(obj.get('match',{})) or match_state(obj)
-            if not state:continue
+        match=obj.get('match') if isinstance(obj.get('match'),dict) else obj
+        state=match_state(match)
+        possible=[]
+        # Official website's `match.stats.players` is the primary shape.
+        match_stats=match.get('stats')
+        if isinstance(match_stats,dict):
+            possible.append(match_stats.get('players'))
+        # Some older endpoints put the same player rows alongside `match`.
+        possible.append(obj.get('players'))
+        possible.extend(obj.get(k) for k in ('matchPlayerStats','playerStatistics'))
+        if match is not obj:
+            possible.append(match.get('players'))
+        for stats in possible:
             found={}
-            found.update(scored_rows(groups['homeTeam'], fixture['home'], by_name, by_id, id_to_name))
-            found.update(scored_rows(groups['awayTeam'], fixture['away'], by_name, by_id, id_to_name))
-            candidates.append((state,found))
-        # More generic form: a match object with player stats array and a
-        # state stored in the SAME match-scope record.
-        elif isinstance(stats,list):
-            state=match_state(obj.get('match',{})) or match_state(obj)
-            if not state:continue
-            found={}
-            for side in (fixture['home'],fixture['away']):
-                found.update(scored_rows(stats,side,by_name,by_id,id_to_name))
-            candidates.append((state,found))
-        # Some APIs call it teamStats, matchPlayerStats, or playerStatistics.
-        else:
-            for key in ('matchPlayerStats','playerStatistics'):
-                rows=obj.get(key)
-                if not isinstance(rows,list):continue
-                state=match_state(obj.get('match',{})) or match_state(obj)
+            if isinstance(stats,dict) and isinstance(stats.get('homeTeam'),list) and isinstance(stats.get('awayTeam'),list):
+                if not any(fantasy_of(row) is not None for side in ('homeTeam','awayTeam') for row in stats[side]):continue
+                saw_stats+=1
                 if not state:continue
-                found={}
-                for side in (fixture['home'],fixture['away']):
-                    found.update(scored_rows(rows,side,by_name,by_id,id_to_name))
+                saw_status+=1
+                found.update(scored_rows(stats['homeTeam'], fixture['home'], by_name, by_id, id_to_name))
+                found.update(scored_rows(stats['awayTeam'], fixture['away'], by_name, by_id, id_to_name))
                 candidates.append((state,found))
-    if not candidates:return None,'No match-scoped fantasy player data and live/final state found'
+            elif isinstance(stats,list):
+                if not any(fantasy_of(row) is not None for row in stats):continue
+                saw_stats+=1
+                if not state:continue
+                saw_status+=1
+                for side in (fixture['home'],fixture['away']):
+                    found.update(scored_rows(stats,side,by_name,by_id,id_to_name))
+                candidates.append((state,found))
+    if not candidates:
+        return None,f'No current-match stats with live/final state (fantasy tables={saw_stats}, state-confirmed={saw_status})'
     state,scores=max(candidates,key=lambda pair:len(pair[1]))
-    sides=set()
-    for p in roster:
-        if p['id'] in scores:sides.add(p['nation'])
+    sides={p['nation'] for p in roster if p['id'] in scores}
     minimum=1 if probe else 8
     if len(scores)<minimum or (not probe and len(sides)<2):
-        return None,f'Only {len(scores)} eligible players across {len(sides)} nations — insufficient verified match scope'
+        return None,f'Only {len(scores)} matched eligible players across {len(sides)} nations — insufficient verified match scope (fantasy tables={saw_stats})'
     now=datetime.now(timezone.utc).isoformat(timespec='seconds')
-    return {'home':fixture['home'],'away':fixture['away'],'status':state,'updatedAt':now,'players':scores},f'{len(scores)} verified 2026-market player scores ({state})'
-
+    return {'home':fixture['home'],'away':fixture['away'],'status':state,'updatedAt':now,'players':scores},f'{len(scores)} matched eligible player scores ({state})'
 
 def parse_embedded(source,fixture,roster,*,probe=False):
     best=None; diagnostics=[]
