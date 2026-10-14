@@ -1,0 +1,124 @@
+{
+  "fixtures": [
+    {
+      "id": "AUS-NZL",
+      "round": 1,
+      "home": "AUS",
+      "away": "NZL",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-1/australia-v-new-zealand/",
+      "date": "2026-10-15"
+    },
+    {
+      "id": "SAM-FRA",
+      "round": 1,
+      "home": "SAM",
+      "away": "FRA",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-1/samoa-v-france/",
+      "date": "2026-10-16"
+    },
+    {
+      "id": "PNG-LEB",
+      "round": 1,
+      "home": "PNG",
+      "away": "LEB",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-1/papua-new-guinea-v-lebanon/",
+      "date": "2026-10-17"
+    },
+    {
+      "id": "ENG-TON",
+      "round": 1,
+      "home": "ENG",
+      "away": "TON",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-1/england-v-tonga/",
+      "date": "2026-10-17"
+    },
+    {
+      "id": "FIJ-COK",
+      "round": 1,
+      "home": "FIJ",
+      "away": "COK",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-1/fiji-v-cook-islands/",
+      "date": "2026-10-18"
+    },
+    {
+      "id": "TON-LEB",
+      "round": 2,
+      "home": "TON",
+      "away": "LEB",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-2/tonga-v-lebanon/",
+      "date": "2026-10-23"
+    },
+    {
+      "id": "PNG-SAM",
+      "round": 2,
+      "home": "PNG",
+      "away": "SAM",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-2/papua-new-guinea-v-samoa/",
+      "date": "2026-10-24"
+    },
+    {
+      "id": "ENG-FRA",
+      "round": 2,
+      "home": "ENG",
+      "away": "FRA",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-2/england-v-france/",
+      "date": "2026-10-24"
+    },
+    {
+      "id": "NZL-COK",
+      "round": 2,
+      "home": "NZL",
+      "away": "COK",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-2/new-zealand-v-cook-islands/",
+      "date": "2026-10-25"
+    },
+    {
+      "id": "AUS-FIJ",
+      "round": 2,
+      "home": "AUS",
+      "away": "FIJ",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-2/australia-v-fiji/",
+      "date": "2026-10-25"
+    },
+    {
+      "id": "ENG-PNG",
+      "round": 3,
+      "home": "ENG",
+      "away": "PNG",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-3/england-v-papua-new-guinea/",
+      "date": "2026-10-30"
+    },
+    {
+      "id": "NZL-FIJ",
+      "round": 3,
+      "home": "NZL",
+      "away": "FIJ",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-3/new-zealand-v-fiji/",
+      "date": "2026-10-31"
+    },
+    {
+      "id": "AUS-COK",
+      "round": 3,
+      "home": "AUS",
+      "away": "COK",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-3/australia-v-cook-islands/",
+      "date": "2026-10-31"
+    },
+    {
+      "id": "LEB-FRA",
+      "round": 3,
+      "home": "LEB",
+      "away": "FRA",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-3/lebanon-v-france/",
+      "date": "2026-11-01"
+    },
+    {
+      "id": "TON-SAM",
+      "round": 3,
+      "home": "TON",
+      "away": "SAM",
+      "url": "https://www.nrl.com/draw/rugby-league-world-cup/2026/round-3/tonga-v-samoa/",
+      "date": "2026-11-01"
+    }
+  ]
+}
