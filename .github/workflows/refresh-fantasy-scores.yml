@@ -1,0 +1,76 @@
+name: Refresh World Cup fantasy scores
+on:
+  workflow_dispatch:
+    inputs:
+      probe_2025:
+        description: "Test 2025 England v Kangaroos without publishing"
+        type: boolean
+        required: false
+        default: false
+  schedule:
+    - cron: '*/10 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: worldcup-fantasy-scoring
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          python -m pip install requests beautifulsoup4 pytest playwright
+          python -m playwright install chromium --with-deps
+      - name: Validate local match parser and V8.14 safety rules
+        run: |
+          python test_fantasy_scores.py
+          python test_hardening.py
+      - name: Historical 2025 match probe (non-publishing)
+        if: ${{ inputs.probe_2025 == true }}
+        run: python refresh_fantasy_scores.py --probe-historical
+      - name: Check 2026 World Cup official fantasy scores and create current-run source proof
+        if: ${{ inputs.probe_2025 != true }}
+        run: python refresh_fantasy_scores.py --browser
+      - name: Validate source-proof sidecar exists for this run
+        if: ${{ inputs.probe_2025 != true }}
+        run: |
+          python - <<'PYTEST'
+          import json
+          from pathlib import Path
+          p=Path('wcf_source_proofs_runtime.json')
+          assert p.is_file(), 'Missing fresh NRL.com source-proof file'
+          data=json.loads(p.read_text(encoding='utf-8'))
+          assert isinstance(data.get('proven'),list), 'Malformed official source proof'
+          print('Current-run source-proof file present; entries:', len(data['proven']))
+          PYTEST
+      # If this step fails, GitHub Actions skips the public JSON commit below.
+      - name: Publish and settle verified scores via trusted Supabase RPCs
+        id: trusted_publish
+        if: ${{ inputs.probe_2025 != true }}
+        env:
+          WCF_SUPABASE_URL: ${{ secrets.WCF_SUPABASE_URL }}
+          WCF_SUPABASE_SECRET_KEY: ${{ secrets.WCF_SUPABASE_SECRET_KEY }}
+        run: python publish_scores_to_supabase.py
+      
+      # Only GitHub's trusted publisher may approve a public feed commit.
+      # On a failed Supabase RPC, the feed is NOT committed. Scheduled retry
+      # can publish the latest verified snapshot on the next successful run.
+      - name: Publish verified feed to GitHub AFTER successful Supabase RPCs
+        if: ${{ success() && inputs.probe_2025 != true && steps.trusted_publish.outcome == 'success' }}
+        run: |
+          git diff --check -- worldcup-fantasy-scores.json
+          if git diff --quiet -- worldcup-fantasy-scores.json; then
+            echo "No new verified fantasy scores"
+            exit 0
+          fi
+          git config user.name "worldcup-score-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add worldcup-fantasy-scores.json
+          git commit -m "Update verified World Cup fantasy scores"
+          git push
