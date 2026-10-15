@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-15T09:10:03+00:00",
+  "updatedAt": "2026-10-15T09:40:53+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -9,58 +9,58 @@
           "home": "AUS",
           "away": "NZL",
           "status": "live",
-          "updatedAt": "2026-10-15T09:10:04+00:00",
+          "updatedAt": "2026-10-15T09:40:54+00:00",
           "players": {
             "p22": {
-              "points": 2,
+              "points": 12,
               "played": true
             },
             "p2": {
-              "points": 0,
+              "points": 39,
               "played": true
             },
             "p12": {
-              "points": 0,
+              "points": 8,
               "played": true
             },
             "p18": {
-              "points": 0,
+              "points": 9,
               "played": true
             },
             "p20": {
-              "points": 0,
+              "points": 4,
               "played": true
             },
             "p14": {
-              "points": 1,
+              "points": 10,
               "played": true
             },
             "p13": {
-              "points": 3,
+              "points": 11,
               "played": true
             },
             "p4": {
-              "points": 3,
+              "points": 26,
               "played": true
             },
             "p9": {
-              "points": 1,
+              "points": 10,
               "played": true
             },
             "p7": {
-              "points": 1,
+              "points": 21,
               "played": true
             },
             "p16": {
-              "points": 3,
+              "points": 14,
               "played": true
             },
             "p11": {
-              "points": 2,
+              "points": 22,
               "played": true
             },
             "p23": {
-              "points": 2,
+              "points": 29,
               "played": true
             },
             "p6": {
@@ -68,16 +68,16 @@
               "played": false
             },
             "p15": {
-              "points": 0,
-              "played": false
+              "points": 9,
+              "played": true
             },
             "p5": {
               "points": 0,
               "played": false
             },
             "p10": {
-              "points": 0,
-              "played": false
+              "points": 2,
+              "played": true
             },
             "p8": {
               "points": 0,
@@ -88,55 +88,55 @@
               "played": false
             },
             "p155": {
-              "points": 4,
+              "points": 14,
               "played": true
             },
             "p143": {
-              "points": 1,
+              "points": 11,
               "played": true
             },
             "p141": {
-              "points": 1,
+              "points": 9,
               "played": true
             },
             "p149": {
-              "points": 1,
+              "points": 17,
               "played": true
             },
             "p150": {
-              "points": 0,
+              "points": 17,
               "played": true
             },
             "p153": {
-              "points": -1,
+              "points": 12,
               "played": true
             },
             "p142": {
-              "points": 2,
+              "points": 10,
               "played": true
             },
             "p140": {
-              "points": 2,
+              "points": 25,
               "played": true
             },
             "p147": {
-              "points": 3,
+              "points": 11,
               "played": true
             },
             "p146": {
-              "points": 4,
+              "points": 21,
               "played": true
             },
             "p154": {
-              "points": 3,
+              "points": 34,
               "played": true
             },
             "p152": {
-              "points": 2,
+              "points": 9,
               "played": true
             },
             "p158": {
-              "points": 3,
+              "points": 14,
               "played": true
             },
             "p148": {
@@ -144,12 +144,12 @@
               "played": false
             },
             "p160": {
-              "points": 0,
-              "played": false
+              "points": 5,
+              "played": true
             },
             "p139": {
-              "points": 0,
-              "played": false
+              "points": 3,
+              "played": true
             },
             "p161": {
               "points": 0,
@@ -168,8 +168,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 13,
-              "fantasy_appearances": 13,
+              "appeared": 15,
+              "fantasy_appearances": 15,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p1",
@@ -196,8 +196,8 @@
             "away": {
               "rows": 19,
               "identified": 19,
-              "appeared": 13,
-              "fantasy_appearances": 13,
+              "appeared": 15,
+              "fantasy_appearances": 15,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p139",
