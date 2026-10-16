@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-16T08:14:09+00:00",
+  "updatedAt": "2026-10-16T08:51:05+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -230,23 +230,23 @@
         "SAM-FRA": {
           "home": "SAM",
           "away": "FRA",
-          "status": "live",
-          "updatedAt": "2026-10-16T08:14:10+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-16T08:51:06+00:00",
           "players": {
             "p202": {
-              "points": 42,
+              "points": 51,
               "played": true
             },
             "p205": {
-              "points": 32,
+              "points": 36,
               "played": true
             },
             "p203": {
-              "points": 33,
+              "points": 50,
               "played": true
             },
             "p186": {
-              "points": 42,
+              "points": 66,
               "played": true
             },
             "p196": {
@@ -254,47 +254,47 @@
               "played": true
             },
             "p189": {
-              "points": 33,
+              "points": 51,
               "played": true
             },
             "p194": {
-              "points": 37,
+              "points": 48,
               "played": true
             },
             "p199": {
-              "points": 13,
+              "points": 35,
               "played": true
             },
             "p191": {
-              "points": 28,
+              "points": 47,
               "played": true
             },
             "p200": {
-              "points": 11,
+              "points": 15,
               "played": true
             },
             "p192": {
-              "points": 33,
+              "points": 42,
               "played": true
             },
             "p198": {
-              "points": 59,
+              "points": 69,
               "played": true
             },
             "p195": {
-              "points": 43,
+              "points": 65,
               "played": true
             },
             "p193": {
-              "points": 28,
+              "points": 41,
               "played": true
             },
             "p185": {
-              "points": 40,
+              "points": 57,
               "played": true
             },
             "p187": {
-              "points": 56,
+              "points": 102,
               "played": true
             },
             "p197": {
@@ -306,15 +306,15 @@
               "played": false
             },
             "p109": {
-              "points": 17,
+              "points": 10,
               "played": true
             },
             "p96": {
-              "points": 17,
+              "points": 27,
               "played": true
             },
             "p105": {
-              "points": 27,
+              "points": 36,
               "played": true
             }
           },
@@ -360,7 +360,8 @@
             },
             "complete": true,
             "home_code": "SAM",
-            "away_code": "FRA"
+            "away_code": "FRA",
+            "official_teams": true
           }
         }
       }
