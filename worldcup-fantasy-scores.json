@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-16T09:21:45+00:00",
+  "updatedAt": "2026-10-16T10:57:39+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -231,14 +231,14 @@
           "home": "SAM",
           "away": "FRA",
           "status": "final",
-          "updatedAt": "2026-10-16T09:21:46+00:00",
+          "updatedAt": "2026-10-16T10:57:41+00:00",
           "players": {
             "p202": {
-              "points": 53,
+              "points": 51,
               "played": true
             },
             "p205": {
-              "points": 36,
+              "points": 34,
               "played": true
             },
             "p203": {
@@ -250,15 +250,15 @@
               "played": true
             },
             "p196": {
-              "points": 23,
+              "points": 22,
               "played": true
             },
             "p189": {
-              "points": 51,
+              "points": 50,
               "played": true
             },
             "p194": {
-              "points": 48,
+              "points": 45,
               "played": true
             },
             "p199": {
@@ -266,11 +266,11 @@
               "played": true
             },
             "p191": {
-              "points": 47,
+              "points": 50,
               "played": true
             },
             "p200": {
-              "points": 16,
+              "points": 18,
               "played": true
             },
             "p192": {
@@ -294,7 +294,7 @@
               "played": true
             },
             "p187": {
-              "points": 102,
+              "points": 111,
               "played": true
             },
             "p197": {
@@ -306,15 +306,15 @@
               "played": false
             },
             "p109": {
-              "points": 10,
+              "points": 9,
               "played": true
             },
             "p96": {
-              "points": 27,
+              "points": 26,
               "played": true
             },
             "p105": {
-              "points": 36,
+              "points": 44,
               "played": true
             }
           },
