@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-16T08:51:05+00:00",
+  "updatedAt": "2026-10-16T09:21:45+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -231,10 +231,10 @@
           "home": "SAM",
           "away": "FRA",
           "status": "final",
-          "updatedAt": "2026-10-16T08:51:06+00:00",
+          "updatedAt": "2026-10-16T09:21:46+00:00",
           "players": {
             "p202": {
-              "points": 51,
+              "points": 53,
               "played": true
             },
             "p205": {
@@ -270,7 +270,7 @@
               "played": true
             },
             "p200": {
-              "points": 15,
+              "points": 16,
               "played": true
             },
             "p192": {
