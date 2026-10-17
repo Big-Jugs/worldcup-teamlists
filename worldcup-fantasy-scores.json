@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-16T10:57:39+00:00",
+  "updatedAt": "2026-10-17T04:48:29+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -362,6 +362,97 @@
             "home_code": "SAM",
             "away_code": "FRA",
             "official_teams": true
+          }
+        },
+        "PNG-LEB": {
+          "home": "PNG",
+          "away": "LEB",
+          "status": "live",
+          "updatedAt": "2026-10-17T04:48:31+00:00",
+          "players": {
+            "p164": {
+              "points": 13,
+              "played": true
+            },
+            "p172": {
+              "points": 3,
+              "played": true
+            },
+            "p169": {
+              "points": -3,
+              "played": true
+            },
+            "p177": {
+              "points": 20,
+              "played": true
+            },
+            "p174": {
+              "points": 19,
+              "played": true
+            },
+            "p168": {
+              "points": 22,
+              "played": true
+            },
+            "p163": {
+              "points": 0,
+              "played": false
+            },
+            "p122": {
+              "points": 8,
+              "played": true
+            },
+            "p131": {
+              "points": 10,
+              "played": true
+            },
+            "p127": {
+              "points": 5,
+              "played": true
+            },
+            "p125": {
+              "points": 3,
+              "played": true
+            },
+            "p118": {
+              "points": 16,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p163",
+                "p164",
+                "p168",
+                "p169",
+                "p172",
+                "p174",
+                "p177"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p118",
+                "p122",
+                "p125",
+                "p127",
+                "p131"
+              ]
+            },
+            "complete": false,
+            "home_code": "PNG",
+            "away_code": "LEB"
           }
         }
       }
