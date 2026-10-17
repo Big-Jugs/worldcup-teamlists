@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-17T09:23:45+00:00",
+  "updatedAt": "2026-10-17T09:52:09+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -460,54 +460,54 @@
           "home": "ENG",
           "away": "TON",
           "status": "live",
-          "updatedAt": "2026-10-17T09:23:47+00:00",
+          "updatedAt": "2026-10-17T09:52:11+00:00",
           "players": {
             "p48": {
-              "points": 13,
+              "points": 28,
               "played": true
             },
             "p61": {
-              "points": 15,
+              "points": 22,
               "played": true
             },
             "p51": {
-              "points": 19,
+              "points": 37,
               "played": true
             },
             "p50": {
-              "points": 0,
+              "points": 3,
               "played": true
             },
             "p68": {
-              "points": 4,
+              "points": 11,
               "played": true
             },
             "p62": {
-              "points": 10,
+              "points": 12,
               "played": true
             },
             "p53": {
-              "points": 15,
+              "points": 34,
               "played": true
             },
             "p58": {
-              "points": 16,
+              "points": 23,
               "played": true
             },
             "p57": {
-              "points": 6,
+              "points": 23,
               "played": true
             },
             "p59": {
-              "points": 17,
+              "points": 39,
               "played": true
             },
             "p60": {
-              "points": 14,
+              "points": 16,
               "played": true
             },
             "p64": {
-              "points": 11,
+              "points": 20,
               "played": true
             },
             "p56": {
@@ -515,12 +515,12 @@
               "played": false
             },
             "p52": {
-              "points": 0,
-              "played": false
+              "points": 9,
+              "played": true
             },
             "p65": {
-              "points": 0,
-              "played": false
+              "points": 4,
+              "played": true
             },
             "p67": {
               "points": 0,
@@ -535,7 +535,7 @@
               "played": false
             },
             "p218": {
-              "points": 21,
+              "points": 23,
               "played": true
             },
             "p209": {
@@ -543,58 +543,58 @@
               "played": true
             },
             "p228": {
-              "points": 6,
+              "points": 4,
               "played": true
             },
             "p221": {
-              "points": 6,
+              "points": 23,
               "played": true
             },
             "p214": {
-              "points": 7,
+              "points": 21,
               "played": true
             },
             "p217": {
-              "points": 6,
-              "played": true
-            },
-            "p212": {
-              "points": 2,
-              "played": true
-            },
-            "p208": {
-              "points": 11,
-              "played": true
-            },
-            "p213": {
-              "points": 15,
-              "played": true
-            },
-            "p211": {
-              "points": 9,
-              "played": true
-            },
-            "p224": {
-              "points": 11,
-              "played": true
-            },
-            "p230": {
               "points": 8,
               "played": true
             },
+            "p212": {
+              "points": 25,
+              "played": true
+            },
+            "p208": {
+              "points": 17,
+              "played": true
+            },
+            "p213": {
+              "points": 33,
+              "played": true
+            },
+            "p211": {
+              "points": 22,
+              "played": true
+            },
+            "p224": {
+              "points": 18,
+              "played": true
+            },
+            "p230": {
+              "points": 12,
+              "played": true
+            },
             "p222": {
-              "points": 7,
+              "points": 21,
+              "played": true
+            },
+            "p226": {
+              "points": 23,
+              "played": true
+            },
+            "p210": {
+              "points": 5,
               "played": true
             },
             "p225": {
-              "points": 0,
-              "played": false
-            },
-            "p226": {
-              "points": 0,
-              "played": false
-            },
-            "p210": {
               "points": 0,
               "played": false
             },
@@ -607,8 +607,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 13,
-              "fantasy_appearances": 13,
+              "appeared": 15,
+              "fantasy_appearances": 15,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p47",
@@ -634,8 +634,8 @@
             "away": {
               "rows": 19,
               "identified": 19,
-              "appeared": 14,
-              "fantasy_appearances": 14,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p208",
