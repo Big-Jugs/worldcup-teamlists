@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-17T07:15:29+00:00",
+  "updatedAt": "2026-10-17T08:06:09+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -368,7 +368,7 @@
           "home": "PNG",
           "away": "LEB",
           "status": "final",
-          "updatedAt": "2026-10-17T07:15:31+00:00",
+          "updatedAt": "2026-10-17T08:06:10+00:00",
           "players": {
             "p164": {
               "points": 50,
@@ -379,7 +379,7 @@
               "played": true
             },
             "p169": {
-              "points": 29,
+              "points": 32,
               "played": true
             },
             "p177": {
@@ -395,11 +395,11 @@
               "played": true
             },
             "p163": {
-              "points": 53,
+              "points": 54,
               "played": true
             },
             "p122": {
-              "points": 42,
+              "points": 43,
               "played": true
             },
             "p131": {
