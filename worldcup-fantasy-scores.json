@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-17T05:11:13+00:00",
+  "updatedAt": "2026-10-17T05:44:22+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -368,14 +368,14 @@
           "home": "PNG",
           "away": "LEB",
           "status": "live",
-          "updatedAt": "2026-10-17T05:11:14+00:00",
+          "updatedAt": "2026-10-17T05:44:27+00:00",
           "players": {
             "p164": {
-              "points": 33,
+              "points": 40,
               "played": true
             },
             "p172": {
-              "points": 8,
+              "points": 16,
               "played": true
             },
             "p169": {
@@ -387,35 +387,35 @@
               "played": true
             },
             "p174": {
-              "points": 31,
+              "points": 43,
               "played": true
             },
             "p168": {
-              "points": 36,
+              "points": 42,
               "played": true
             },
             "p163": {
-              "points": 19,
+              "points": 36,
               "played": true
             },
             "p122": {
-              "points": 12,
+              "points": 26,
               "played": true
             },
             "p131": {
-              "points": 11,
+              "points": 13,
               "played": true
             },
             "p127": {
-              "points": 10,
+              "points": 16,
               "played": true
             },
             "p125": {
-              "points": 1,
+              "points": 4,
               "played": true
             },
             "p118": {
-              "points": 28,
+              "points": 36,
               "played": true
             }
           },
@@ -439,8 +439,8 @@
             "away": {
               "rows": 19,
               "identified": 19,
-              "appeared": 15,
-              "fantasy_appearances": 15,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p118",
