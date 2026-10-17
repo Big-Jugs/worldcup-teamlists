@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-17T04:48:29+00:00",
+  "updatedAt": "2026-10-17T05:11:13+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -368,54 +368,54 @@
           "home": "PNG",
           "away": "LEB",
           "status": "live",
-          "updatedAt": "2026-10-17T04:48:31+00:00",
+          "updatedAt": "2026-10-17T05:11:14+00:00",
           "players": {
             "p164": {
-              "points": 13,
+              "points": 33,
               "played": true
             },
             "p172": {
-              "points": 3,
-              "played": true
-            },
-            "p169": {
-              "points": -3,
-              "played": true
-            },
-            "p177": {
-              "points": 20,
-              "played": true
-            },
-            "p174": {
-              "points": 19,
-              "played": true
-            },
-            "p168": {
-              "points": 22,
-              "played": true
-            },
-            "p163": {
-              "points": 0,
-              "played": false
-            },
-            "p122": {
               "points": 8,
               "played": true
             },
+            "p169": {
+              "points": 4,
+              "played": true
+            },
+            "p177": {
+              "points": 25,
+              "played": true
+            },
+            "p174": {
+              "points": 31,
+              "played": true
+            },
+            "p168": {
+              "points": 36,
+              "played": true
+            },
+            "p163": {
+              "points": 19,
+              "played": true
+            },
+            "p122": {
+              "points": 12,
+              "played": true
+            },
             "p131": {
-              "points": 10,
+              "points": 11,
               "played": true
             },
             "p127": {
-              "points": 5,
+              "points": 10,
               "played": true
             },
             "p125": {
-              "points": 3,
+              "points": 1,
               "played": true
             },
             "p118": {
-              "points": 16,
+              "points": 28,
               "played": true
             }
           },
@@ -423,8 +423,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 13,
-              "fantasy_appearances": 13,
+              "appeared": 16,
+              "fantasy_appearances": 16,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p163",
@@ -439,8 +439,8 @@
             "away": {
               "rows": 19,
               "identified": 19,
-              "appeared": 13,
-              "fantasy_appearances": 13,
+              "appeared": 15,
+              "fantasy_appearances": 15,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p118",
