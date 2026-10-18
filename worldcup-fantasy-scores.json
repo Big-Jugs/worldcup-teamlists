@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-17T15:55:07+00:00",
+  "updatedAt": "2026-10-18T05:31:26+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -661,6 +661,82 @@
             "home_code": "ENG",
             "away_code": "TON",
             "official_teams": true
+          }
+        },
+        "FIJ-COK": {
+          "home": "FIJ",
+          "away": "COK",
+          "status": "live",
+          "updatedAt": "2026-10-18T05:31:28+00:00",
+          "players": {
+            "p89": {
+              "points": 4,
+              "played": true
+            },
+            "p72": {
+              "points": 32,
+              "played": true
+            },
+            "p87": {
+              "points": 12,
+              "played": true
+            },
+            "p76": {
+              "points": 10,
+              "played": true
+            },
+            "p81": {
+              "points": 13,
+              "played": true
+            },
+            "p74": {
+              "points": 18,
+              "played": true
+            },
+            "p29": {
+              "points": 9,
+              "played": true
+            },
+            "p34": {
+              "points": 19,
+              "played": true
+            },
+            "p42": {
+              "points": 18,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 14,
+              "fantasy_appearances": 14,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p72",
+                "p74",
+                "p76",
+                "p81",
+                "p87",
+                "p89"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 15,
+              "fantasy_appearances": 15,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p29",
+                "p34",
+                "p42"
+              ]
+            },
+            "complete": false,
+            "home_code": "FIJ",
+            "away_code": "COK"
           }
         }
       }
