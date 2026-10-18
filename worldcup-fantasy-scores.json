@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-18T07:07:12+00:00",
+  "updatedAt": "2026-10-18T08:24:15+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -667,14 +667,14 @@
           "home": "FIJ",
           "away": "COK",
           "status": "final",
-          "updatedAt": "2026-10-18T07:07:15+00:00",
+          "updatedAt": "2026-10-18T08:24:20+00:00",
           "players": {
             "p89": {
-              "points": 22,
+              "points": 23,
               "played": true
             },
             "p72": {
-              "points": 48,
+              "points": 47,
               "played": true
             },
             "p87": {
@@ -682,27 +682,27 @@
               "played": true
             },
             "p76": {
-              "points": 42,
+              "points": 43,
               "played": true
             },
             "p81": {
-              "points": 54,
+              "points": 52,
               "played": true
             },
             "p74": {
-              "points": 44,
+              "points": 42,
               "played": true
             },
             "p29": {
-              "points": 31,
+              "points": 36,
               "played": true
             },
             "p34": {
-              "points": 65,
+              "points": 66,
               "played": true
             },
             "p42": {
-              "points": 56,
+              "points": 57,
               "played": true
             }
           },
