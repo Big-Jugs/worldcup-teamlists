@@ -8,7 +8,7 @@ No credentials or proprietary NRL APIs are required.
 from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 import html
 import math
 import json
@@ -27,6 +27,19 @@ NEWS_URLS = [
     'https://www.nrl.com/news/topic/team-lists/',
 ]
 DEFAULT_ROUND_1 = 'https://www.nrl.com/news/2026/10/13/world-cup-team-lists-mens-round-1/'
+# Article slugs and projected publication Tuesdays. Future URLs are *candidates*,
+# never treated as published until the article can be downloaded and verified.
+# Index discovery still takes precedence if the official date or title differs.
+ARTICLE_SCHEDULE = {
+    '2': (date(2026, 10, 20), ('world-cup-team-lists-mens-round-2',)),
+    '3': (date(2026, 10, 27), ('world-cup-team-lists-mens-round-3',)),
+    '4': (date(2026, 11, 3), ('world-cup-team-lists-mens-semi-finals',
+                             'world-cup-team-lists-mens-semi-final',
+                             'world-cup-team-lists-mens-finals-week-1')),
+    '5': (date(2026, 11, 10), ('world-cup-team-lists-mens-final',
+                              'world-cup-team-lists-mens-grand-final')),
+}
+
 COUNTRY_CODES = {
     'australia':'AUS', 'kangaroos':'AUS', 'new zealand':'NZL', 'kiwis':'NZL',
     'england':'ENG', 'tonga':'TON', 'samoa':'SAM', 'papua new guinea':'PNG',
@@ -149,8 +162,30 @@ def complete_matchday(teams):
     return valid
 
 
-def discover_urls(session=None, manual=None):
+def prospective_urls(round_no: str, today: date) -> list[str]:
+    """Bounded fallback if official NRL news indexes omit the new article.
+
+    Probe the projected publication Tuesday and next day, only once these
+    dates have actually arrived. Does not assume that any article exists.
+    """
+    planned, slugs = ARTICLE_SCHEDULE[round_no]
+    if today < planned:
+        return []
+    dates = [d for d in (planned, planned + timedelta(days=1)) if d <= today]
+    return [f'https://www.nrl.com/news/{d:%Y/%m/%d}/{slug}/'
+            for d in dates for slug in slugs]
+
+
+def discover_urls(session=None, manual=None, previous=None, today=None):
     candidates={'1':{DEFAULT_ROUND_1}}
+    today = today or datetime.now(timezone.utc).date()
+    previous = previous or {}
+    # Revisit verified source articles to detect late team-list revisions.
+    for rnd, sources in previous.get('sources', {}).items():
+        for item in sources:
+            url = item.get('url', '')
+            if valid_nrl_url(url) and round_for_url(url) == rnd:
+                candidates.setdefault(rnd, set()).add(url)
     for u in manual or []:
         if valid_nrl_url(u):
             r=round_for_url(u)
@@ -169,7 +204,13 @@ def discover_urls(session=None, manual=None):
             if not valid_nrl_url(candidate): continue
             r = round_for_url(candidate)
             if r: candidates.setdefault(r,set()).add(candidate)
-    return {k: sorted(v) for k,v in candidates.items()}
+    # Deterministic fallback prevents a green Action with no new round merely
+    # because NRL's homepage/team-list topic did not link to its published URL.
+    for rnd in ARTICLE_SCHEDULE:
+        # No need to guess article dates when a verified/manual URL is known.
+        if rnd not in candidates:
+            candidates[rnd] = set(prospective_urls(rnd, today))
+    return {k: sorted(v) for k,v in candidates.items() if v}
 
 
 def build_changes(previous: dict, players: list, pages: dict[str,str]):
@@ -180,13 +221,19 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
     for p in players:
         if p.get('marketEligible'): by_nation[p['nation']].append(p)
     verified = []
+    # After a later round has published, older round snapshots become
+    # historical and must not be silently rewritten by NRL page revisions.
+    existing_rounds = [int(r) for r, values in previous.get('rounds', {}).items()
+                       if values and str(r).isdigit()]
+    newest_published = max(existing_rounds, default=0)
     for round_no, sources in pages.items():
+        if int(round_no) < newest_published:
+            continue
         for url, page in sources.items():
             parsed = complete_matchday(parse_teams(page))
             if not parsed:
                 print(f'WARN {url}: zero complete 19-player nations, keeping last known statuses')
                 continue
-            current=result['rounds'].setdefault(round_no,{})
             page_verified=0
             for country, values in parsed.items():
                 roster = by_nation.get(country,[])
@@ -196,7 +243,8 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
                 if matched < required:
                     print(f'WARN {country} R{round_no}: only {matched}/{len(roster)} known market players match; need {required}. Keeping last verified statuses.')
                     continue
-                # Never clear a different round's values; validate team completeness first.
+                # Never create/alter a round until a nation is actually verified.
+                current=result['rounds'].setdefault(round_no,{})
                 for player in roster:
                     key = normalize_name(player['name'])
                     current[player['id']] = ('starting' if key in values['starting']
@@ -215,7 +263,7 @@ def run(offline_pages=None):
     before=json.loads(feed_path.read_text(encoding='utf8'))
     manual=json.loads((ROOT/'additional_sources.json').read_text(encoding='utf8'))
     manual_urls = [u for vals in manual.values() for u in vals]
-    sources=discover_urls(manual=manual_urls) if offline_pages is None else {r:list(p) for r,p in offline_pages.items()}
+    sources=discover_urls(manual=manual_urls, previous=before) if offline_pages is None else {r:list(p) for r,p in offline_pages.items()}
     pages={}
     for round_no,urls in sources.items():
         if offline_pages is not None: pages[round_no]=offline_pages[round_no]
@@ -224,6 +272,11 @@ def run(offline_pages=None):
                 try: pages.setdefault(round_no,{})[url]=download_text(url)
                 except Exception as e: print('WARN',e,file=sys.stderr)
     candidate,verified=build_changes(before,roster,pages)
+    today = datetime.now(timezone.utc).date()
+    for rnd,(expected_date, _slugs) in ARTICLE_SCHEDULE.items():
+        if today > expected_date and not candidate.get('rounds',{}).get(rnd):
+            print(f'::warning::Round {rnd} not yet published to the fantasy team-list feed; '
+                  'check NRL source discovery, parser and roster matches.', file=sys.stderr)
     compare=lambda d: {k:v for k,v in d.items() if k!='updatedAt'}
     if compare(candidate)==compare(before):
         print(f'No changed team lists ({len(verified)} validated nations, {len(pages)} rounds checked).')
