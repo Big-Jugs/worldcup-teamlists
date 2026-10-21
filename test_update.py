@@ -231,3 +231,80 @@ class NetworkFallbackTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class PairedTeamColumnTests(unittest.TestCase):
+    """Regression for Oct 21 production failure: 5 apparent teams, 0 matches.
+
+    The readable NRL article flattens its two-column table into strings like
+    'Fullback for Tonga is number 1 Lehi Hopoate 1 Fullback for Lebanon is
+     number 1 Jacob Kiraz'. These MUST yield two independent player records.
+    """
+    POSITIONS = ['Fullback','Winger','Centre','Centre','Winger','Five-Eighth',
+                 'Halfback','Prop','Hooker','Prop','2nd Row','2nd Row','Lock'] + ['Interchange']*6
+
+    def paired_page(self, nations):
+        roster = json.loads((Path(__file__).parent/'roster.json').read_text())
+        parts=[]
+        for a,b in nations:
+            players={}
+            for nation in (a,b):
+                names=[p['name'] for p in roster if p.get('marketEligible') and p['nation']==nation]
+                names=(names+[f'Nonmarket {nation} Player {chr(65+i)}' for i in range(20)])[:19]
+                players[nation]=names
+            for i,role in enumerate(self.POSITIONS,1):
+                # Simulate markdown's collapsed opponent columns and the
+                # interposed jersey number(s). Opposite column may be different.
+                number_b = 17 if b=='COK' and i==7 else 7 if b=='COK' and i==17 else i
+                parts.append(f'* {role} for {self.country(a)} is number {i} {players[a][i-1]} '
+                             f'{i} {role} for {self.country(b)} is number {number_b} {players[b][i-1]}')
+            # Reserve jersey 20+ must never be counted in the 19.
+            parts.append(f'Reserve for {self.country(a)} is number 20 Reserve {a} '
+                         f'20 Reserve for {self.country(b)} is number 20 Reserve {b}')
+        return '\n'.join(parts)
+
+    @staticmethod
+    def country(code):
+        return {'TON':'Tonga','LEB':'Lebanon','PNG':'Papua New Guinea','SAM':'Samoa',
+                'ENG':'England','FRA':'France','NZL':'New Zealand',
+                'COK':'Cook Islands','AUS':'Australia','FIJ':'Fiji'}[code]
+
+    def test_exact_real_tonga_lebanon_line(self):
+        parsed=parse_teams('* Fullback for Tonga is number 1 Lehi Hopoate 1 '
+                           'Fullback for Lebanon is number 1 Jacob Kiraz')
+        self.assertEqual(parsed['TON']['start'][0][0],'lehihopoate')
+        self.assertEqual(parsed['LEB']['start'][0][0],'jacobkiraz')
+        self.assertNotIn('lebanon',parsed['TON']['start'][0][0])
+
+    def test_all_ten_nations_complete_from_paired_markdown(self):
+        matchups=[('TON','LEB'),('PNG','SAM'),('ENG','FRA'),('NZL','COK'),('AUS','FIJ')]
+        official_page=self.paired_page(matchups)
+        parsed=complete_matchday(parse_teams(official_page))
+        self.assertEqual(set(parsed), {x for m in matchups for x in m})
+        self.assertEqual(len(parsed['TON']['starting']),13)
+        self.assertEqual(len(parsed['TON']['interchange']),6)
+        self.assertNotIn('reserveton',parsed['TON']['interchange'])
+        roster=json.loads((Path(__file__).parent/'roster.json').read_text())
+        before={'schema':1,'updatedAt':'before','rounds':{'1':{'p1':'starting'}},'sources':{'1':[]}}
+        url='https://www.nrl.com/news/2026/10/20/world-cup-team-lists-mens-round-2/'
+        updated, verified=build_changes(before,roster,{'2':{url:official_page}})
+        self.assertEqual(len(verified),10)
+        self.assertEqual(len(updated['rounds']['2']),140)
+        self.assertEqual(updated['rounds']['1'],before['rounds']['1'])
+        second, verified2=build_changes(updated,roster,{'2':{url:official_page}})
+        self.assertEqual(second,updated)
+        self.assertEqual(len(verified2),10)
+
+    def test_single_column_and_multiple_jersey_separator(self):
+        row=('Interchange for New Zealand is number 14 Te Maire Martin '
+             '14 7 Interchange for Cook Islands is number 7 Esan Marsters')
+        parsed=parse_teams(row)
+        self.assertEqual(parsed['NZL']['bench'][0][0],'temairemartin')
+        self.assertEqual(parsed['COK']['bench'][0][0],'esanmarsters')
+        single=parse_teams('Prop for France is number 10 Julian Bousquet')
+        self.assertEqual(single['FRA']['start'][0][0],'julianbousquet')
+
+    def test_missing_first_team_player_does_not_still_validate(self):
+        page=self.paired_page([('TON','LEB')]);page=page.replace('Sione Katoa','',1)
+        parsed=complete_matchday(parse_teams(page))
+        self.assertNotIn('TON', parsed)
+        self.assertIn('LEB', parsed)
