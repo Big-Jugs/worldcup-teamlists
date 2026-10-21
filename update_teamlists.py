@@ -50,8 +50,13 @@ ROLES_START = ['fullback','winger','centre','five-eighth','five eighth','halfbac
 ROLES_BENCH = ['interchange','replacement','reserve']
 ROLE_PATTERN = '|'.join(re.escape(s) for s in (ROLES_START + ROLES_BENCH))
 TEAM_PATTERN = '|'.join(re.escape(s) for s in sorted(COUNTRY_CODES, key=len, reverse=True))
-MARK_PATTERN = re.compile(
-    rf'(?P<role>{ROLE_PATTERN})\s+for\s+(?P<team>{TEAM_PATTERN})\s+is\s+number\s+(?P<num>\d{{1,2}})\s+(?P<name>[^\r\n<]+?)\s*$',
+# Team-list mirrors sometimes flatten the two columns into ONE line:
+# "Fullback for Tonga is number 1 Lehi Hopoate 1 Fullback for Lebanon is
+#  number 1 Jacob Kiraz".  Match each entry's *start* and split at the next
+# start; an end-of-line anchored name regex swallows the opposing player.
+ENTRY_START_PATTERN = re.compile(
+    rf'(?P<role>{ROLE_PATTERN})\s+for\s+(?P<team>{TEAM_PATTERN})'
+    rf'\s+is\s+number\s+(?P<num>\d{{1,2}})\s+',
     re.I,
 )
 URL_PATTERN = re.compile(r'https?://(?:www\.)?nrl\.com/news/2026/\d\d/\d\d/[^\s"<>\)]+', re.I)
@@ -198,20 +203,30 @@ def parse_teams(source: str) -> dict[str, dict[str, list[str]]]:
     people = defaultdict(lambda: {'start': [], 'bench': [], 'other': []})
     rows = visible_lines(source)
     for line in rows:
-        # Names after the match-team markup should not contain a paragraph.
-        match = MARK_PATTERN.search(line)
-        if not match: continue
-        role = match['role'].lower()
-        code = COUNTRY_CODES[match['team'].lower()]
-        number = int(match['num'])
-        name = match['name'].strip(' "*,. \t')
-        # Exclude trailing markdown link and double-printed jersey numbers.
-        name = re.split(r'\]\(|\s+Image:', name, maxsplit=1)[0].strip()
-        normalized = normalize_name(name)
-        if not normalized: continue
-        category='start' if role in ROLES_START else ('bench' if role=='interchange' else 'other')
-        record=(normalized,name,number)
-        if record not in people[code][category]: people[code][category].append(record)
+        matches = list(ENTRY_START_PATTERN.finditer(line))
+        for i, match in enumerate(matches):
+            role = match['role'].lower()
+            code = COUNTRY_CODES[match['team'].lower()]
+            number = int(match['num'])
+            # Each player name stops at the NEXT role/team/jersey entry, not
+            # necessarily at a newline (Jina often joins opposing teams).
+            end = matches[i + 1].start() if i + 1 < len(matches) else len(line)
+            name = line[match.end():end].strip(' "*,. \t')
+            if i + 1 < len(matches):
+                # The collapsed table includes the jersey number in its
+                # separator, e.g. "Lehi Hopoate 1 Fullback for Lebanon...".
+                # Some games print two numbers during late jersey changes.
+                name = re.sub(r'(?:\s+\d{1,2}){1,3}\s*$', '', name)
+            name = re.split(r'\]\(|\s+Image:', name, maxsplit=1)[0].strip(' "*,. \t')
+            # Refuse empty/number-only entries; never guess a player name.
+            if not re.search(r'[a-zA-Z]', name):
+                continue
+            normalized = normalize_name(name)
+            category = ('start' if role in ROLES_START
+                        else 'bench' if role == 'interchange' else 'other')
+            record = (normalized, name, number)
+            if record not in people[code][category]:
+                people[code][category].append(record)
     return dict(people)
 
 
@@ -316,7 +331,7 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
                 matched = sum(normalize_name(p['name']) in active_names for p in roster)
                 required = max(2, math.ceil(len(roster) * 0.30))
                 if matched < required:
-                    print(f'WARN {country} R{round_no}: only {matched}/{len(roster)} known market players match; need {required}. Keeping last verified statuses.')
+                    print(f'WARN {country} R{round_no}: only {matched}/{len(roster)} known market players match; need {required}. Keeping last verified statuses. Sample extracted names: {sorted(active_names)[:4]}')
                     continue
                 # Never create/alter a round until a nation is actually verified.
                 current=result['rounds'].setdefault(round_no,{})
