@@ -155,3 +155,79 @@ class MultiRoundAutomationTests(unittest.TestCase):
 
 if __name__=='__main__':unittest.main()
 
+
+
+class NetworkFallbackTests(unittest.TestCase):
+    class Reply:
+        status_code=200
+        def __init__(self,source):
+            self.text=source
+            self.content=source.encode('utf-8')
+        def raise_for_status(self): pass
+
+    class FakeSession:
+        def __init__(self, responses):
+            self.responses=iter(responses)
+            self.calls=[]
+        def get(self,url,**kwargs):
+            self.calls.append(url)
+            return NetworkFallbackTests.Reply(next(self.responses))
+
+    def test_http_200_without_players_triggers_readable_fallback(self):
+        from update_teamlists import get_official_source
+        source='<!doctype html><html><body>'+'Loading team list...'*30+'</body></html>'
+        markdown=markup(style='md').replace('Fullback for Australia is number 1 Test Player 1',
+           '[Fullback for Australia is number 1 Test Player 1](https://www.nrl.com/)')
+        session=self.FakeSession([source,markdown])
+        def browser(_): raise AssertionError('browser fallback should not run')
+        result=get_official_source(MultiRoundAutomationTests.R2_URL,session=session,
+                                   expected_nations=1,render=browser)
+        self.assertEqual(len(complete_matchday(parse_teams(result))),1)
+        self.assertEqual(len(session.calls),2)
+        self.assertIn('r.jina.ai',session.calls[1])
+
+    def test_both_nonextractable_sources_trigger_browser(self):
+        from update_teamlists import get_official_source
+        bad='<html><body>'+'Team list loading...'*50+'</body></html>'
+        session=self.FakeSession([bad,bad])
+        calls=[]
+        def browser(url):
+            calls.append(url)
+            return markup(style='html')
+        got=get_official_source(MultiRoundAutomationTests.R2_URL,session=session,
+                                expected_nations=1,render=browser)
+        self.assertEqual(len(calls),1)
+        self.assertEqual(len(complete_matchday(parse_teams(got))),1)
+
+    def test_all_unverifiable_sources_publish_nothing(self):
+        from update_teamlists import get_official_source
+        bad='<html><body>'+'Team list loading...'*50+'</body></html>'
+        got=get_official_source(MultiRoundAutomationTests.R2_URL,
+             session=self.FakeSession([bad,bad]),expected_nations=1,render=lambda _:bad)
+        self.assertEqual(got,'')
+
+    def test_reserve_20_does_not_fill_missing_bench_player(self):
+        bad=markup().replace('Interchange for Australia is number 17 Test Player 17','')
+        result=complete_matchday(parse_teams(bad))
+        self.assertNotIn('AUS',result)
+
+    def test_official_interchange_role_handles_jersey_number_swaps(self):
+        shifted=markup().replace('Halfback for Australia is number 7 Test Player 7',
+                                 'Halfback for Australia is number 17 Test Player 7')
+        shifted=shifted.replace('Interchange for Australia is number 17 Test Player 17',
+                                'Interchange for Australia is number 7 Test Player 17')
+        self.assertEqual(len(complete_matchday(parse_teams(shifted))['AUS']['interchange']),6)
+
+    def test_newer_round_verified_before_existing_old_round_is_changed(self):
+        from update_teamlists import build_changes
+        people=[{'id':'p'+str(i),'name':f'Test Player {i}','nation':'AUS','marketEligible':True}
+                for i in range(1,24)]
+        before={'schema':1,'updatedAt':'old','rounds':{'1':{'p1':'omitted'}},'sources':{}}
+        after,valid=build_changes(before,people,{'1':{'old-r1':markup()},'2':{'new-r2':markup()}})
+        self.assertEqual(after['rounds']['1'],before['rounds']['1'])
+        self.assertEqual(len(valid),1)
+        self.assertEqual(after['rounds']['2']['p1'],'starting')
+
+
+if __name__ == '__main__':
+    unittest.main()
