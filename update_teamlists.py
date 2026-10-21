@@ -97,6 +97,79 @@ def download_text(url: str, session=None) -> str:
     raise RuntimeError(f'Could not retrieve {url}: {last_error}')
 
 
+
+def get_official_source(url: str, session=None, expected_nations=10, render=None) -> str:
+    """Select the *extractable* article, not the first HTTP 200 page.
+
+    NRL may reply 200 with a JS shell or anti-bot page. Such a response has
+    hundreds of bytes but no verifiable starting 13 + interchange 6.
+    Try the normal page, a text mirror, and finally a rendered Chromium page.
+    Always return only the version with the most validated nations; return an
+    empty string if none can be verified. Fail closed in build_changes().
+    """
+    sess = session or requests.Session()
+    targets=[('direct',url),('readable','https://r.jina.ai/'+url)]
+    best_source=''
+    best_count=0
+    best_method='none'
+    for method, address in targets:
+        try:
+            r=sess.get(address, timeout=TIMEOUT, headers={
+                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
+                              '(KHTML, like Gecko) Chrome/131.0 Safari/537.36',
+                'Accept': 'text/html,text/plain;q=0.9,*/*;q=0.7',
+            })
+            r.raise_for_status()
+            source=r.text if len(r.content)>300 else ''
+            verified=complete_matchday(parse_teams(source)) if source else {}
+            print(f'Source check {method} R{round_for_url(url) or "?"}: '
+                  f'{len(verified)} complete nations, HTTP {r.status_code}, '
+                  f'{len(r.content)} bytes')
+            if len(verified)>best_count:
+                best_source,best_count,best_method=source,len(verified),method
+            if best_count>=expected_nations:break
+        except Exception as e:
+            print(f'WARN {method} fetch {url}: {e}', file=sys.stderr)
+    if best_count<expected_nations:
+        try:
+            rendered=render(url) if render is not None else render_nrl_browser(url)
+            verified=complete_matchday(parse_teams(rendered))
+            print(f'Source check browser R{round_for_url(url) or "?"}: '
+                  f'{len(verified)} complete nations')
+            if len(verified)>best_count:
+                best_source,best_count,best_method=rendered,len(verified),'browser'
+        except Exception as e:
+            print(f'WARN browser fetch {url}: {e}',file=sys.stderr)
+    if not best_count:
+        print(f'::warning::No verified 19-player teams in {url}. '
+              'No changes published from this source.',file=sys.stderr)
+    else:
+        print(f'Validated {best_count} complete nations from {best_method} for {url}')
+    return best_source
+
+
+def render_nrl_browser(url: str) -> str:
+    """Fallback used only if ordinary and readable pages are incomplete."""
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as playwright:
+        browser=playwright.chromium.launch(headless=True, args=['--no-sandbox'])
+        try:
+            page=browser.new_page(locale='en-AU',
+                user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
+                           '(KHTML, like Gecko) Chrome/131.0 Safari/537.36')
+            page.goto(url,wait_until='domcontentloaded',timeout=30000)
+            try:
+                page.wait_for_function("""() => {
+                  const marked = document.querySelector('[alt*=" for "][alt*=" is number "], [aria-label*=" for "][aria-label*=" is number "]');
+                  return !!marked || /(?:Fullback|Winger|Centre|Prop|Hooker) for (?:Tonga|Australia|France|England|Samoa|Lebanon|Fiji|New Zealand|Papua New Guinea|Cook Islands) is number/i.test(document.body?.innerText || '');
+                }""",timeout=13000)
+            except Exception:
+                pass
+            return page.content()
+        finally:
+            browser.close()
+
+
 def visible_lines(source: str) -> list[str]:
     soup = BeautifulSoup(source, 'html.parser')
     # NRL team cards expose meaningful descriptions in alt/aria-label attributes.
@@ -111,6 +184,12 @@ def visible_lines(source: str) -> list[str]:
     for line in labels:
         if not line:continue
         s=html.unescape(str(line)).strip().lstrip('* -').strip()
+        # Readable NRL mirrors commonly express jersey descriptions as
+        # Markdown image alt text or inline links, not plain lines.
+        for text in re.findall(r'!?\[([^\]]{8,180})\]\([^)]*\)', s):
+            t=text.strip()
+            if t:lines.append(t)
+        s=re.sub(r'!?\[([^\]]+)\]\([^)]*\)', r'\1', s)
         if s:lines.append(s)
     return lines
 
@@ -137,26 +216,21 @@ def parse_teams(source: str) -> dict[str, dict[str, list[str]]]:
 
 
 def complete_matchday(teams):
-    """Require exactly 13 distinct starters and 6 bench players.
+    """Require 13 distinct starters and 6 actual match-day bench players.
 
-    NRL pages show interchange positions 14-17 and positions 18-19 under
-    'Reserve'. Later named reserves (20-23) must NOT count as interchange.
+    Jersey numbers may shift due to late changes, so prefer the official
+    Interchange role. Only jersey 18-19 Reserve rows may supplement it.
+    Never turn Reserve jersey 20+ into an interchange player.
     """
     valid={}
     for country, groups in teams.items():
         starters = {name for name, label, number in groups['start']}
         interchange = {name for name,label,number in groups['bench']}
         rest = [(name,label,number) for name,label,number in groups['other'] if name not in starters and name not in interchange]
-        # For NRL match cards, first two reserves are the fifth and sixth bench players.
-        # Prefer jerseys 18/19 where present; avoid promoting all extended reserves.
-        chosen = [n for n,label,number in rest if number in (18,19)]
-        if len(interchange) + len(set(chosen)) < 6:
-            # Only take the first slots if the list appears ordered and complete.
-            for n,label,number in rest:
-                if n not in chosen and n not in interchange:
-                    chosen.append(n)
-                    if len(interchange) + len(set(chosen)) >= 6: break
-        bench = interchange | set(chosen[:max(0,6-len(interchange))])
+        # Only jerseys 18-19 labelled Reserve may fill a missing matchday
+        # bench slot. NEVER promote reserve #20+; they are outside the 19.
+        chosen = {n for n,label,number in rest if number in (18,19)}
+        bench = interchange | chosen
         if len(starters) == 13 and len(bench) == 6 and starters.isdisjoint(bench):
             valid[country]={'starting':starters,'interchange':bench}
     return valid
@@ -226,7 +300,8 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
     existing_rounds = [int(r) for r, values in previous.get('rounds', {}).items()
                        if values and str(r).isdigit()]
     newest_published = max(existing_rounds, default=0)
-    for round_no, sources in pages.items():
+    for round_no in sorted(pages, key=int, reverse=True):
+        sources=pages[round_no]
         if int(round_no) < newest_published:
             continue
         for url, page in sources.items():
@@ -252,6 +327,7 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
                                              else 'omitted')
                 verified.append((round_no,country,len(roster)))
                 page_verified+=1
+                newest_published=max(newest_published,int(round_no))
             if page_verified and not any(x.get('url') == url for x in result['sources'].setdefault(round_no,[])):
                 result['sources'][round_no].append({'url':url,'label':f'NRL.com World Cup men - round {round_no}'})
     return result,verified
@@ -268,22 +344,43 @@ def run(offline_pages=None):
     for round_no,urls in sources.items():
         if offline_pages is not None: pages[round_no]=offline_pages[round_no]
         else:
+            # Complete fixture cards: 10 nations in R1/R2/R3, four in SF, two in Final.
+            expected={'1':10,'2':10,'3':10,'4':4,'5':2}.get(round_no,1)
             for url in urls:
-                try: pages.setdefault(round_no,{})[url]=download_text(url)
-                except Exception as e: print('WARN',e,file=sys.stderr)
+                source=get_official_source(url,expected_nations=expected)
+                if source: pages.setdefault(round_no,{})[url]=source
     candidate,verified=build_changes(before,roster,pages)
+    # Report complete per-nation coverage, not only whether the round key exists.
+    market_nations=defaultdict(set)
+    for p in roster:
+        if p.get('marketEligible'):
+            market_nations[p['nation']].add(p['id'])
+    for rnd in sorted(set(sources) | set(candidate.get('rounds',{}))):
+        keys=set(candidate.get('rounds',{}).get(rnd,{}))
+        if not keys: continue
+        full={nation for nation,ids in market_nations.items() if ids.issubset(keys)}
+        print(f'Coverage R{rnd}: {len(full)}/{len(market_nations)} nations; '
+              f'{len(keys)} player statuses')
+        if len(full)<len(market_nations):
+            missing_nations=sorted(set(market_nations)-full)
+            print(f'::warning::R{rnd} incomplete nation coverage: '
+                  f'{", ".join(missing_nations)}',file=sys.stderr)
     today = datetime.now(timezone.utc).date()
+    missing=[]
     for rnd,(expected_date, _slugs) in ARTICLE_SCHEDULE.items():
-        if today > expected_date and not candidate.get('rounds',{}).get(rnd):
-            print(f'::warning::Round {rnd} not yet published to the fantasy team-list feed; '
-                  'check NRL source discovery, parser and roster matches.', file=sys.stderr)
+        if today >= expected_date + timedelta(days=1) and not candidate.get('rounds',{}).get(rnd):
+            missing.append(rnd)
+            print(f'::error::Round {rnd} has no validated player statuses. '
+                  'The official source may be blocked or its format may have changed.',file=sys.stderr)
     compare=lambda d: {k:v for k,v in d.items() if k!='updatedAt'}
     if compare(candidate)==compare(before):
         print(f'No changed team lists ({len(verified)} validated nations, {len(pages)} rounds checked).')
+        if missing: raise RuntimeError('Missing expected round(s): '+', '.join(missing))
         return False
     candidate['updatedAt'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
     feed_path.write_text(json.dumps(candidate,indent=2,ensure_ascii=False)+'\n',encoding='utf8')
     print(f'Updated feed: {len(verified)} validated nation-round entries: {verified}')
+    if missing: raise RuntimeError('Missing expected round(s): '+', '.join(missing))
     return True
 
 
