@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-23T10:58:33+00:00",
+  "updatedAt": "2026-10-23T12:25:53+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -748,10 +748,10 @@
           "home": "TON",
           "away": "LEB",
           "status": "final",
-          "updatedAt": "2026-10-23T10:58:35+00:00",
+          "updatedAt": "2026-10-23T12:25:57+00:00",
           "players": {
             "p218": {
-              "points": 61,
+              "points": 62,
               "played": true
             },
             "p223": {
@@ -759,7 +759,7 @@
               "played": true
             },
             "p228": {
-              "points": 61,
+              "points": 65,
               "played": true
             },
             "p220": {
@@ -767,15 +767,15 @@
               "played": true
             },
             "p214": {
-              "points": 57,
+              "points": 56,
               "played": true
             },
             "p208": {
-              "points": 44,
+              "points": 45,
               "played": true
             },
             "p222": {
-              "points": 41,
+              "points": 42,
               "played": true
             },
             "p226": {
@@ -783,11 +783,11 @@
               "played": true
             },
             "p211": {
-              "points": 54,
+              "points": 51,
               "played": true
             },
             "p216": {
-              "points": 25,
+              "points": 24,
               "played": true
             },
             "p213": {
@@ -795,31 +795,31 @@
               "played": true
             },
             "p217": {
-              "points": 20,
+              "points": 22,
               "played": true
             },
             "p225": {
-              "points": 26,
+              "points": 31,
               "played": true
             },
             "p227": {
               "points": 35,
               "played": true
             },
-            "p224": {
-              "points": 45,
-              "played": true
-            },
             "p209": {
               "points": 0,
               "played": false
             },
+            "p224": {
+              "points": 43,
+              "played": true
+            },
             "p122": {
-              "points": 38,
+              "points": 31,
               "played": true
             },
             "p131": {
-              "points": 3,
+              "points": 6,
               "played": true
             },
             "p127": {
@@ -831,7 +831,7 @@
               "played": true
             },
             "p118": {
-              "points": 58,
+              "points": 59,
               "played": true
             }
           },
