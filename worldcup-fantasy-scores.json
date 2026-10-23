@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-18T08:24:15+00:00",
+  "updatedAt": "2026-10-23T07:45:34+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -460,7 +460,7 @@
           "home": "ENG",
           "away": "TON",
           "status": "final",
-          "updatedAt": "2026-10-17T15:55:11+00:00",
+          "updatedAt": "2026-10-23T07:45:36+00:00",
           "players": {
             "p48": {
               "points": 62,
@@ -507,7 +507,7 @@
               "played": true
             },
             "p64": {
-              "points": 23,
+              "points": 22,
               "played": true
             },
             "p56": {
@@ -586,6 +586,10 @@
               "points": 37,
               "played": true
             },
+            "p225": {
+              "points": 0,
+              "played": false
+            },
             "p226": {
               "points": 61,
               "played": true
@@ -593,10 +597,6 @@
             "p210": {
               "points": 22,
               "played": true
-            },
-            "p225": {
-              "points": 0,
-              "played": false
             },
             "p220": {
               "points": 0,
