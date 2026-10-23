@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-23T10:27:11+00:00",
+  "updatedAt": "2026-10-23T10:58:33+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -747,31 +747,31 @@
         "TON-LEB": {
           "home": "TON",
           "away": "LEB",
-          "status": "live",
-          "updatedAt": "2026-10-23T10:27:14+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-23T10:58:35+00:00",
           "players": {
             "p218": {
-              "points": 36,
+              "points": 61,
               "played": true
             },
             "p223": {
-              "points": 43,
+              "points": 56,
               "played": true
             },
             "p228": {
-              "points": 42,
+              "points": 61,
               "played": true
             },
             "p220": {
-              "points": 28,
+              "points": 36,
               "played": true
             },
             "p214": {
-              "points": 30,
+              "points": 57,
               "played": true
             },
             "p208": {
-              "points": 22,
+              "points": 44,
               "played": true
             },
             "p222": {
@@ -779,11 +779,11 @@
               "played": true
             },
             "p226": {
-              "points": 6,
+              "points": 13,
               "played": true
             },
             "p211": {
-              "points": 39,
+              "points": 54,
               "played": true
             },
             "p216": {
@@ -791,23 +791,23 @@
               "played": true
             },
             "p213": {
-              "points": 14,
+              "points": 39,
               "played": true
             },
             "p217": {
-              "points": 15,
+              "points": 20,
               "played": true
             },
             "p225": {
-              "points": 15,
+              "points": 26,
               "played": true
             },
             "p227": {
-              "points": 31,
+              "points": 35,
               "played": true
             },
             "p224": {
-              "points": 36,
+              "points": 45,
               "played": true
             },
             "p209": {
@@ -815,23 +815,23 @@
               "played": false
             },
             "p122": {
-              "points": 27,
+              "points": 38,
               "played": true
             },
             "p131": {
-              "points": 0,
+              "points": 3,
               "played": true
             },
             "p127": {
-              "points": 23,
+              "points": 42,
               "played": true
             },
             "p125": {
-              "points": 12,
+              "points": 15,
               "played": true
             },
             "p118": {
-              "points": 55,
+              "points": 58,
               "played": true
             }
           },
@@ -877,7 +877,8 @@
             },
             "complete": true,
             "home_code": "TON",
-            "away_code": "LEB"
+            "away_code": "LEB",
+            "official_teams": true
           }
         }
       }
