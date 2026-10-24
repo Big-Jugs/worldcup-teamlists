@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-24T07:04:18+00:00",
+  "updatedAt": "2026-10-24T07:37:19+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1041,59 +1041,59 @@
           "home": "ENG",
           "away": "FRA",
           "status": "live",
-          "updatedAt": "2026-10-24T07:04:37+00:00",
+          "updatedAt": "2026-10-24T07:37:36+00:00",
           "players": {
             "p48": {
-              "points": 11,
+              "points": 29,
               "played": true
             },
             "p61": {
-              "points": 14,
+              "points": 35,
               "played": true
             },
             "p51": {
-              "points": 15,
+              "points": 65,
               "played": true
             },
             "p68": {
-              "points": 10,
+              "points": 41,
               "played": true
             },
             "p62": {
-              "points": 11,
+              "points": 43,
               "played": true
             },
             "p53": {
-              "points": 14,
+              "points": 28,
               "played": true
             },
             "p58": {
-              "points": 11,
+              "points": 16,
               "played": true
             },
             "p64": {
-              "points": 8,
+              "points": 18,
               "played": true
             },
             "p57": {
-              "points": 13,
+              "points": 35,
               "played": true
             },
             "p59": {
-              "points": 17,
+              "points": 33,
               "played": true
             },
             "p60": {
-              "points": 14,
+              "points": 24,
               "played": true
             },
             "p47": {
-              "points": 5,
+              "points": 21,
               "played": true
             },
             "p56": {
-              "points": 0,
-              "played": false
+              "points": 4,
+              "played": true
             },
             "p49": {
               "points": 0,
@@ -1104,8 +1104,8 @@
               "played": false
             },
             "p65": {
-              "points": 0,
-              "played": false
+              "points": 12,
+              "played": true
             },
             "p67": {
               "points": 0,
@@ -1116,19 +1116,19 @@
               "played": false
             },
             "p109": {
-              "points": 7,
+              "points": 9,
               "played": true
             },
             "p96": {
-              "points": 14,
+              "points": 15,
               "played": true
             },
             "p95": {
-              "points": 18,
+              "points": 17,
               "played": true
             },
             "p105": {
-              "points": 11,
+              "points": 17,
               "played": true
             }
           },
@@ -1136,8 +1136,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 13,
-              "fantasy_appearances": 13,
+              "appeared": 15,
+              "fantasy_appearances": 15,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p47",
@@ -1163,8 +1163,8 @@
             "away": {
               "rows": 19,
               "identified": 19,
-              "appeared": 14,
-              "fantasy_appearances": 14,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p105",
