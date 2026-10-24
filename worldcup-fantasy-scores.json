@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-24T08:33:28+00:00",
+  "updatedAt": "2026-10-24T09:04:04+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1041,15 +1041,15 @@
         "ENG-FRA": {
           "home": "ENG",
           "away": "FRA",
-          "status": "live",
-          "updatedAt": "2026-10-24T08:33:31+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-24T09:04:07+00:00",
           "players": {
             "p48": {
               "points": 88,
               "played": true
             },
             "p61": {
-              "points": 72,
+              "points": 71,
               "played": true
             },
             "p51": {
@@ -1065,7 +1065,7 @@
               "played": true
             },
             "p53": {
-              "points": 56,
+              "points": 57,
               "played": true
             },
             "p58": {
@@ -1073,23 +1073,23 @@
               "played": true
             },
             "p64": {
-              "points": 39,
-              "played": true
-            },
-            "p57": {
-              "points": 48,
-              "played": true
-            },
-            "p59": {
-              "points": 48,
-              "played": true
-            },
-            "p60": {
               "points": 46,
               "played": true
             },
+            "p57": {
+              "points": 53,
+              "played": true
+            },
+            "p59": {
+              "points": 53,
+              "played": true
+            },
+            "p60": {
+              "points": 47,
+              "played": true
+            },
             "p47": {
-              "points": 35,
+              "points": 40,
               "played": true
             },
             "p56": {
@@ -1097,15 +1097,15 @@
               "played": true
             },
             "p65": {
-              "points": 48,
+              "points": 49,
               "played": true
             },
             "p67": {
-              "points": 24,
+              "points": 25,
               "played": true
             },
             "p55": {
-              "points": 32,
+              "points": 35,
               "played": true
             },
             "p49": {
@@ -1117,19 +1117,19 @@
               "played": false
             },
             "p109": {
-              "points": 22,
-              "played": true
-            },
-            "p96": {
               "points": 24,
               "played": true
             },
+            "p96": {
+              "points": 23,
+              "played": true
+            },
             "p95": {
-              "points": 25,
+              "points": 28,
               "played": true
             },
             "p105": {
-              "points": 31,
+              "points": 33,
               "played": true
             }
           },
@@ -1176,7 +1176,8 @@
             },
             "complete": true,
             "home_code": "ENG",
-            "away_code": "FRA"
+            "away_code": "FRA",
+            "official_teams": true
           }
         }
       }
