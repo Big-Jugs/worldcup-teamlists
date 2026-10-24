@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-24T06:18:40+00:00",
+  "updatedAt": "2026-10-24T07:04:18+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1035,6 +1035,147 @@
             "complete": false,
             "home_code": "PNG",
             "away_code": "SAM"
+          }
+        },
+        "ENG-FRA": {
+          "home": "ENG",
+          "away": "FRA",
+          "status": "live",
+          "updatedAt": "2026-10-24T07:04:37+00:00",
+          "players": {
+            "p48": {
+              "points": 11,
+              "played": true
+            },
+            "p61": {
+              "points": 14,
+              "played": true
+            },
+            "p51": {
+              "points": 15,
+              "played": true
+            },
+            "p68": {
+              "points": 10,
+              "played": true
+            },
+            "p62": {
+              "points": 11,
+              "played": true
+            },
+            "p53": {
+              "points": 14,
+              "played": true
+            },
+            "p58": {
+              "points": 11,
+              "played": true
+            },
+            "p64": {
+              "points": 8,
+              "played": true
+            },
+            "p57": {
+              "points": 13,
+              "played": true
+            },
+            "p59": {
+              "points": 17,
+              "played": true
+            },
+            "p60": {
+              "points": 14,
+              "played": true
+            },
+            "p47": {
+              "points": 5,
+              "played": true
+            },
+            "p56": {
+              "points": 0,
+              "played": false
+            },
+            "p49": {
+              "points": 0,
+              "played": false
+            },
+            "p52": {
+              "points": 0,
+              "played": false
+            },
+            "p65": {
+              "points": 0,
+              "played": false
+            },
+            "p67": {
+              "points": 0,
+              "played": false
+            },
+            "p55": {
+              "points": 0,
+              "played": false
+            },
+            "p109": {
+              "points": 7,
+              "played": true
+            },
+            "p96": {
+              "points": 14,
+              "played": true
+            },
+            "p95": {
+              "points": 18,
+              "played": true
+            },
+            "p105": {
+              "points": 11,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p47",
+                "p48",
+                "p49",
+                "p51",
+                "p52",
+                "p53",
+                "p55",
+                "p56",
+                "p57",
+                "p58",
+                "p59",
+                "p60",
+                "p61",
+                "p62",
+                "p64",
+                "p65",
+                "p67",
+                "p68"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 14,
+              "fantasy_appearances": 14,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p105",
+                "p109",
+                "p95",
+                "p96"
+              ]
+            },
+            "complete": false,
+            "home_code": "ENG",
+            "away_code": "FRA"
           }
         }
       }
