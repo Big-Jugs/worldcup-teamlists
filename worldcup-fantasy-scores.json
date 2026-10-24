@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-24T08:04:48+00:00",
+  "updatedAt": "2026-10-24T08:33:28+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -884,27 +884,27 @@
         "PNG-SAM": {
           "home": "PNG",
           "away": "SAM",
-          "status": "live",
-          "updatedAt": "2026-10-24T06:18:44+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-24T08:33:31+00:00",
           "players": {
             "p164": {
-              "points": 12,
+              "points": 13,
               "played": true
             },
             "p172": {
-              "points": 3,
+              "points": 0,
               "played": true
             },
             "p169": {
-              "points": 18,
+              "points": 15,
               "played": true
             },
             "p174": {
-              "points": 34,
+              "points": 32,
               "played": true
             },
             "p163": {
-              "points": 17,
+              "points": 16,
               "played": true
             },
             "p168": {
@@ -912,43 +912,43 @@
               "played": true
             },
             "p202": {
-              "points": 46,
+              "points": 70,
               "played": true
             },
             "p205": {
-              "points": 33,
+              "points": 48,
               "played": true
             },
             "p203": {
-              "points": 25,
+              "points": 44,
               "played": true
             },
             "p186": {
-              "points": 34,
-              "played": true
-            },
-            "p187": {
-              "points": 50,
-              "played": true
-            },
-            "p189": {
               "points": 37,
               "played": true
             },
+            "p187": {
+              "points": 75,
+              "played": true
+            },
+            "p189": {
+              "points": 43,
+              "played": true
+            },
             "p194": {
-              "points": 29,
+              "points": 45,
               "played": true
             },
             "p199": {
-              "points": 32,
+              "points": 39,
               "played": true
             },
             "p191": {
-              "points": 31,
+              "points": 30,
               "played": true
             },
             "p200": {
-              "points": 14,
+              "points": 33,
               "played": true
             },
             "p192": {
@@ -960,40 +960,40 @@
               "played": true
             },
             "p195": {
-              "points": 86,
+              "points": 91,
               "played": true
             },
             "p193": {
-              "points": 44,
+              "points": 48,
               "played": true
             },
             "p185": {
-              "points": 14,
+              "points": 28,
               "played": true
             },
             "p197": {
-              "points": 34,
+              "points": 63,
               "played": true
+            },
+            "p190": {
+              "points": 0,
+              "played": false
             },
             "p188": {
               "points": 0,
               "played": false
             },
             "p207": {
-              "points": 8,
-              "played": false
-            },
-            "p190": {
-              "points": 0,
-              "played": false
+              "points": 17,
+              "played": true
             }
           },
           "coverage": {
             "home": {
               "rows": 18,
               "identified": 18,
-              "appeared": 16,
-              "fantasy_appearances": 16,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p163",
@@ -1007,8 +1007,8 @@
             "away": {
               "rows": 19,
               "identified": 19,
-              "appeared": 16,
-              "fantasy_appearances": 16,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p185",
@@ -1032,39 +1032,40 @@
                 "p207"
               ]
             },
-            "complete": false,
+            "complete": true,
             "home_code": "PNG",
-            "away_code": "SAM"
+            "away_code": "SAM",
+            "official_teams": true
           }
         },
         "ENG-FRA": {
           "home": "ENG",
           "away": "FRA",
           "status": "live",
-          "updatedAt": "2026-10-24T08:05:07+00:00",
+          "updatedAt": "2026-10-24T08:33:31+00:00",
           "players": {
             "p48": {
-              "points": 32,
+              "points": 88,
               "played": true
             },
             "p61": {
-              "points": 45,
+              "points": 72,
               "played": true
             },
             "p51": {
-              "points": 68,
+              "points": 76,
               "played": true
             },
             "p68": {
-              "points": 64,
+              "points": 65,
               "played": true
             },
             "p62": {
-              "points": 47,
+              "points": 60,
               "played": true
             },
             "p53": {
-              "points": 28,
+              "points": 56,
               "played": true
             },
             "p58": {
@@ -1072,27 +1073,39 @@
               "played": true
             },
             "p64": {
-              "points": 28,
-              "played": true
-            },
-            "p57": {
-              "points": 40,
-              "played": true
-            },
-            "p59": {
               "points": 39,
               "played": true
             },
+            "p57": {
+              "points": 48,
+              "played": true
+            },
+            "p59": {
+              "points": 48,
+              "played": true
+            },
             "p60": {
-              "points": 44,
+              "points": 46,
               "played": true
             },
             "p47": {
-              "points": 27,
+              "points": 35,
               "played": true
             },
             "p56": {
-              "points": 19,
+              "points": 37,
+              "played": true
+            },
+            "p65": {
+              "points": 48,
+              "played": true
+            },
+            "p67": {
+              "points": 24,
+              "played": true
+            },
+            "p55": {
+              "points": 32,
               "played": true
             },
             "p49": {
@@ -1103,32 +1116,20 @@
               "points": 0,
               "played": false
             },
-            "p65": {
-              "points": 28,
-              "played": true
-            },
-            "p67": {
-              "points": 0,
-              "played": false
-            },
-            "p55": {
-              "points": 0,
-              "played": false
-            },
             "p109": {
-              "points": 13,
+              "points": 22,
               "played": true
             },
             "p96": {
-              "points": 15,
+              "points": 24,
               "played": true
             },
             "p95": {
-              "points": 17,
+              "points": 25,
               "played": true
             },
             "p105": {
-              "points": 26,
+              "points": 31,
               "played": true
             }
           },
@@ -1136,8 +1137,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 15,
-              "fantasy_appearances": 15,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p47",
@@ -1173,7 +1174,7 @@
                 "p96"
               ]
             },
-            "complete": false,
+            "complete": true,
             "home_code": "ENG",
             "away_code": "FRA"
           }
