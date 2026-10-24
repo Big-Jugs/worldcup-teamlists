@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-24T07:37:19+00:00",
+  "updatedAt": "2026-10-24T08:04:48+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1041,26 +1041,26 @@
           "home": "ENG",
           "away": "FRA",
           "status": "live",
-          "updatedAt": "2026-10-24T07:37:36+00:00",
+          "updatedAt": "2026-10-24T08:05:07+00:00",
           "players": {
             "p48": {
-              "points": 29,
+              "points": 32,
               "played": true
             },
             "p61": {
-              "points": 35,
+              "points": 45,
               "played": true
             },
             "p51": {
-              "points": 65,
+              "points": 68,
               "played": true
             },
             "p68": {
-              "points": 41,
+              "points": 64,
               "played": true
             },
             "p62": {
-              "points": 43,
+              "points": 47,
               "played": true
             },
             "p53": {
@@ -1072,27 +1072,27 @@
               "played": true
             },
             "p64": {
-              "points": 18,
+              "points": 28,
               "played": true
             },
             "p57": {
-              "points": 35,
+              "points": 40,
               "played": true
             },
             "p59": {
-              "points": 33,
+              "points": 39,
               "played": true
             },
             "p60": {
-              "points": 24,
+              "points": 44,
               "played": true
             },
             "p47": {
-              "points": 21,
+              "points": 27,
               "played": true
             },
             "p56": {
-              "points": 4,
+              "points": 19,
               "played": true
             },
             "p49": {
@@ -1104,7 +1104,7 @@
               "played": false
             },
             "p65": {
-              "points": 12,
+              "points": 28,
               "played": true
             },
             "p67": {
@@ -1116,7 +1116,7 @@
               "played": false
             },
             "p109": {
-              "points": 9,
+              "points": 13,
               "played": true
             },
             "p96": {
@@ -1128,7 +1128,7 @@
               "played": true
             },
             "p105": {
-              "points": 17,
+              "points": 26,
               "played": true
             }
           },
