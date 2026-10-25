@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-25T08:47:40+00:00",
+  "updatedAt": "2026-10-25T09:12:31+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1325,6 +1325,162 @@
             "home_code": "NZL",
             "away_code": "COK",
             "official_teams": true
+          }
+        },
+        "AUS-FIJ": {
+          "home": "AUS",
+          "away": "FIJ",
+          "status": "live",
+          "updatedAt": "2026-10-25T09:12:38+00:00",
+          "players": {
+            "p19": {
+              "points": 1,
+              "played": true
+            },
+            "p2": {
+              "points": 10,
+              "played": true
+            },
+            "p18": {
+              "points": 2,
+              "played": true
+            },
+            "p1": {
+              "points": 3,
+              "played": true
+            },
+            "p20": {
+              "points": 3,
+              "played": true
+            },
+            "p6": {
+              "points": 5,
+              "played": true
+            },
+            "p21": {
+              "points": 0,
+              "played": true
+            },
+            "p10": {
+              "points": 6,
+              "played": true
+            },
+            "p3": {
+              "points": 4,
+              "played": true
+            },
+            "p17": {
+              "points": 8,
+              "played": true
+            },
+            "p8": {
+              "points": 6,
+              "played": true
+            },
+            "p5": {
+              "points": 10,
+              "played": true
+            },
+            "p15": {
+              "points": 6,
+              "played": true
+            },
+            "p7": {
+              "points": 0,
+              "played": false
+            },
+            "p16": {
+              "points": 0,
+              "played": false
+            },
+            "p4": {
+              "points": 0,
+              "played": false
+            },
+            "p14": {
+              "points": 0,
+              "played": false
+            },
+            "p12": {
+              "points": 0,
+              "played": false
+            },
+            "p9": {
+              "points": 0,
+              "played": false
+            },
+            "p89": {
+              "points": 4,
+              "played": true
+            },
+            "p72": {
+              "points": 4,
+              "played": true
+            },
+            "p87": {
+              "points": 9,
+              "played": true
+            },
+            "p76": {
+              "points": -1,
+              "played": true
+            },
+            "p81": {
+              "points": 6,
+              "played": true
+            },
+            "p74": {
+              "points": 3,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p1",
+                "p10",
+                "p12",
+                "p14",
+                "p15",
+                "p16",
+                "p17",
+                "p18",
+                "p19",
+                "p2",
+                "p20",
+                "p21",
+                "p3",
+                "p4",
+                "p5",
+                "p6",
+                "p7",
+                "p8",
+                "p9"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p72",
+                "p74",
+                "p76",
+                "p81",
+                "p87",
+                "p89"
+              ]
+            },
+            "complete": false,
+            "home_code": "AUS",
+            "away_code": "FIJ"
           }
         }
       }
