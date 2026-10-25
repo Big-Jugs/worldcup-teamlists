@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-25T07:19:32+00:00",
+  "updatedAt": "2026-10-25T08:47:40+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1184,14 +1184,14 @@
           "home": "NZL",
           "away": "COK",
           "status": "final",
-          "updatedAt": "2026-10-25T07:19:35+00:00",
+          "updatedAt": "2026-10-25T08:47:42+00:00",
           "players": {
             "p144": {
-              "points": 53,
+              "points": 57,
               "played": true
             },
             "p143": {
-              "points": 98,
+              "points": 95,
               "played": true
             },
             "p151": {
@@ -1199,7 +1199,7 @@
               "played": true
             },
             "p149": {
-              "points": 66,
+              "points": 64,
               "played": true
             },
             "p150": {
@@ -1207,7 +1207,7 @@
               "played": true
             },
             "p153": {
-              "points": 48,
+              "points": 47,
               "played": true
             },
             "p142": {
@@ -1223,7 +1223,7 @@
               "played": true
             },
             "p158": {
-              "points": 47,
+              "points": 48,
               "played": true
             },
             "p161": {
@@ -1231,15 +1231,15 @@
               "played": true
             },
             "p156": {
-              "points": 33,
+              "points": 34,
               "played": true
             },
             "p139": {
-              "points": 54,
+              "points": 56,
               "played": true
             },
             "p148": {
-              "points": 32,
+              "points": 34,
               "played": true
             },
             "p159": {
@@ -1251,7 +1251,7 @@
               "played": true
             },
             "p145": {
-              "points": 19,
+              "points": 20,
               "played": true
             },
             "p154": {
@@ -1271,11 +1271,11 @@
               "played": true
             },
             "p34": {
-              "points": 40,
+              "points": 38,
               "played": true
             },
             "p42": {
-              "points": 51,
+              "points": 52,
               "played": true
             }
           },
