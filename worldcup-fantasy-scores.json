@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-25T10:36:44+00:00",
+  "updatedAt": "2026-10-25T15:01:38+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1184,7 +1184,7 @@
           "home": "NZL",
           "away": "COK",
           "status": "final",
-          "updatedAt": "2026-10-25T08:47:42+00:00",
+          "updatedAt": "2026-10-25T15:01:41+00:00",
           "players": {
             "p144": {
               "points": 57,
@@ -1227,7 +1227,7 @@
               "played": true
             },
             "p161": {
-              "points": 49,
+              "points": 48,
               "played": true
             },
             "p156": {
@@ -1243,7 +1243,7 @@
               "played": true
             },
             "p159": {
-              "points": 35,
+              "points": 36,
               "played": true
             },
             "p157": {
