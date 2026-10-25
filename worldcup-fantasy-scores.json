@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-25T06:38:53+00:00",
+  "updatedAt": "2026-10-25T07:19:32+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1183,31 +1183,31 @@
         "NZL-COK": {
           "home": "NZL",
           "away": "COK",
-          "status": "live",
-          "updatedAt": "2026-10-25T06:38:56+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-25T07:19:35+00:00",
           "players": {
             "p144": {
-              "points": 43,
+              "points": 53,
               "played": true
             },
             "p143": {
-              "points": 61,
+              "points": 98,
               "played": true
             },
             "p151": {
-              "points": 35,
+              "points": 66,
               "played": true
             },
             "p149": {
-              "points": 62,
+              "points": 66,
               "played": true
             },
             "p150": {
-              "points": 51,
+              "points": 54,
               "played": true
             },
             "p153": {
-              "points": 44,
+              "points": 48,
               "played": true
             },
             "p142": {
@@ -1215,7 +1215,7 @@
               "played": true
             },
             "p140": {
-              "points": 14,
+              "points": 23,
               "played": true
             },
             "p147": {
@@ -1223,15 +1223,15 @@
               "played": true
             },
             "p158": {
-              "points": 33,
+              "points": 47,
               "played": true
             },
             "p161": {
-              "points": 40,
+              "points": 49,
               "played": true
             },
             "p156": {
-              "points": 30,
+              "points": 33,
               "played": true
             },
             "p139": {
@@ -1239,19 +1239,19 @@
               "played": true
             },
             "p148": {
-              "points": 13,
+              "points": 32,
               "played": true
             },
             "p159": {
-              "points": 30,
+              "points": 35,
               "played": true
             },
             "p157": {
-              "points": 67,
+              "points": 72,
               "played": true
             },
             "p145": {
-              "points": 8,
+              "points": 19,
               "played": true
             },
             "p154": {
@@ -1267,15 +1267,15 @@
               "played": true
             },
             "p29": {
-              "points": 13,
+              "points": 19,
               "played": true
             },
             "p34": {
-              "points": 27,
+              "points": 40,
               "played": true
             },
             "p42": {
-              "points": 42,
+              "points": 51,
               "played": true
             }
           },
@@ -1323,7 +1323,8 @@
             },
             "complete": true,
             "home_code": "NZL",
-            "away_code": "COK"
+            "away_code": "COK",
+            "official_teams": true
           }
         }
       }
