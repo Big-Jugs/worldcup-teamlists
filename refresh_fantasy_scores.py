@@ -583,7 +583,13 @@ def update(sources,roster,existing,*,fetcher=None, browser=False, today=None,sou
                 match,msg=parse_embedded(s,fixture,roster)
             except Exception as exc:match,msg=None,str(exc)
             notes=[]
-        else:match,msg,notes=parse_match_url(fixture['url'],fixture,roster,browser=(browser and abs((today-date_of(fixture['date'])).days)<=2))
+        else:
+            # CRITICAL: Settlement requires fresh proof of each FULL-TIME match
+            # at every scheduled run. The former abs(days)<=2 gate disabled
+            # Playwright just as older match-centre pages became harder to
+            # extract, leaving last_source_verified_at stale and R3 locked.
+            # active_fixture() already bounds this to the 7-day match window.
+            match,msg,notes=parse_match_url(fixture['url'],fixture,roster,browser=browser)
         for line in notes:print('  ',line)
         if not match:
             print('NO SOURCE DATA',fixture['id'],msg)
@@ -604,6 +610,21 @@ def update(sources,roster,existing,*,fetcher=None, browser=False, today=None,sou
         slot[fixture['id']]=match
         count+=1
         print('VERIFIED',fixture['id'],msg)
+    # Never treat a green Actions run as evidence a round was settled.
+    # This line reports how many match-scoped full-time sources were genuinely
+    # reverified DURING THIS RUN; an unchanged cached JSON row is not proof.
+    if source_proofs is not None:
+        for rn in sorted({f['round'] for f in scheduled}):
+            due=[f for f in scheduled if f['round']==rn]
+            proofs_for_round={p['fixture_id'] for p in source_proofs if p['fixture_id'] in {f['id'] for f in due}}
+            recorded=out.get('rounds',{}).get(str(rn),{}).get('matches',{})
+            finals=sum(1 for f in due if recorded.get(f['id'],{}).get('status')=='final')
+            print(f'RECHECK R{rn}: feed final={finals}/{len(due)}; fresh official final proofs={len(proofs_for_round)}/{len(due)}')
+            if due and all(date_of(f.get('date')) < today for f in due) and len(proofs_for_round)<len(due):
+                missing=sorted({f['id'] for f in due}-proofs_for_round)
+                print('::warning title=World Cup fantasy source recheck incomplete::R'+str(rn)+
+                      ' has no fresh final fantasy proof for '+', '.join(missing)+
+                      '. The scoring database will keep this round provisional until all evidence is present.')
     if count:out['updatedAt']=now.isoformat(timespec='seconds')
     return out,count
 
