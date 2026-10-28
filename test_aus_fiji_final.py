@@ -51,6 +51,55 @@ def test_full_final():
     assert reloaded and len(reloaded['players'])==20,msg
 
 
+def test_actual_aus16_fij17_complete_with_six_fiji_market_players():
+    # Reproduces observed 28 Oct source: 19 rows per side, 16/17 played,
+    # no unresolved, but only 6 eligible Fiji market players. All values
+    # in this test are synthetic; these are NOT actual fantasy point totals.
+    from publish_scores_to_supabase import validate_feed
+    data,fixture,roster=make_fixture()
+    aussie_row=data['match']['stats']['players']['homeTeam'][16]
+    aussie_row['minutesPlayed']=0
+    aussie_row['fantasyPointsTotal']=0
+    for i in range(10,19):
+        roster.append({'id':f'AUS-{i}','name':f'AUS Sample {i+1}',
+                       'nation':'AUS','marketEligible':True})
+    for person in roster:
+        if person['nation']=='FIJ' and int(person['id'].split('-')[-1])>=6:
+            person['marketEligible']=False
+    parsed,msg=parse_payload(data,fixture,roster)
+    assert parsed is not None and parsed['status']=='final',msg
+    cover=parsed['coverage']
+    assert cover['complete'] is True and cover['official_teams'] is True
+    assert (cover['home']['rows'],cover['home']['identified'],cover['home']['appeared'],cover['home']['unresolved'])==(19,19,16,0)
+    assert (cover['away']['rows'],cover['away']['identified'],cover['away']['appeared'],cover['away']['unresolved'])==(19,19,17,0)
+    assert len(cover['home']['eligible_score_ids'])==19
+    assert len(cover['away']['eligible_score_ids'])==6
+    assert parsed['players']['AUS-16']=={'points':0,'played':False}
+    assert validate_feed({'schema':1,'rounds':{'2':{'matches':{'AUS-FIJ':parsed}}}})==1
+
+
+def test_reject_missing_named_bench_row_even_with_sixteen_appearances():
+    data,fixture,roster=make_fixture()
+    data['match']['stats']['players']['homeTeam'][16]['minutesPlayed']=0
+    data['match']['stats']['players']['homeTeam'][16]['fantasyPointsTotal']=0
+    data['match']['stats']['players']['homeTeam'].pop()
+    parsed,msg=parse_payload(data,fixture,roster)
+    assert parsed is None and 'incomplete' in msg.lower(),msg
+
+
+def test_reject_uncertain_dnp_and_missing_played_points():
+    data,fixture,roster=make_fixture()
+    side=data['match']['stats']['players']['homeTeam']
+    side[16]['fantasyPointsTotal']=0
+    side[16].pop('minutesPlayed')  # ambiguous: real DNP or played 0 points?
+    parsed,msg=parse_payload(data,fixture,roster)
+    assert parsed is None and 'incomplete' in msg.lower(),msg
+    data,fixture,roster=make_fixture()
+    data['match']['stats']['players']['awayTeam'][0].pop('fantasyPointsTotal')
+    parsed,msg=parse_payload(data,fixture,roster)
+    assert parsed is None and 'incomplete' in msg.lower(),msg
+
+
 def test_partial_final_rejected():
     data,fixture,roster=make_fixture()
     data['match']['stats']['players']['awayTeam'][8].pop('fantasyPointsTotal')
@@ -80,6 +129,6 @@ def test_live_not_final():
     assert parsed is None
 
 if __name__=='__main__':
-    for test in (test_full_final,test_partial_final_rejected,test_wrong_match_rejected,test_live_not_final):
+    for test in (test_full_final,test_actual_aus16_fij17_complete_with_six_fiji_market_players,test_reject_missing_named_bench_row_even_with_sixteen_appearances,test_reject_uncertain_dnp_and_missing_played_points,test_partial_final_rejected,test_wrong_match_rejected,test_live_not_final):
         test()
         print('PASS',test.__name__)
