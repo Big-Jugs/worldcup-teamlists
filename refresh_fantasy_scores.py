@@ -237,9 +237,14 @@ def official_match_coverage(stats,participants,by_name,by_id,id_to_name):
         return None
     h=official_side_coverage(stats['homeTeam'],participants['home'],by_name,by_id,id_to_name)
     a=official_side_coverage(stats['awayTeam'],participants['away'],by_name,by_id,id_to_name)
-    # Seventeen played participants on each side is a conservative rugby
-    # league baseline. Additional 2026 interchange players are supported.
-    complete=all(x['appeared']>=17 and x['fantasy_appearances']==x['appeared']
+    # NRL names 19 players (13 starters plus six interchange/reserves), but
+    # does not require 17 of them actually to enter the match. A confirmed
+    # zero-minute DNP is legitimate. Require all 19 official identities and
+    # an unambiguous played/DNP result for every row, while verifying fantasy
+    # points for every player who did take the field.
+    complete=all(x['rows']>=19 and x['identified']==x['rows']
+                 and 13<=x['appeared']<=x['rows']
+                 and x['fantasy_appearances']==x['appeared']
                  and x['unresolved']==0 for x in (h,a))
     return {'home':h,'away':a,'complete':complete,
             'home_code':participants['home'],'away_code':participants['away']}
@@ -396,7 +401,7 @@ def parse_payload(payload, fixture, roster, *, probe=False):
     state,scores,participants,coverage=candidates[0]
     if state=='final' and not probe:
         if not (coverage and coverage['complete']):
-            return None,'Final match player table incomplete: need >=17 verified appearances, fantasy points and unambiguous identities per side'
+            return None,'Final match player table incomplete: need >=19 named rows, >=13 verified appearances and unambiguous fantasy/DNP evidence per side'
         # Source must identify the CURRENT fixture's two nations explicitly.
         # Without this, a stale/historical game could be attributed to 2026.
         official=None
