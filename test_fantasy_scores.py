@@ -34,3 +34,10 @@ for fn in (test_complete_finals,test_reject_partial_score_map_even_with_valid_co
            test_coverage_only_correction_is_published):
     fn()
 print('PASS source identities, live points, DNP, incomplete-final rejection, revisions and publisher order')
+
+# Verify current 19-per-side international match format and diagnostics.
+from test_aus_fiji_final import (test_full_final,test_partial_final_rejected,
+                                 test_wrong_match_rejected,test_live_not_final)
+for fn in (test_full_final,test_partial_final_rejected,test_wrong_match_rejected,test_live_not_final):
+    fn()
+print('PASS 38-row international final, strict coverage, identity checks and diagnostic')
