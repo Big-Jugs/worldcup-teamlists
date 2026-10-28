@@ -116,7 +116,10 @@ def validate_feed(data):
                     raise PublishError('Official player coverage fixture nations mismatch')
                 for side in ('home','away'):
                     c = cover.get(side)
-                    if not isinstance(c, dict) or not isinstance(c.get('appeared'), int) or c['appeared'] < 17 or c.get('unresolved') != 0 or c.get('fantasy_appearances') != c['appeared']:
+                    if (not isinstance(c, dict) or not isinstance(c.get('rows'), int) or c['rows'] < 19
+                        or not isinstance(c.get('identified'), int) or c['identified'] != c['rows']
+                        or not isinstance(c.get('appeared'), int) or not 13 <= c['appeared'] <= c['rows']
+                        or c.get('unresolved') != 0 or c.get('fantasy_appearances') != c['appeared']):
                         raise PublishError('Final fixture official player coverage incomplete')
                     ids = c.get('eligible_score_ids')
                     if not isinstance(ids, list) or any(not isinstance(pid, str) or not pid for pid in ids):
