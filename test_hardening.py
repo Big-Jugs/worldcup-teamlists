@@ -31,12 +31,15 @@ def synthetic(*,status='final',players_per_side=17, zero_missing_minutes=False, 
             if not (zero_missing_minutes and idx==0):row['minutesPlayed']=75
             rows.append(row)
         if extra_dnp:
-            ext_id=str(2000 if nation=='AUS' else 3000)
-            name=f'{nation} Reserve'
-            roster.append({'id':f'{nation}-dnp','name':name,'nation':nation,
-                           'nrlId':ext_id,'marketEligible':True})
-            rows.append({'playerId':ext_id,'playerName':name,
-                         'fantasyPointsTotal':0,'minutesPlayed':0})
+            # Six-man named interchange: 17 active participants, 2 DNPs.
+            for reserve_num in range(2):
+                ext_id=str((2000 if nation=='AUS' else 3000)+reserve_num)
+                name=f'{nation} Reserve {reserve_num+1}'
+                suffix='dnp' if reserve_num==0 else 'dnp-extra'
+                roster.append({'id':f'{nation}-{suffix}','name':name,'nation':nation,
+                               'nrlId':ext_id,'marketEligible':True})
+                rows.append({'playerId':ext_id,'playerName':name,
+                             'fantasyPointsTotal':0,'minutesPlayed':0})
         stats[side]=rows
     match={'matchState':('fulltime' if status=='final' else 'inprogress'),
            'homeTeam':{'name':'Australia'},'awayTeam':{'name':'New Zealand'},
@@ -84,7 +87,7 @@ def test_reject_partial_and_uncertain():
     payload, fixture, roster=synthetic(players_per_side=8)
     parsed,msg=reader.parse_payload(payload,fixture,roster)
     assert parsed is None and 'incomplete' in msg.lower(),msg
-    payload, fixture, roster=synthetic(zero_missing_minutes=True)
+    payload, fixture, roster=synthetic(zero_missing_minutes=True,extra_dnp=True)
     parsed,msg=reader.parse_payload(payload,fixture,roster)
     assert parsed is None,msg
     payload, fixture, roster=synthetic(status='live',players_per_side=8)
@@ -130,7 +133,7 @@ def test_coverage_only_correction_is_published():
     # The updater must persist the new coverage so the DB attestation can match.
     import copy
     from datetime import date
-    base,_,roster=synthetic(extra_dnp=False)
+    base,_,roster=synthetic(extra_dnp=True)
     updated=copy.deepcopy(base)
     updated['match']['stats']['players']['homeTeam'].append({
         'playerId':'999999','playerName':'Unmarketed reserve',
