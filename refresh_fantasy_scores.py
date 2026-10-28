@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent
 HEADERS = {"User-Agent": "Mozilla/5.0 (WorldCupFantasy fan prototype; NRL match stat verification)"}
 FANTASY_KEYS = ('fantasyPointsTotal','fantasyPoints','fantasy_points','fantasyScore')
 NAME_KEYS = ('playerName','fullName','name','displayName','player_name')
-ID_KEYS = ('playerId','player_id','personId')
+ID_KEYS = ('playerId','player_id','personId','profileId')
 STATES = ('matchState','gameState','gameStatus','matchStatus','status','matchMode')
 
 
@@ -251,12 +251,13 @@ def official_match_coverage(stats,participants,by_name,by_id,id_to_name):
 # Unknown/TBC match sides never receive guessed scores or mislabelled players.
 NATION_NAMES = {
     'australia': 'AUS', 'kangaroos': 'AUS', 'aus': 'AUS',
+    'australiankangaroos': 'AUS', 'australianroos': 'AUS',
     'newzealand': 'NZL', 'kiwis': 'NZL', 'nzl': 'NZL',
     'england': 'ENG', 'eng': 'ENG',
     'samoa': 'SAM', 'toasamoa': 'SAM', 'sam': 'SAM',
     'tonga': 'TON', 'matemaatonga': 'TON', 'ton': 'TON',
     'papuanewguinea': 'PNG', 'pngkumuls': 'PNG', 'kumuls': 'PNG', 'png': 'PNG',
-    'fiji': 'FIJ', 'fijibati': 'FIJ', 'fij': 'FIJ',
+    'fiji': 'FIJ', 'fijibati': 'FIJ', 'fij': 'FIJ', 'thebati': 'FIJ',
     'cookislands': 'COK', 'cookislandsakukura': 'COK', 'cok': 'COK', 'coo': 'COK',
     'france': 'FRA', 'fra': 'FRA', 'lebanon': 'LEB', 'cedars': 'LEB', 'leb': 'LEB'
 }
@@ -418,12 +419,59 @@ def parse_payload(payload, fixture, roster, *, probe=False):
     now=datetime.now(timezone.utc).isoformat(timespec='seconds')
     return {'home':participants['home'],'away':participants['away'],'status':state,'updatedAt':now,'players':scores, **({'coverage':coverage} if coverage else {})},f'{len(scores)} matched eligible player scores ({state})'
 
+def safe_match_evidence(payload, fixture, roster):
+    """Report WHY official match statistics cannot be attested.
+
+    Diagnostics include only structural keys and aggregate counts. Never print
+    individual player scores, IDs, request URLs with query strings or secrets.
+    In particular, an unscoped 38-record table is NOT a final proof.
+    """
+    if not isinstance(payload, (dict, list)):
+        return 'no structured match payload'
+    root_names = names_by_external_id(payload)
+    summaries=[]
+    for obj in current_match_containers(payload):
+        if not isinstance(obj,dict):continue
+        match=obj.get('match') if isinstance(obj.get('match'),dict) else obj
+        state=match_state(match)
+        official_home=nation_from_team(match.get('homeTeam'))
+        official_away=nation_from_team(match.get('awayTeam'))
+        stats=match.get('stats') if isinstance(match.get('stats'),dict) else {}
+        candidates=[stats.get('players'),obj.get('players'),match.get('players')]
+        tables=[c for c in candidates if isinstance(c,dict) and
+                isinstance(c.get('homeTeam'),list) and isinstance(c.get('awayTeam'),list)]
+        if not state and not tables:continue
+        note=(f'match state={state or "unknown"}; official teams='
+              f'{official_home or "unknown"}/{official_away or "unknown"}; '
+              f'fixture={fixture["home"]}/{fixture["away"]}; '
+              f'split-side tables={len(tables)}; ')
+        if tables:
+            chosen=tables[0]
+            participant=resolved_fixture(match,fixture)
+            if participant:
+                names, ids, _ = roster_lookups(roster,participant)
+                cov=official_match_coverage(chosen,participant,names,ids,root_names)
+                if cov:
+                    note+='; '.join(
+                        f'{side}: rows={cov[k]["rows"]} identified={cov[k]["identified"]} '
+                        f'played={cov[k]["appeared"]} fantasy={cov[k]["fantasy_appearances"]} '
+                        f'unresolved={cov[k]["unresolved"]} matched-market={len(cov[k]["eligible_score_ids"])}'
+                        for k,side in (('home','home'),('away','away'))
+                    )
+            else:
+                note+='fixture team identity unavailable'
+        summaries.append(note)
+        if len(summaries)>=3:break
+    return ' | '.join(summaries) if summaries else 'no current match state or split-side fantasy table'
+
+
 def parse_embedded(source,fixture,roster,*,probe=False):
     best=None; diagnostics=[]
     for payload in extract_embedded(source):
         result,msg=parse_payload(payload,fixture,roster,probe=probe)
         if result and (best is None or (result['status']=='final',len(result['players']))>(best['status']=='final',len(best['players']))):best=result
-        diagnostics.append(msg)
+        if not result:
+            diagnostics.append(msg + ' | ' + safe_match_evidence(payload,fixture,roster))
     if best:return best, f'{len(best["players"])} match-scoped players'
     return None, (diagnostics[-1] if diagnostics else 'No match-scoped embedded JSON found')
 
@@ -545,8 +593,10 @@ def parse_match_url(url,fixture,roster,*,browser=False,probe=False):
                 if match:
                     log.append('Matched from '+origin)
                     return match,msg,log
+                if origin=='rendered-html' or 'fantasy' in origin.lower():
+                    log.append('MATCH PROOF REJECTED ('+origin+'): '+msg[:850])
         except Exception as exc:log.append('Browser fallback failed: '+str(exc)[:160])
-    return None,'No match-scoped fantasy points could be verified',log
+    return None,'No match-scoped fantasy points could be verified; consult MATCH PROOF REJECTED diagnostics above',log
 
 
 def date_of(s):
