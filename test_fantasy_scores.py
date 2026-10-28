@@ -15,10 +15,10 @@ match,msg=parse_payload(payload,fixture,roster)
 assert match and match['status']=='live',(match,msg)
 assert match['players']['AUS-0']=={'points':0,'played':True}
 assert match['players']['NZL-dnp']=={'points':0,'played':False}
-assert len(match['players'])==36
+assert len(match['players'])==38
 html_source='<div q-data="'+html.escape(json.dumps(payload),quote=True)+'"></div>'
 parsed,msg=parse_embedded(html_source,fixture,roster)
-assert parsed and len(parsed['players'])==36,msg
+assert parsed and len(parsed['players'])==38,msg
 payload['match']['matchState']='NotStarted'
 assert parse_payload(payload,fixture,roster)[0] is None
 payload['match']['matchState']='inprogress'
@@ -37,7 +37,13 @@ print('PASS source identities, live points, DNP, incomplete-final rejection, rev
 
 # Verify current 19-per-side international match format and diagnostics.
 from test_aus_fiji_final import (test_full_final,test_partial_final_rejected,
-                                 test_wrong_match_rejected,test_live_not_final)
-for fn in (test_full_final,test_partial_final_rejected,test_wrong_match_rejected,test_live_not_final):
+                                 test_wrong_match_rejected,test_live_not_final,
+                                 test_actual_aus16_fij17_complete_with_six_fiji_market_players,
+                                 test_reject_missing_named_bench_row_even_with_sixteen_appearances,
+                                 test_reject_uncertain_dnp_and_missing_played_points)
+for fn in (test_full_final,test_partial_final_rejected,test_wrong_match_rejected,test_live_not_final,
+                                 test_actual_aus16_fij17_complete_with_six_fiji_market_players,
+                                 test_reject_missing_named_bench_row_even_with_sixteen_appearances,
+                                 test_reject_uncertain_dnp_and_missing_played_points):
     fn()
 print('PASS 38-row international final, strict coverage, identity checks and diagnostic')
