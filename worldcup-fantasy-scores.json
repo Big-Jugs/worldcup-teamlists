@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-25T15:01:38+00:00",
+  "updatedAt": "2026-10-29T00:38:02+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -885,7 +885,7 @@
           "home": "PNG",
           "away": "SAM",
           "status": "final",
-          "updatedAt": "2026-10-24T08:33:31+00:00",
+          "updatedAt": "2026-10-29T00:38:03+00:00",
           "players": {
             "p164": {
               "points": 13,
@@ -975,17 +975,17 @@
               "points": 63,
               "played": true
             },
-            "p190": {
-              "points": 0,
-              "played": false
+            "p207": {
+              "points": 17,
+              "played": true
             },
             "p188": {
               "points": 0,
               "played": false
             },
-            "p207": {
-              "points": 17,
-              "played": true
+            "p190": {
+              "points": 0,
+              "played": false
             }
           },
           "coverage": {
@@ -1035,6 +1035,7 @@
             "complete": true,
             "home_code": "PNG",
             "away_code": "SAM",
+            "short_bench_exception": "PNG-SAM-R2-PNG-18",
             "official_teams": true
           }
         },
@@ -1330,47 +1331,47 @@
         "AUS-FIJ": {
           "home": "AUS",
           "away": "FIJ",
-          "status": "live",
-          "updatedAt": "2026-10-25T10:36:47+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-29T00:38:05+00:00",
           "players": {
             "p19": {
-              "points": 65,
+              "points": 59,
               "played": true
             },
             "p2": {
-              "points": 24,
-              "played": true
-            },
-            "p18": {
-              "points": 37,
-              "played": true
-            },
-            "p1": {
               "points": 31,
               "played": true
             },
+            "p18": {
+              "points": 40,
+              "played": true
+            },
+            "p1": {
+              "points": 41,
+              "played": true
+            },
             "p20": {
-              "points": 74,
+              "points": 79,
               "played": true
             },
             "p6": {
-              "points": 22,
+              "points": 31,
               "played": true
             },
             "p21": {
-              "points": 36,
+              "points": 44,
               "played": true
             },
             "p10": {
-              "points": 21,
-              "played": true
-            },
-            "p3": {
               "points": 28,
               "played": true
             },
+            "p3": {
+              "points": 38,
+              "played": true
+            },
             "p17": {
-              "points": 23,
+              "points": 39,
               "played": true
             },
             "p8": {
@@ -1378,7 +1379,7 @@
               "played": true
             },
             "p5": {
-              "points": 45,
+              "points": 49,
               "played": true
             },
             "p15": {
@@ -1390,11 +1391,11 @@
               "played": true
             },
             "p16": {
-              "points": 29,
+              "points": 61,
               "played": true
             },
             "p4": {
-              "points": 39,
+              "points": 45,
               "played": true
             },
             "p14": {
@@ -1414,7 +1415,7 @@
               "played": true
             },
             "p72": {
-              "points": 26,
+              "points": 38,
               "played": true
             },
             "p87": {
@@ -1422,15 +1423,15 @@
               "played": true
             },
             "p76": {
-              "points": 14,
+              "points": 25,
               "played": true
             },
             "p81": {
-              "points": 46,
+              "points": 54,
               "played": true
             },
             "p74": {
-              "points": 29,
+              "points": 33,
               "played": true
             }
           },
@@ -1478,9 +1479,10 @@
                 "p89"
               ]
             },
-            "complete": false,
+            "complete": true,
             "home_code": "AUS",
-            "away_code": "FIJ"
+            "away_code": "FIJ",
+            "official_teams": true
           }
         }
       }
