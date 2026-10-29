@@ -91,6 +91,9 @@ def rpc(url, token, name, payload=None, opener=urlopen):
         ) from err
 
 
+PNG_SAM_SHORT_BENCH_PROOF = 'PNG-SAM-R2-PNG-18'
+
+
 def validate_feed(data):
     if not isinstance(data, dict) or data.get('schema') != 1:
         raise PublishError('Unexpected score feed schema; refusing to publish')
@@ -114,9 +117,21 @@ def validate_feed(data):
                     raise PublishError('Final fixture missing complete official player coverage')
                 if cover.get('home_code') != match.get('home') or cover.get('away_code') != match.get('away'):
                     raise PublishError('Official player coverage fixture nations mismatch')
+                short_proof = (rn == '2' and mid == 'PNG-SAM'
+                               and match.get('home') == 'PNG' and match.get('away') == 'SAM'
+                               and cover.get('short_bench_exception') == PNG_SAM_SHORT_BENCH_PROOF
+                               and isinstance(cover.get('home'), dict)
+                               and cover['home'].get('rows') == 18
+                               and cover['home'].get('appeared') == 17)
+                # A short-bench attestation is never valid on other fixtures,
+                # or after the official feed expands to 19 named PNG rows.
+                if cover.get('short_bench_exception') is not None and not short_proof:
+                    raise PublishError('Unrecognised official short-bench exception')
                 for side in ('home','away'):
                     c = cover.get(side)
-                    if (not isinstance(c, dict) or not isinstance(c.get('rows'), int) or c['rows'] < 19
+                    allowed_short = side == 'home' and short_proof
+                    if (not isinstance(c, dict) or not isinstance(c.get('rows'), int)
+                        or (c['rows'] < 19 and not allowed_short)
                         or not isinstance(c.get('identified'), int) or c['identified'] != c['rows']
                         or not isinstance(c.get('appeared'), int) or not 13 <= c['appeared'] <= c['rows']
                         or c.get('unresolved') != 0 or c.get('fantasy_appearances') != c['appeared']):
