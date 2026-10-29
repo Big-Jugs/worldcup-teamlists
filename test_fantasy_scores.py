@@ -47,3 +47,17 @@ for fn in (test_full_final,test_partial_final_rejected,test_wrong_match_rejected
                                  test_reject_uncertain_dnp_and_missing_played_points):
     fn()
 print('PASS 38-row international final, strict coverage, identity checks and diagnostic')
+
+# Explicitly run new PNG-SAM 18-person official short-bench tests in standard workflow.
+from test_png_sam_short_bench import (
+    test_verified_png_18_samoa_19_accepted,
+    test_other_matches_cannot_use_short_bench_exception,
+    test_incomplete_png_table_rejected,
+    test_publisher_rejects_coverage_tampering,
+)
+for fn in (test_verified_png_18_samoa_19_accepted,
+           test_other_matches_cannot_use_short_bench_exception,
+           test_incomplete_png_table_rejected,
+           test_publisher_rejects_coverage_tampering):
+    fn()
+    print("PASS short-bench regression:",fn.__name__)
