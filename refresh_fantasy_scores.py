@@ -232,22 +232,45 @@ def official_side_coverage(rows,side,lookup_name,lookup_id,id_to_name):
             'eligible_score_ids':sorted(eligible_score_ids)}
 
 
-def official_match_coverage(stats,participants,by_name,by_id,id_to_name):
+# This is a single verified exception, NOT a general relaxation of final proofs.
+# NRL.com's 24 October 2026 PNG-Samoa report says PNG had only FIVE
+# available bench players: 13 starters + 5 bench = 18 named players.
+# Source: https://www.nrl.com/news/2026/10/20/world-cup-team-lists-mens-round-2/
+# NRL match centre lists 18 PNG names, 17 appearances, 1 verified bench DNP.
+PNG_SAM_SHORT_BENCH_PROOF = 'PNG-SAM-R2-PNG-18'
+
+
+def png_sam_short_bench_fixture(fixture, participants):
+    return (isinstance(fixture, dict) and fixture.get('id') == 'PNG-SAM'
+            and str(fixture.get('round')) == '2'
+            and fixture.get('home') == participants['home'] == 'PNG'
+            and fixture.get('away') == participants['away'] == 'SAM')
+
+
+def official_match_coverage(stats,participants,by_name,by_id,id_to_name,fixture=None):
     if not isinstance(stats,dict) or not all(isinstance(stats.get(side),list) for side in ('homeTeam','awayTeam')):
         return None
     h=official_side_coverage(stats['homeTeam'],participants['home'],by_name,by_id,id_to_name)
     a=official_side_coverage(stats['awayTeam'],participants['away'],by_name,by_id,id_to_name)
-    # NRL names 19 players (13 starters plus six interchange/reserves), but
-    # does not require 17 of them actually to enter the match. A confirmed
-    # zero-minute DNP is legitimate. Require all 19 official identities and
-    # an unambiguous played/DNP result for every row, while verifying fantasy
-    # points for every player who did take the field.
-    complete=all(x['rows']>=19 and x['identified']==x['rows']
-                 and 13<=x['appeared']<=x['rows']
-                 and x['fantasy_appearances']==x['appeared']
-                 and x['unresolved']==0 for x in (h,a))
-    return {'home':h,'away':a,'complete':complete,
+    # Normally NRL names 19 players per side. PNG officially had only five
+    # bench players against Samoa on 24 Oct, so its complete final contains
+    # 18 named/identified players and 17 actual scored appearances.
+    # The exception is restricted to THIS fixture, round and side and cannot
+    # legitimise an 18-row table for any other match.
+    png_short=(png_sam_short_bench_fixture(fixture,participants)
+               and h['rows']==18 and h['identified']==18 and h['appeared']==17)
+    complete=(all(x['identified']==x['rows']
+                  and 13<=x['appeared']<=x['rows']
+                  and x['fantasy_appearances']==x['appeared']
+                  and x['unresolved']==0 for x in (h,a))
+              and (h['rows']>=19 or png_short)
+              and a['rows']>=19)
+    result={'home':h,'away':a,'complete':complete,
             'home_code':participants['home'],'away_code':participants['away']}
+    # Trusted publisher + Supabase independently validate this exact marker.
+    if png_short and complete:
+        result['short_bench_exception']=PNG_SAM_SHORT_BENCH_PROOF
+    return result
 
 
 
@@ -382,7 +405,7 @@ def parse_payload(payload, fixture, roster, *, probe=False):
                 saw_status+=1
                 found.update(scored_rows(stats['homeTeam'], participants['home'], by_name, by_id, id_to_name))
                 found.update(scored_rows(stats['awayTeam'], participants['away'], by_name, by_id, id_to_name))
-                candidates.append((state,found,participants,official_match_coverage(stats,participants,by_name,by_id,id_to_name)))
+                candidates.append((state,found,participants,official_match_coverage(stats,participants,by_name,by_id,id_to_name,fixture)))
             elif isinstance(stats,list):
                 if not any(fantasy_of(row) is not None for row in stats):continue
                 saw_stats+=1
@@ -401,7 +424,7 @@ def parse_payload(payload, fixture, roster, *, probe=False):
     state,scores,participants,coverage=candidates[0]
     if state=='final' and not probe:
         if not (coverage and coverage['complete']):
-            return None,'Final match player table incomplete: need >=19 named rows, >=13 verified appearances and unambiguous fantasy/DNP evidence per side'
+            return None,'Final match player table incomplete: need >=19 named per side (except verified PNG-SAM R2 short bench), >=13 appearances and unambiguous fantasy/DNP evidence'
         # Source must identify the CURRENT fixture's two nations explicitly.
         # Without this, a stale/historical game could be attributed to 2026.
         official=None
@@ -455,7 +478,7 @@ def safe_match_evidence(payload, fixture, roster):
             participant=resolved_fixture(match,fixture)
             if participant:
                 names, ids, _ = roster_lookups(roster,participant)
-                cov=official_match_coverage(chosen,participant,names,ids,root_names)
+                cov=official_match_coverage(chosen,participant,names,ids,root_names,fixture)
                 if cov:
                     note+='; '.join(
                         f'{side}: rows={cov[k]["rows"]} identified={cov[k]["identified"]} '
