@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-29T09:57:20+00:00",
+  "updatedAt": "2026-10-30T09:00:03+00:00",
   "rounds": {
     "1": {
       "p1": "interchange",
@@ -289,8 +289,8 @@
     "3": {
       "p47": "starting",
       "p48": "starting",
-      "p49": "interchange",
-      "p50": "omitted",
+      "p49": "omitted",
+      "p50": "interchange",
       "p51": "starting",
       "p52": "interchange",
       "p53": "starting",
@@ -298,16 +298,16 @@
       "p55": "interchange",
       "p56": "starting",
       "p57": "starting",
-      "p58": "omitted",
+      "p58": "interchange",
       "p59": "starting",
-      "p60": "interchange",
+      "p60": "omitted",
       "p61": "starting",
       "p62": "starting",
       "p63": "omitted",
       "p64": "starting",
       "p65": "interchange",
       "p66": "omitted",
-      "p67": "interchange",
+      "p67": "omitted",
       "p68": "starting",
       "p69": "omitted",
       "p163": "omitted",
