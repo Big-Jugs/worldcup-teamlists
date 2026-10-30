@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-29T00:38:02+00:00",
+  "updatedAt": "2026-10-30T09:33:08+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1483,6 +1483,151 @@
             "home_code": "AUS",
             "away_code": "FIJ",
             "official_teams": true
+          }
+        }
+      }
+    },
+    "3": {
+      "matches": {
+        "ENG-PNG": {
+          "home": "ENG",
+          "away": "PNG",
+          "status": "live",
+          "updatedAt": "2026-10-30T09:33:39+00:00",
+          "players": {
+            "p48": {
+              "points": 21,
+              "played": true
+            },
+            "p61": {
+              "points": 19,
+              "played": true
+            },
+            "p51": {
+              "points": 17,
+              "played": true
+            },
+            "p47": {
+              "points": 12,
+              "played": true
+            },
+            "p68": {
+              "points": 14,
+              "played": true
+            },
+            "p62": {
+              "points": 23,
+              "played": true
+            },
+            "p53": {
+              "points": 17,
+              "played": true
+            },
+            "p56": {
+              "points": 10,
+              "played": true
+            },
+            "p64": {
+              "points": 4,
+              "played": true
+            },
+            "p57": {
+              "points": 18,
+              "played": true
+            },
+            "p59": {
+              "points": 24,
+              "played": true
+            },
+            "p54": {
+              "points": 12,
+              "played": true
+            },
+            "p55": {
+              "points": 0,
+              "played": false
+            },
+            "p65": {
+              "points": 0,
+              "played": false
+            },
+            "p52": {
+              "points": 0,
+              "played": false
+            },
+            "p58": {
+              "points": 0,
+              "played": false
+            },
+            "p50": {
+              "points": 0,
+              "played": false
+            },
+            "p172": {
+              "points": 3,
+              "played": true
+            },
+            "p164": {
+              "points": 2,
+              "played": true
+            },
+            "p177": {
+              "points": 15,
+              "played": true
+            },
+            "p174": {
+              "points": 9,
+              "played": true
+            },
+            "p168": {
+              "points": 14,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p47",
+                "p48",
+                "p50",
+                "p51",
+                "p52",
+                "p53",
+                "p54",
+                "p55",
+                "p56",
+                "p57",
+                "p58",
+                "p59",
+                "p61",
+                "p62",
+                "p64",
+                "p65",
+                "p68"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 16,
+              "fantasy_appearances": 16,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p164",
+                "p168",
+                "p172",
+                "p174",
+                "p177"
+              ]
+            },
+            "complete": true,
+            "home_code": "ENG",
+            "away_code": "PNG"
           }
         }
       }
