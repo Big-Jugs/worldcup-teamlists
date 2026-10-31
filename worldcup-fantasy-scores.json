@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-30T13:27:19+00:00",
+  "updatedAt": "2026-10-31T05:07:16+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1629,6 +1629,162 @@
             "home_code": "ENG",
             "away_code": "PNG",
             "official_teams": true
+          }
+        },
+        "NZL-FIJ": {
+          "home": "NZL",
+          "away": "FIJ",
+          "status": "live",
+          "updatedAt": "2026-10-31T05:07:19+00:00",
+          "players": {
+            "p144": {
+              "points": 32,
+              "played": true
+            },
+            "p143": {
+              "points": 13,
+              "played": true
+            },
+            "p141": {
+              "points": 31,
+              "played": true
+            },
+            "p149": {
+              "points": 42,
+              "played": true
+            },
+            "p150": {
+              "points": 20,
+              "played": true
+            },
+            "p153": {
+              "points": 20,
+              "played": true
+            },
+            "p142": {
+              "points": 29,
+              "played": true
+            },
+            "p140": {
+              "points": 23,
+              "played": true
+            },
+            "p147": {
+              "points": 14,
+              "played": true
+            },
+            "p146": {
+              "points": 12,
+              "played": true
+            },
+            "p154": {
+              "points": 21,
+              "played": true
+            },
+            "p152": {
+              "points": 14,
+              "played": true
+            },
+            "p158": {
+              "points": 23,
+              "played": true
+            },
+            "p148": {
+              "points": 0,
+              "played": false
+            },
+            "p160": {
+              "points": 15,
+              "played": true
+            },
+            "p139": {
+              "points": 3,
+              "played": true
+            },
+            "p161": {
+              "points": 3,
+              "played": true
+            },
+            "p151": {
+              "points": 0,
+              "played": false
+            },
+            "p156": {
+              "points": 0,
+              "played": false
+            },
+            "p89": {
+              "points": 4,
+              "played": true
+            },
+            "p72": {
+              "points": 7,
+              "played": true
+            },
+            "p87": {
+              "points": 20,
+              "played": true
+            },
+            "p76": {
+              "points": 1,
+              "played": true
+            },
+            "p81": {
+              "points": 5,
+              "played": true
+            },
+            "p74": {
+              "points": 9,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 16,
+              "fantasy_appearances": 16,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p139",
+                "p140",
+                "p141",
+                "p142",
+                "p143",
+                "p144",
+                "p146",
+                "p147",
+                "p148",
+                "p149",
+                "p150",
+                "p151",
+                "p152",
+                "p153",
+                "p154",
+                "p156",
+                "p158",
+                "p160",
+                "p161"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 15,
+              "fantasy_appearances": 15,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p72",
+                "p74",
+                "p76",
+                "p81",
+                "p87",
+                "p89"
+              ]
+            },
+            "complete": true,
+            "home_code": "NZL",
+            "away_code": "FIJ"
           }
         }
       }
