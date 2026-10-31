@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-31T06:22:27+00:00",
+  "updatedAt": "2026-10-31T07:24:48+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1634,23 +1634,23 @@
         "NZL-FIJ": {
           "home": "NZL",
           "away": "FIJ",
-          "status": "live",
-          "updatedAt": "2026-10-31T06:22:29+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-31T07:25:53+00:00",
           "players": {
             "p144": {
-              "points": 55,
+              "points": 72,
               "played": true
             },
             "p143": {
-              "points": 42,
+              "points": 44,
               "played": true
             },
             "p141": {
-              "points": 48,
+              "points": 50,
               "played": true
             },
             "p149": {
-              "points": 89,
+              "points": 91,
               "played": true
             },
             "p150": {
@@ -1658,7 +1658,7 @@
               "played": true
             },
             "p153": {
-              "points": 31,
+              "points": 38,
               "played": true
             },
             "p142": {
@@ -1674,7 +1674,7 @@
               "played": true
             },
             "p146": {
-              "points": 35,
+              "points": 36,
               "played": true
             },
             "p154": {
@@ -1690,7 +1690,7 @@
               "played": true
             },
             "p148": {
-              "points": 21,
+              "points": 22,
               "played": true
             },
             "p160": {
@@ -1698,11 +1698,11 @@
               "played": true
             },
             "p139": {
-              "points": 47,
+              "points": 49,
               "played": true
             },
             "p161": {
-              "points": 49,
+              "points": 54,
               "played": true
             },
             "p151": {
@@ -1714,11 +1714,11 @@
               "played": false
             },
             "p89": {
-              "points": 3,
+              "points": 4,
               "played": true
             },
             "p72": {
-              "points": 22,
+              "points": 24,
               "played": true
             },
             "p87": {
@@ -1730,11 +1730,11 @@
               "played": true
             },
             "p81": {
-              "points": 33,
+              "points": 34,
               "played": true
             },
             "p74": {
-              "points": 23,
+              "points": 25,
               "played": true
             }
           },
@@ -1784,7 +1784,8 @@
             },
             "complete": true,
             "home_code": "NZL",
-            "away_code": "FIJ"
+            "away_code": "FIJ",
+            "official_teams": true
           }
         }
       }
