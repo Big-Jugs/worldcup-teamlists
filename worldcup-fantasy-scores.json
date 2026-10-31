@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-31T11:13:17+00:00",
+  "updatedAt": "2026-10-31T13:13:51+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1792,26 +1792,26 @@
           "home": "AUS",
           "away": "COK",
           "status": "final",
-          "updatedAt": "2026-10-31T11:13:23+00:00",
+          "updatedAt": "2026-10-31T13:13:55+00:00",
           "players": {
             "p22": {
-              "points": 70,
+              "points": 69,
               "played": true
             },
             "p2": {
-              "points": 64,
+              "points": 63,
               "played": true
             },
             "p18": {
-              "points": 32,
+              "points": 28,
               "played": true
             },
             "p1": {
-              "points": 40,
+              "points": 42,
               "played": true
             },
             "p20": {
-              "points": 66,
+              "points": 62,
               "played": true
             },
             "p14": {
@@ -1819,7 +1819,7 @@
               "played": true
             },
             "p6": {
-              "points": 58,
+              "points": 59,
               "played": true
             },
             "p4": {
@@ -1831,28 +1831,32 @@
               "played": true
             },
             "p7": {
-              "points": 85,
+              "points": 83,
               "played": true
             },
             "p16": {
-              "points": 76,
+              "points": 80,
               "played": true
             },
             "p11": {
-              "points": 27,
+              "points": 25,
               "played": true
             },
             "p23": {
-              "points": 23,
+              "points": 24,
               "played": true
             },
             "p10": {
-              "points": 42,
+              "points": 38,
               "played": true
             },
             "p5": {
               "points": 22,
               "played": true
+            },
+            "p8": {
+              "points": 0,
+              "played": false
             },
             "p17": {
               "points": 4,
@@ -1862,16 +1866,12 @@
               "points": 0,
               "played": false
             },
-            "p8": {
-              "points": 0,
-              "played": false
-            },
             "p27": {
-              "points": 34,
+              "points": 31,
               "played": true
             },
             "p29": {
-              "points": 17,
+              "points": 18,
               "played": true
             },
             "p34": {
