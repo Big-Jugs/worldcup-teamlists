@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-31T08:55:16+00:00",
+  "updatedAt": "2026-10-31T09:28:10+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1786,6 +1786,147 @@
             "home_code": "NZL",
             "away_code": "FIJ",
             "official_teams": true
+          }
+        },
+        "AUS-COK": {
+          "home": "AUS",
+          "away": "COK",
+          "status": "live",
+          "updatedAt": "2026-10-31T09:28:21+00:00",
+          "players": {
+            "p22": {
+              "points": 13,
+              "played": true
+            },
+            "p2": {
+              "points": 22,
+              "played": true
+            },
+            "p18": {
+              "points": 6,
+              "played": true
+            },
+            "p1": {
+              "points": 13,
+              "played": true
+            },
+            "p20": {
+              "points": 12,
+              "played": true
+            },
+            "p14": {
+              "points": 7,
+              "played": true
+            },
+            "p6": {
+              "points": 17,
+              "played": true
+            },
+            "p4": {
+              "points": 8,
+              "played": true
+            },
+            "p9": {
+              "points": 19,
+              "played": true
+            },
+            "p7": {
+              "points": 20,
+              "played": true
+            },
+            "p16": {
+              "points": 11,
+              "played": true
+            },
+            "p11": {
+              "points": 12,
+              "played": true
+            },
+            "p23": {
+              "points": 13,
+              "played": true
+            },
+            "p10": {
+              "points": 0,
+              "played": false
+            },
+            "p5": {
+              "points": 0,
+              "played": false
+            },
+            "p17": {
+              "points": 0,
+              "played": false
+            },
+            "p19": {
+              "points": 0,
+              "played": false
+            },
+            "p8": {
+              "points": 0,
+              "played": false
+            },
+            "p27": {
+              "points": 9,
+              "played": true
+            },
+            "p29": {
+              "points": -1,
+              "played": true
+            },
+            "p34": {
+              "points": 7,
+              "played": true
+            },
+            "p42": {
+              "points": 20,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p1",
+                "p10",
+                "p11",
+                "p14",
+                "p16",
+                "p17",
+                "p18",
+                "p19",
+                "p2",
+                "p20",
+                "p22",
+                "p23",
+                "p4",
+                "p5",
+                "p6",
+                "p7",
+                "p8",
+                "p9"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 13,
+              "fantasy_appearances": 13,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p27",
+                "p29",
+                "p34",
+                "p42"
+              ]
+            },
+            "complete": true,
+            "home_code": "AUS",
+            "away_code": "COK"
           }
         }
       }
