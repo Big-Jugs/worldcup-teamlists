@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-31T07:24:48+00:00",
+  "updatedAt": "2026-10-31T08:55:16+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1635,14 +1635,14 @@
           "home": "NZL",
           "away": "FIJ",
           "status": "final",
-          "updatedAt": "2026-10-31T07:25:53+00:00",
+          "updatedAt": "2026-10-31T08:55:53+00:00",
           "players": {
             "p144": {
-              "points": 72,
+              "points": 74,
               "played": true
             },
             "p143": {
-              "points": 44,
+              "points": 43,
               "played": true
             },
             "p141": {
@@ -1650,11 +1650,11 @@
               "played": true
             },
             "p149": {
-              "points": 91,
+              "points": 90,
               "played": true
             },
             "p150": {
-              "points": 12,
+              "points": 11,
               "played": true
             },
             "p153": {
@@ -1662,7 +1662,7 @@
               "played": true
             },
             "p142": {
-              "points": 48,
+              "points": 50,
               "played": true
             },
             "p140": {
@@ -1674,11 +1674,11 @@
               "played": true
             },
             "p146": {
-              "points": 36,
+              "points": 37,
               "played": true
             },
             "p154": {
-              "points": 49,
+              "points": 48,
               "played": true
             },
             "p152": {
@@ -1694,7 +1694,7 @@
               "played": true
             },
             "p160": {
-              "points": 46,
+              "points": 47,
               "played": true
             },
             "p139": {
@@ -1702,7 +1702,7 @@
               "played": true
             },
             "p161": {
-              "points": 54,
+              "points": 55,
               "played": true
             },
             "p151": {
@@ -1714,7 +1714,7 @@
               "played": false
             },
             "p89": {
-              "points": 4,
+              "points": 2,
               "played": true
             },
             "p72": {
@@ -1722,7 +1722,7 @@
               "played": true
             },
             "p87": {
-              "points": 39,
+              "points": 42,
               "played": true
             },
             "p76": {
@@ -1730,11 +1730,11 @@
               "played": true
             },
             "p81": {
-              "points": 34,
+              "points": 35,
               "played": true
             },
             "p74": {
-              "points": 25,
+              "points": 27,
               "played": true
             }
           },
