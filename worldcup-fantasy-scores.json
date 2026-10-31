@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-31T10:39:56+00:00",
+  "updatedAt": "2026-10-31T11:13:17+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1791,55 +1791,55 @@
         "AUS-COK": {
           "home": "AUS",
           "away": "COK",
-          "status": "live",
-          "updatedAt": "2026-10-31T10:40:07+00:00",
+          "status": "final",
+          "updatedAt": "2026-10-31T11:13:23+00:00",
           "players": {
             "p22": {
-              "points": 61,
+              "points": 70,
               "played": true
             },
             "p2": {
-              "points": 61,
+              "points": 64,
               "played": true
             },
             "p18": {
-              "points": 27,
+              "points": 32,
               "played": true
             },
             "p1": {
-              "points": 37,
+              "points": 40,
               "played": true
             },
             "p20": {
-              "points": 61,
+              "points": 66,
               "played": true
             },
             "p14": {
-              "points": 52,
+              "points": 61,
               "played": true
             },
             "p6": {
-              "points": 46,
+              "points": 58,
               "played": true
             },
             "p4": {
-              "points": 15,
+              "points": 21,
               "played": true
             },
             "p9": {
-              "points": 39,
+              "points": 55,
               "played": true
             },
             "p7": {
-              "points": 70,
+              "points": 85,
               "played": true
             },
             "p16": {
-              "points": 70,
+              "points": 76,
               "played": true
             },
             "p11": {
-              "points": 31,
+              "points": 27,
               "played": true
             },
             "p23": {
@@ -1847,7 +1847,7 @@
               "played": true
             },
             "p10": {
-              "points": 41,
+              "points": 42,
               "played": true
             },
             "p5": {
@@ -1855,8 +1855,8 @@
               "played": true
             },
             "p17": {
-              "points": 0,
-              "played": false
+              "points": 4,
+              "played": true
             },
             "p19": {
               "points": 0,
@@ -1867,19 +1867,19 @@
               "played": false
             },
             "p27": {
-              "points": 21,
+              "points": 34,
               "played": true
             },
             "p29": {
-              "points": 9,
+              "points": 17,
               "played": true
             },
             "p34": {
-              "points": 9,
+              "points": 20,
               "played": true
             },
             "p42": {
-              "points": 42,
+              "points": 53,
               "played": true
             }
           },
@@ -1887,8 +1887,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 16,
-              "fantasy_appearances": 16,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p1",
@@ -1926,7 +1926,8 @@
             },
             "complete": true,
             "home_code": "AUS",
-            "away_code": "COK"
+            "away_code": "COK",
+            "official_teams": true
           }
         }
       }
