@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-11-01T06:18:39+00:00",
+  "updatedAt": "2026-11-01T07:25:13+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1928,6 +1928,87 @@
             "home_code": "AUS",
             "away_code": "COK",
             "official_teams": true
+          }
+        },
+        "LEB-FRA": {
+          "home": "LEB",
+          "away": "FRA",
+          "status": "live",
+          "updatedAt": "2026-11-01T07:27:24+00:00",
+          "players": {
+            "p122": {
+              "points": 10,
+              "played": true
+            },
+            "p131": {
+              "points": 9,
+              "played": true
+            },
+            "p127": {
+              "points": 8,
+              "played": true
+            },
+            "p125": {
+              "points": 5,
+              "played": true
+            },
+            "p118": {
+              "points": 30,
+              "played": true
+            },
+            "p109": {
+              "points": 16,
+              "played": true
+            },
+            "p96": {
+              "points": 18,
+              "played": true
+            },
+            "p98": {
+              "points": 24,
+              "played": true
+            },
+            "p95": {
+              "points": 27,
+              "played": true
+            },
+            "p105": {
+              "points": 21,
+              "played": true
+            }
+          },
+          "coverage": {
+            "home": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 16,
+              "fantasy_appearances": 16,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p118",
+                "p122",
+                "p125",
+                "p127",
+                "p131"
+              ]
+            },
+            "away": {
+              "rows": 19,
+              "identified": 19,
+              "appeared": 16,
+              "fantasy_appearances": 16,
+              "unresolved": 0,
+              "eligible_score_ids": [
+                "p105",
+                "p109",
+                "p95",
+                "p96",
+                "p98"
+              ]
+            },
+            "complete": true,
+            "home_code": "LEB",
+            "away_code": "FRA"
           }
         }
       }
