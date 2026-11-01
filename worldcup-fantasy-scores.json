@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-10-31T13:13:51+00:00",
+  "updatedAt": "2026-11-01T06:18:39+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1792,14 +1792,14 @@
           "home": "AUS",
           "away": "COK",
           "status": "final",
-          "updatedAt": "2026-10-31T13:13:55+00:00",
+          "updatedAt": "2026-11-01T06:18:44+00:00",
           "players": {
             "p22": {
               "points": 69,
               "played": true
             },
             "p2": {
-              "points": 63,
+              "points": 62,
               "played": true
             },
             "p18": {
@@ -1807,7 +1807,7 @@
               "played": true
             },
             "p1": {
-              "points": 42,
+              "points": 41,
               "played": true
             },
             "p20": {
@@ -1851,7 +1851,7 @@
               "played": true
             },
             "p5": {
-              "points": 22,
+              "points": 21,
               "played": true
             },
             "p8": {
@@ -1867,7 +1867,7 @@
               "played": false
             },
             "p27": {
-              "points": 31,
+              "points": 30,
               "played": true
             },
             "p29": {
