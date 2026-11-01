@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-11-01T08:14:51+00:00",
+  "updatedAt": "2026-11-01T08:59:07+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -1933,35 +1933,35 @@
         "LEB-FRA": {
           "home": "LEB",
           "away": "FRA",
-          "status": "live",
-          "updatedAt": "2026-11-01T08:14:56+00:00",
+          "status": "final",
+          "updatedAt": "2026-11-01T08:59:10+00:00",
           "players": {
             "p122": {
-              "points": 33,
+              "points": 43,
               "played": true
             },
             "p131": {
-              "points": 20,
+              "points": 24,
               "played": true
             },
             "p127": {
-              "points": 14,
+              "points": 21,
               "played": true
             },
             "p125": {
-              "points": 9,
+              "points": 12,
               "played": true
             },
             "p118": {
-              "points": 47,
+              "points": 43,
               "played": true
             },
             "p109": {
-              "points": 27,
+              "points": 43,
               "played": true
             },
             "p96": {
-              "points": 25,
+              "points": 34,
               "played": true
             },
             "p98": {
@@ -1969,11 +1969,11 @@
               "played": true
             },
             "p95": {
-              "points": 38,
+              "points": 36,
               "played": true
             },
             "p105": {
-              "points": 46,
+              "points": 59,
               "played": true
             }
           },
@@ -1981,8 +1981,8 @@
             "home": {
               "rows": 19,
               "identified": 19,
-              "appeared": 16,
-              "fantasy_appearances": 16,
+              "appeared": 17,
+              "fantasy_appearances": 17,
               "unresolved": 0,
               "eligible_score_ids": [
                 "p118",
@@ -2008,7 +2008,8 @@
             },
             "complete": true,
             "home_code": "LEB",
-            "away_code": "FRA"
+            "away_code": "FRA",
+            "official_teams": true
           }
         }
       }
