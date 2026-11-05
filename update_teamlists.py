@@ -128,21 +128,24 @@ def get_official_source(url: str, session=None, expected_nations=10, render=None
     is a last resort; its freshness cannot be independently guaranteed.
     """
     sess = session or requests.Session()
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
-                      '(KHTML, like Gecko) Chrome/131.0 Safari/537.36',
-        'Accept': 'text/html,text/plain;q=0.9,*/*;q=0.7',
-    }
+    # Match the lightweight request that returned the full NRL article in
+    # the GitHub-runner diagnostic (147 KB rather than the 883-byte shell).
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
     def fetch_checked(method, address):
         try:
             r = sess.get(address, timeout=TIMEOUT, headers=headers)
             r.raise_for_status()
             source = r.text if len(r.content) > 300 else ''
-            complete = complete_matchday(parse_teams(source)) if source else {}
+            parsed = parse_teams(source) if source else {}
+            complete = complete_matchday(parsed)
+            card_count = len(BeautifulSoup(source, 'html.parser').select('.team-list-profile__name')) if source else 0
+            partial_counts = {code: (len(groups['start']), len(groups['bench']), len(groups['other']))
+                              for code, groups in sorted(parsed.items())}
             print(f'Source check {method} R{round_for_url(url) or "?"}: '
                   f'{len(complete)} complete nations, HTTP {r.status_code}, '
-                  f'{len(r.content)} bytes')
+                  f'{len(r.content)} bytes; HTML team cards={card_count}; '
+                  f'parsed start/bench/reserve={partial_counts}')
             return source, len(complete)
         except Exception as e:
             print(f'WARN {method} fetch {url}: {e}', file=sys.stderr)
@@ -186,7 +189,7 @@ def render_nrl_browser(url: str) -> str:
             page.goto(url,wait_until='domcontentloaded',timeout=30000)
             try:
                 page.wait_for_function("""() => {
-                  const marked = document.querySelector('[alt*=" for "][alt*=" is number "], [aria-label*=" for "][aria-label*=" is number "]');
+                  const marked = document.querySelector('.team-list-profile__name, [alt*=" for "][alt*=" is number "], [aria-label*=" for "][aria-label*=" is number "]');
                   return !!marked || /(?:Fullback|Winger|Centre|Prop|Hooker) for (?:Tonga|Australia|France|England|Samoa|Lebanon|Fiji|New Zealand|Papua New Guinea|Cook Islands) is number/i.test(document.body?.innerText || '');
                 }""",timeout=13000)
             except Exception:
@@ -200,7 +203,17 @@ def visible_lines(source: str) -> list[str]:
     soup = BeautifulSoup(source, 'html.parser')
     # NRL team cards expose meaningful descriptions in alt/aria-label attributes.
     for script in soup(['script','style']): script.decompose()
-    labels = [node.get('alt') or node.get('aria-label') for node in soup.find_all(attrs={'alt':True})]
+    # Official NRL article cards split the accessibility line (e.g.
+    # 'Fullback for New Zealand is number 1') and the player's first/surname
+    # across nested spans. Reading separate text lines loses the relationship.
+    # Read the ENTIRE card first. This covers both server-rendered pages and
+    # the browser-rendered version, without relaxing 13+6 verification.
+    labels = []
+    for node in soup.select('.team-list-profile__name'):
+        card_text = ' '.join(node.get_text(' ', strip=True).split())
+        if ENTRY_START_PATTERN.search(card_text):
+            labels.append(card_text)
+    labels += [node.get('alt') or node.get('aria-label') for node in soup.find_all(attrs={'alt':True})]
     labels += [node.get('aria-label') for node in soup.find_all(attrs={'aria-label':True})]
     labels += soup.get_text('\n', strip=True).splitlines()
     # Jina.ai fallback is already markdown; preserve its original lines too.
@@ -393,8 +406,9 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
                     complete.update(statuses)
                 result['rounds'][round_no] = complete
             else:
-                # Only create a round when a nation has passed
-                # the official roster verification checks.
+                # Keep earlier group rounds fail-closed too: if a page parses
+                # but no nation passes market-roster matching, do not create
+                # an empty round key (required by test_update regression).
                 if stage:
                     current = result['rounds'].setdefault(round_no, {})
                     for statuses in stage.values():
