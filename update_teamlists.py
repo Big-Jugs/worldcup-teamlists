@@ -393,10 +393,12 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
                     complete.update(statuses)
                 result['rounds'][round_no] = complete
             else:
-                # Preserve the existing group-round behaviour.
-                current = result['rounds'].setdefault(round_no, {})
-                for statuses in stage.values():
-                    current.update(statuses)
+                # Only create a round when a nation has passed
+                # the official roster verification checks.
+                if stage:
+                    current = result['rounds'].setdefault(round_no, {})
+                    for statuses in stage.values():
+                        current.update(statuses)
 
             for country, statuses in stage.items():
                 verified.append((round_no, country, len(statuses)))
