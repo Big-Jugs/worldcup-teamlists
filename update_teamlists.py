@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 import html
 import math
 import json
@@ -62,6 +63,23 @@ ENTRY_START_PATTERN = re.compile(
 URL_PATTERN = re.compile(r'https?://(?:www\.)?nrl\.com/news/2026/\d\d/\d\d/[^\s"<>\)]+', re.I)
 SLUG_PATTERN = re.compile(r'/world-cup-team-lists-(?:mens|men-s|men|mens-).*?/?$', re.I)
 TIMEOUT = 25
+# Confirmed official men's knockout article; poll THIS page again for late changes.
+KNOWN_OFFICIAL_URLS = {
+    '4': 'https://www.nrl.com/news/2026/11/03/world-cup-team-lists-mens-semi-finals/',
+}
+# Round 4 is only complete when all four named semi-final nations are verified.
+ROUND_4_NATIONS = frozenset({'NZL', 'TON', 'AUS', 'SAM'})
+
+
+def current_target_round(today: date) -> str:
+    """Restrict polling to the relevant round; don't re-fetch historic pages."""
+    for rnd, (start, _slugs) in sorted(ARTICLE_SCHEDULE.items(), key=lambda item: item[1][0], reverse=True):
+        if today >= start:
+            return rnd
+    if today >= date(2026, 10, 13):
+        return '1'
+    return '1'
+
 
 
 def normalize_name(name: str) -> str:
@@ -104,53 +122,56 @@ def download_text(url: str, session=None) -> str:
 
 
 def get_official_source(url: str, session=None, expected_nations=10, render=None) -> str:
-    """Select the *extractable* article, not the first HTTP 200 page.
+    """Prefer current official NRL HTML/Chromium over possibly cached text mirrors.
 
-    NRL may reply 200 with a JS shell or anti-bot page. Such a response has
-    hundreds of bytes but no verifiable starting 13 + interchange 6.
-    Try the normal page, a text mirror, and finally a rendered Chromium page.
-    Always return only the version with the most validated nations; return an
-    empty string if none can be verified. Fail closed in build_changes().
+    Only accept a complete official 13+6 sheet. A third-party readable mirror
+    is a last resort; its freshness cannot be independently guaranteed.
     """
     sess = session or requests.Session()
-    targets=[('direct',url),('readable','https://r.jina.ai/'+url)]
-    best_source=''
-    best_count=0
-    best_method='none'
-    for method, address in targets:
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/131.0 Safari/537.36',
+        'Accept': 'text/html,text/plain;q=0.9,*/*;q=0.7',
+    }
+
+    def fetch_checked(method, address):
         try:
-            r=sess.get(address, timeout=TIMEOUT, headers={
-                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
-                              '(KHTML, like Gecko) Chrome/131.0 Safari/537.36',
-                'Accept': 'text/html,text/plain;q=0.9,*/*;q=0.7',
-            })
+            r = sess.get(address, timeout=TIMEOUT, headers=headers)
             r.raise_for_status()
-            source=r.text if len(r.content)>300 else ''
-            verified=complete_matchday(parse_teams(source)) if source else {}
+            source = r.text if len(r.content) > 300 else ''
+            complete = complete_matchday(parse_teams(source)) if source else {}
             print(f'Source check {method} R{round_for_url(url) or "?"}: '
-                  f'{len(verified)} complete nations, HTTP {r.status_code}, '
+                  f'{len(complete)} complete nations, HTTP {r.status_code}, '
                   f'{len(r.content)} bytes')
-            if len(verified)>best_count:
-                best_source,best_count,best_method=source,len(verified),method
-            if best_count>=expected_nations:break
+            return source, len(complete)
         except Exception as e:
             print(f'WARN {method} fetch {url}: {e}', file=sys.stderr)
-    if best_count<expected_nations:
-        try:
-            rendered=render(url) if render is not None else render_nrl_browser(url)
-            verified=complete_matchday(parse_teams(rendered))
-            print(f'Source check browser R{round_for_url(url) or "?"}: '
-                  f'{len(verified)} complete nations')
-            if len(verified)>best_count:
-                best_source,best_count,best_method=rendered,len(verified),'browser'
-        except Exception as e:
-            print(f'WARN browser fetch {url}: {e}',file=sys.stderr)
-    if not best_count:
-        print(f'::warning::No verified 19-player teams in {url}. '
-              'No changes published from this source.',file=sys.stderr)
-    else:
-        print(f'Validated {best_count} complete nations from {best_method} for {url}')
-    return best_source
+            return '', 0
+
+    direct, count = fetch_checked('official HTTP', url)
+    if count >= expected_nations:
+        return direct
+
+    try:
+        rendered = render(url) if render is not None else render_nrl_browser(url)
+        complete = complete_matchday(parse_teams(rendered))
+        print(f'Source check official browser R{round_for_url(url) or "?"}: '
+              f'{len(complete)} complete nations')
+        if len(complete) >= expected_nations:
+            return rendered
+    except Exception as e:
+        print(f'WARN official browser fetch {url}: {e}', file=sys.stderr)
+
+    readable, count = fetch_checked('readable mirror (freshness not guaranteed)',
+                                    'https://r.jina.ai/' + url)
+    if count >= expected_nations:
+        print('::warning::Using readable NRL.com mirror: source may lag late official changes. '
+              'The next refresh will re-check the live official page first.')
+        return readable
+
+    print(f'::warning::Round {round_for_url(url) or "?"}: no complete official '
+          f'team list from {url}; preserving last verified feed.', file=sys.stderr)
+    return ''
 
 
 def render_nrl_browser(url: str) -> str:
@@ -265,10 +286,14 @@ def prospective_urls(round_no: str, today: date) -> list[str]:
             for d in dates for slug in slugs]
 
 
-def discover_urls(session=None, manual=None, previous=None, today=None):
+def discover_urls(session=None, manual=None, previous=None, today=None, focus_round=None):
     candidates={'1':{DEFAULT_ROUND_1}}
-    today = today or datetime.now(timezone.utc).date()
+    today = today or datetime.now(ZoneInfo('Australia/Sydney')).date()
     previous = previous or {}
+    # Always probe the known, official semi-final article, even when the NRL
+    # news homepage does not link to it. Treat it as a candidate, not proof.
+    if focus_round in KNOWN_OFFICIAL_URLS:
+        candidates.setdefault(focus_round, set()).add(KNOWN_OFFICIAL_URLS[focus_round])
     # Revisit verified source articles to detect late team-list revisions.
     for rnd, sources in previous.get('sources', {}).items():
         for item in sources:
@@ -279,7 +304,11 @@ def discover_urls(session=None, manual=None, previous=None, today=None):
         if valid_nrl_url(u):
             r=round_for_url(u)
             if r: candidates.setdefault(r,set()).add(u)
-    for url in NEWS_URLS:
+    # A known/current official article is more reliable and quicker than
+    # re-discovering a news index every five minutes. Unknown R5 URLs still
+    # get discovery until an official article is located.
+    should_discover = not focus_round or not candidates.get(focus_round)
+    for url in NEWS_URLS if should_discover else []:
         try:
             page=download_text(url,session)
         except Exception as e:
@@ -296,10 +325,12 @@ def discover_urls(session=None, manual=None, previous=None, today=None):
     # Deterministic fallback prevents a green Action with no new round merely
     # because NRL's homepage/team-list topic did not link to its published URL.
     for rnd in ARTICLE_SCHEDULE:
+        if focus_round and rnd != focus_round:
+            continue
         # No need to guess article dates when a verified/manual URL is known.
         if rnd not in candidates:
             candidates[rnd] = set(prospective_urls(rnd, today))
-    return {k: sorted(v) for k,v in candidates.items() if v}
+    return {k: sorted(v) for k,v in candidates.items() if v and (not focus_round or k == focus_round)}
 
 
 def build_changes(previous: dict, players: list, pages: dict[str,str]):
@@ -316,45 +347,85 @@ def build_changes(previous: dict, players: list, pages: dict[str,str]):
                        if values and str(r).isdigit()]
     newest_published = max(existing_rounds, default=0)
     for round_no in sorted(pages, key=int, reverse=True):
-        sources=pages[round_no]
         if int(round_no) < newest_published:
             continue
+        sources = pages[round_no]
         for url, page in sources.items():
             parsed = complete_matchday(parse_teams(page))
             if not parsed:
-                print(f'WARN {url}: zero complete 19-player nations, keeping last known statuses')
+                print(f'WARN {url}: no complete 19-player nation; last verified feed unchanged')
                 continue
-            page_verified=0
+
+            # For knockout rounds, a single source must contain the complete
+            # official matchday sheet; do not mix old and new partial pages.
+            if round_no == '4' and set(parsed) != ROUND_4_NATIONS:
+                print(f'::warning::R4 source incomplete; got {sorted(parsed)}, need {sorted(ROUND_4_NATIONS)}')
+                continue
+            if round_no == '5' and len(parsed) != 2:
+                print(f'::warning::R5 needs two fully verified finalist nations; got {sorted(parsed)}')
+                continue
+
+            stage = {}
             for country, values in parsed.items():
-                roster = by_nation.get(country,[])
+                roster = by_nation.get(country, [])
                 active_names = values['starting'] | values['interchange']
                 matched = sum(normalize_name(p['name']) in active_names for p in roster)
                 required = max(2, math.ceil(len(roster) * 0.30))
-                if matched < required:
-                    print(f'WARN {country} R{round_no}: only {matched}/{len(roster)} known market players match; need {required}. Keeping last verified statuses. Sample extracted names: {sorted(active_names)[:4]}')
+                if not roster or matched < required:
+                    print(f'::warning::{country} R{round_no} matches only {matched}/{len(roster)} market players; '
+                          f'need {required}; keeping previously verified feed')
                     continue
-                # Never create/alter a round until a nation is actually verified.
-                current=result['rounds'].setdefault(round_no,{})
-                for player in roster:
-                    key = normalize_name(player['name'])
-                    current[player['id']] = ('starting' if key in values['starting']
-                                             else 'interchange' if key in values['interchange']
-                                             else 'omitted')
-                verified.append((round_no,country,len(roster)))
-                page_verified+=1
-                newest_published=max(newest_published,int(round_no))
-            if page_verified and not any(x.get('url') == url for x in result['sources'].setdefault(round_no,[])):
-                result['sources'][round_no].append({'url':url,'label':f'NRL.com World Cup men - round {round_no}'})
+                stage[country] = {
+                    p['id']: ('starting' if normalize_name(p['name']) in values['starting']
+                              else 'interchange' if normalize_name(p['name']) in values['interchange']
+                              else 'omitted')
+                    for p in roster
+                }
+
+            if round_no in ('4', '5'):
+                # Atomic knockout publication: 140 market players get a status.
+                # Eliminated nations (no fixture) are explicitly "omitted".
+                if set(stage) != set(parsed):
+                    print(f'::warning::R{round_no}: market mapping incomplete. No partial knockout publication.')
+                    continue
+                complete = {p['id']: 'omitted' for p in players if p.get('marketEligible')}
+                for statuses in stage.values():
+                    complete.update(statuses)
+                result['rounds'][round_no] = complete
+            else:
+                # Preserve the existing group-round behaviour.
+                current = result['rounds'].setdefault(round_no, {})
+                for statuses in stage.values():
+                    current.update(statuses)
+
+            for country, statuses in stage.items():
+                verified.append((round_no, country, len(statuses)))
+            if stage:
+                newest_published = max(newest_published, int(round_no))
+                found = result['sources'].setdefault(round_no, [])
+                if not any(x.get('url') == url for x in found):
+                    found.append({'url': url, 'label': f'NRL.com World Cup men - round {round_no}'})
+                if round_no in ('4', '5'):
+                    # Never let an additional, potentially stale page overwrite
+                    # a fully verified single-source knockout snapshot.
+                    break
     return result,verified
 
 
-def run(offline_pages=None):
+def run(offline_pages=None, round_override=None):
     feed_path=ROOT/'worldcup-teamlists.json'
     roster=json.loads((ROOT/'roster.json').read_text(encoding='utf8'))
     before=json.loads(feed_path.read_text(encoding='utf8'))
     manual=json.loads((ROOT/'additional_sources.json').read_text(encoding='utf8'))
     manual_urls = [u for vals in manual.values() for u in vals]
-    sources=discover_urls(manual=manual_urls, previous=before) if offline_pages is None else {r:list(p) for r,p in offline_pages.items()}
+    today = datetime.now(ZoneInfo('Australia/Sydney')).date()
+    target = round_override or current_target_round(today)
+    print(f'Team list publisher target: Round {target} (Australia/Sydney {today}); scanning current round only')
+    sources=(discover_urls(manual=manual_urls, previous=before, today=today,
+                           focus_round=target) if offline_pages is None
+             else {r:list(p) for r,p in offline_pages.items()})
+    if offline_pages is None and not sources.get(target):
+        raise RuntimeError(f'No official article candidate for Round {target}')
     pages={}
     for round_no,urls in sources.items():
         if offline_pages is not None: pages[round_no]=offline_pages[round_no]
@@ -362,52 +433,58 @@ def run(offline_pages=None):
             # Complete fixture cards: 10 nations in R1/R2/R3, four in SF, two in Final.
             expected={'1':10,'2':10,'3':10,'4':4,'5':2}.get(round_no,1)
             for url in urls:
-                source=get_official_source(url,expected_nations=expected)
-                if source: pages.setdefault(round_no,{})[url]=source
+                source = get_official_source(url, expected_nations=expected)
+                if not source:
+                    continue
+                parsed = complete_matchday(parse_teams(source))
+                if round_no == '4' and set(parsed) != ROUND_4_NATIONS:
+                    print(f'::warning::R4 article is not a fully validated four-nation snapshot: {sorted(parsed)}')
+                    continue
+                if round_no == '5' and len(parsed) != 2:
+                    continue
+                pages.setdefault(round_no, {})[url] = source
+                if round_no in ('4', '5'):
+                    break
     candidate,verified=build_changes(before,roster,pages)
-    # Report complete per-nation coverage, not only whether the round key exists.
-    market_nations=defaultdict(set)
-    for p in roster:
-        if p.get('marketEligible'):
-            market_nations[p['nation']].add(p['id'])
-    for rnd in sorted(set(sources) | set(candidate.get('rounds',{}))):
-        keys=set(candidate.get('rounds',{}).get(rnd,{}))
-        if not keys: continue
-        full={nation for nation,ids in market_nations.items() if ids.issubset(keys)}
-        print(f'Coverage R{rnd}: {len(full)}/{len(market_nations)} nations; '
-              f'{len(keys)} player statuses')
-        if len(full)<len(market_nations):
-            missing_nations=sorted(set(market_nations)-full)
-            print(f'::warning::R{rnd} incomplete nation coverage: '
-                  f'{", ".join(missing_nations)}',file=sys.stderr)
-    today = datetime.now(timezone.utc).date()
-    missing=[]
-    for rnd,(expected_date, _slugs) in ARTICLE_SCHEDULE.items():
-        if today >= expected_date + timedelta(days=1) and not candidate.get('rounds',{}).get(rnd):
-            missing.append(rnd)
-            print(f'::error::Round {rnd} has no validated player statuses. '
-                  'The official source may be blocked or its format may have changed.',file=sys.stderr)
+    # A successful scheduled run means CURRENT official team sheets were verified,
+    # not merely that a historical/cached JSON entry already exists.
+    if offline_pages is None:
+        verified_current = {nation for rnd, nation, _ in verified if rnd == target}
+        required = ROUND_4_NATIONS if target == '4' else set()
+        if target == '4' and verified_current != required:
+            raise RuntimeError('Round 4 official verification incomplete: '
+                               f'{sorted(verified_current)}; expected {sorted(required)}. '
+                               'Existing feed preserved; no stale success reported.')
+        if target == '5' and len(verified_current) != 2:
+            raise RuntimeError('Round 5 official finalist lists not fully verified; last feed preserved.')
+        if target in ('1', '2', '3') and not verified_current:
+            raise RuntimeError(f'No new official verification for Round {target}; last feed preserved.')
+        expected_ids = {p['id'] for p in roster if p.get('marketEligible')}
+        if target in ('4', '5') and set(candidate.get('rounds', {}).get(target, {})) != expected_ids:
+            raise RuntimeError(f'Round {target} incomplete market coverage; no publication')
+        print(f'::notice::Official R{target} verification PASSED: {len(verified_current)} nations, '
+              f'{len(candidate["rounds"][target])} player statuses')
     compare=lambda d: {k:v for k,v in d.items() if k!='updatedAt'}
     if compare(candidate)==compare(before):
         print(f'No changed team lists ({len(verified)} validated nations, {len(pages)} rounds checked).')
-        if missing: raise RuntimeError('Missing expected round(s): '+', '.join(missing))
         return False
     candidate['updatedAt'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
     feed_path.write_text(json.dumps(candidate,indent=2,ensure_ascii=False)+'\n',encoding='utf8')
     print(f'Updated feed: {len(verified)} validated nation-round entries: {verified}')
-    if missing: raise RuntimeError('Missing expected round(s): '+', '.join(missing))
     return True
 
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
-    parser.add_argument('--fixture-dir',type=Path,help='Use locally saved pages for offline verification')
+    parser.add_argument('--fixture-dir', type=Path, help='Use locally saved pages for offline verification')
+    parser.add_argument('--round', dest='round_override', choices=['1','2','3','4','5'],
+                        help='Explicit official round target; defaults to current Australia/Sydney round')
     args=parser.parse_args()
     if args.fixture_dir:
         sources={}
         for p in sorted(args.fixture_dir.glob('round[1-5]_*.txt')):
             rd=p.name[5]
             sources.setdefault(rd,{})[f'https://www.nrl.com/news/2026/10/13/world-cup-team-lists-mens-round-{rd}/']=p.read_text(encoding='utf8')
-        run(sources)
+        run(sources, round_override=args.round_override)
     else:
-        run()
+        run(round_override=args.round_override)
