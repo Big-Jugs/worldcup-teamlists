@@ -32,6 +32,41 @@ jobs:
           python -m unittest test_teamlist_round4 -v
       - name: Verify CURRENT NRL.com team lists (fail closed if unavailable)
         run: python update_teamlists.py
+      - name: Diagnose official team-list sources
+        if: failure()
+        run: |
+          python - <<'PY'
+          import requests
+          from bs4 import BeautifulSoup
+          from update_teamlists import parse_teams, complete_matchday
+
+          urls = [
+              "https://www.nrl.com/news/2026/11/03/world-cup-team-lists-mens-semi-finals/",
+              "https://www.rlwc2026.com/news/world-cup-team-lists-mens-semi-finals",
+              "https://www.seaeagles.com.au/news/2026/11/03/world-cup-team-lists-mens-semi-finals/",
+          ]
+
+          for url in urls:
+              print("\nSOURCE:", url, flush=True)
+              try:
+                  response = requests.get(
+                      url,
+                      timeout=20,
+                      headers={"User-Agent": "Mozilla/5.0"}
+                  )
+                  soup = BeautifulSoup(response.text, "html.parser")
+                  title = soup.title.get_text(strip=True) if soup.title else "None"
+                  teams = complete_matchday(parse_teams(response.text))
+
+                  print("HTTP:", response.status_code)
+                  print("Bytes:", len(response.content))
+                  print("Title:", title)
+                  print("Verified nations:", sorted(teams))
+                  print("Page sample:", soup.get_text(" ", strip=True)[:200])
+              except Exception as exc:
+                  print("FETCH FAILED:", type(exc).__name__, str(exc)[:200])
+          PY
+
       - name: Commit only verified differences
         run: |
           if git diff --quiet -- worldcup-teamlists.json; then
