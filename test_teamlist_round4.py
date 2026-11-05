@@ -76,6 +76,35 @@ class Round4PublisherTests(unittest.TestCase):
         self.assertEqual(mod.current_target_round(date(2026,11,5)), '4')
         self.assertEqual(mod.current_target_round(date(2026,11,10)), '5')
 
+    def test_realistic_nrl_html_nested_player_cards(self):
+        # NRL hides the role/jersey in a visually-hidden span and puts the
+        # first/last name in separate sibling text nodes. Previously all
+        # these entries were silently missed by visible_lines().
+        teams = {'NZL': 'New Zealand', 'TON': 'Tonga',
+                 'AUS': 'Australia', 'SAM': 'Samoa'}
+        roles = ['Fullback', 'Winger', 'Centre', 'Centre', 'Winger',
+                 'Five-Eighth', 'Halfback', 'Prop', 'Hooker', 'Prop',
+                 '2nd Row', '2nd Row', 'Lock']
+        cards = []
+        for nation, players in self.squads.items():
+            for index, player in enumerate(players, 1):
+                role = roles[index - 1] if index <= 13 else (
+                    'Interchange' if index <= 19 else 'Reserve')
+                parts = player.split(' ', 1)
+                first, surname = (parts[0], parts[1]) if len(parts) > 1 else (player, '')
+                cards.append(
+                    '<div class="team-list-profile__name">'
+                    f'<span class="u-visually-hidden">{role} for {teams[nation]} '
+                    f'is number {index}</span> {first}'
+                    f' <span class="u-font-weight-700">{surname}</span>'
+                    '</div>')
+        html = '<html><body>' + ''.join(cards) + '</body></html>'
+        parsed = mod.complete_matchday(mod.parse_teams(html))
+        self.assertEqual(set(parsed), mod.ROUND_4_NATIONS)
+        for value in parsed.values():
+            self.assertEqual(len(value['starting']), 13)
+            self.assertEqual(len(value['interchange']), 6)
+
     def test_four_complete_squads_parsed(self):
         parsed = mod.complete_matchday(mod.parse_teams(sample_html(self.squads)))
         self.assertEqual(set(parsed), mod.ROUND_4_NATIONS)
