@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-11-07T08:21:48+00:00",
+  "updatedAt": "2026-11-07T09:10:22+00:00",
   "rounds": {
     "1": {
       "p1": "interchange",
@@ -447,9 +447,9 @@
       "p16": "starting",
       "p17": "omitted",
       "p18": "starting",
-      "p19": "interchange",
+      "p19": "omitted",
       "p20": "starting",
-      "p21": "omitted",
+      "p21": "interchange",
       "p22": "starting",
       "p23": "starting",
       "p27": "omitted",
