@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-11-07T10:36:04+00:00",
+  "updatedAt": "2026-11-07T11:14:51+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -2226,35 +2226,35 @@
         "SF-1": {
           "home": "NZL",
           "away": "TON",
-          "status": "live",
-          "updatedAt": "2026-11-07T10:36:06+00:00",
+          "status": "final",
+          "updatedAt": "2026-11-07T11:14:53+00:00",
           "players": {
             "p143": {
-              "points": 28,
+              "points": 33,
               "played": true
             },
             "p141": {
-              "points": 37,
+              "points": 49,
               "played": true
             },
             "p149": {
-              "points": 55,
+              "points": 69,
               "played": true
             },
             "p151": {
-              "points": 53,
+              "points": 72,
               "played": true
             },
             "p153": {
-              "points": 31,
+              "points": 37,
               "played": true
             },
             "p142": {
-              "points": 62,
+              "points": 67,
               "played": true
             },
             "p140": {
-              "points": 44,
+              "points": 57,
               "played": true
             },
             "p147": {
@@ -2262,11 +2262,11 @@
               "played": true
             },
             "p146": {
-              "points": 21,
+              "points": 36,
               "played": true
             },
             "p154": {
-              "points": 54,
+              "points": 56,
               "played": true
             },
             "p152": {
@@ -2274,11 +2274,11 @@
               "played": true
             },
             "p158": {
-              "points": 40,
+              "points": 51,
               "played": true
             },
             "p155": {
-              "points": 44,
+              "points": 53,
               "played": true
             },
             "p160": {
@@ -2286,11 +2286,11 @@
               "played": true
             },
             "p139": {
-              "points": 33,
+              "points": 64,
               "played": true
             },
             "p161": {
-              "points": 25,
+              "points": 44,
               "played": true
             },
             "p144": {
@@ -2302,11 +2302,11 @@
               "played": false
             },
             "p218": {
-              "points": 35,
+              "points": 41,
               "played": true
             },
             "p209": {
-              "points": 17,
+              "points": 18,
               "played": true
             },
             "p228": {
@@ -2314,7 +2314,7 @@
               "played": true
             },
             "p214": {
-              "points": 65,
+              "points": 69,
               "played": true
             },
             "p212": {
@@ -2322,19 +2322,19 @@
               "played": true
             },
             "p208": {
-              "points": 30,
+              "points": 43,
               "played": true
             },
             "p222": {
-              "points": 41,
+              "points": 50,
               "played": true
             },
             "p213": {
-              "points": 28,
+              "points": 34,
               "played": true
             },
             "p211": {
-              "points": 62,
+              "points": 71,
               "played": true
             },
             "p224": {
@@ -2342,11 +2342,11 @@
               "played": true
             },
             "p230": {
-              "points": 16,
+              "points": 32,
               "played": true
             },
             "p220": {
-              "points": 16,
+              "points": 30,
               "played": true
             },
             "p226": {
@@ -2426,7 +2426,8 @@
             },
             "complete": true,
             "home_code": "NZL",
-            "away_code": "TON"
+            "away_code": "TON",
+            "official_teams": true
           }
         }
       }
