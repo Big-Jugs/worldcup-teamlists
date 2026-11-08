@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-11-08T11:26:26+00:00",
+  "updatedAt": "2026-11-08T14:20:56+00:00",
   "source": "NRL.com match centre (pending match scoring validation)",
   "rounds": {
     "1": {
@@ -2434,10 +2434,10 @@
           "home": "AUS",
           "away": "SAM",
           "status": "final",
-          "updatedAt": "2026-11-08T11:26:28+00:00",
+          "updatedAt": "2026-11-08T14:20:58+00:00",
           "players": {
             "p22": {
-              "points": 63,
+              "points": 62,
               "played": true
             },
             "p2": {
@@ -2449,7 +2449,7 @@
               "played": true
             },
             "p1": {
-              "points": 35,
+              "points": 33,
               "played": true
             },
             "p20": {
@@ -2469,27 +2469,27 @@
               "played": true
             },
             "p7": {
-              "points": 37,
+              "points": 35,
               "played": true
             },
             "p16": {
-              "points": 85,
+              "points": 87,
               "played": true
             },
             "p11": {
-              "points": 28,
+              "points": 26,
               "played": true
             },
             "p23": {
-              "points": 40,
+              "points": 45,
               "played": true
             },
             "p10": {
-              "points": 44,
+              "points": 46,
               "played": true
             },
             "p4": {
-              "points": 45,
+              "points": 41,
               "played": true
             },
             "p15": {
@@ -2497,7 +2497,7 @@
               "played": true
             },
             "p5": {
-              "points": 20,
+              "points": 18,
               "played": true
             },
             "p12": {
@@ -2513,23 +2513,23 @@
               "played": true
             },
             "p205": {
-              "points": 24,
+              "points": 25,
               "played": true
             },
             "p203": {
-              "points": 40,
+              "points": 41,
               "played": true
             },
             "p186": {
-              "points": 28,
+              "points": 26,
               "played": true
             },
             "p187": {
-              "points": 33,
+              "points": 29,
               "played": true
             },
             "p207": {
-              "points": 18,
+              "points": 15,
               "played": true
             },
             "p194": {
@@ -2537,11 +2537,11 @@
               "played": true
             },
             "p199": {
-              "points": 30,
+              "points": 32,
               "played": true
             },
             "p200": {
-              "points": 30,
+              "points": 33,
               "played": true
             },
             "p192": {
@@ -2549,15 +2549,15 @@
               "played": true
             },
             "p198": {
-              "points": 57,
+              "points": 58,
               "played": true
             },
             "p195": {
-              "points": 31,
+              "points": 33,
               "played": true
             },
             "p191": {
-              "points": 27,
+              "points": 28,
               "played": true
             },
             "p193": {
@@ -2569,7 +2569,7 @@
               "played": true
             },
             "p188": {
-              "points": 5,
+              "points": 4,
               "played": true
             },
             "p185": {
